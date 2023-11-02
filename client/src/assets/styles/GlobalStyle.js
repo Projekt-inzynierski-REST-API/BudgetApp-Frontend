@@ -2,19 +2,10 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
-
-html{
-    box-sizing: border-box;
-}
-
-*,*::after,*::before{
-    box-sizing: inherit;
-}
-
-body {
-  background-color: #eeeeee;
+body, html {
+  height: 100%;
   margin: 0;
-  padding: 0;
+  font-family: 'Arial', sans-serif; /* Jeśli potrzebujesz inny font, możesz go tu dodać */
 }
 
 `;
