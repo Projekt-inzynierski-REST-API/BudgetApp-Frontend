@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button } from "@mui/material";
 
 const CardContainer = styled.div`
   width: 400px;
@@ -24,13 +23,4 @@ const UserInfo = styled.div`
   margin-bottom: 8px;
 `;
 
-const LogoutButton = styled(Button)`
-  && {
-    background-color: #bdbdbd;
-    color: #212121;
-    width: 100%;
-    margin-top: 6%;
-  }
-`;
-
-export { CardContainer, UserInfo, LogoutButton };
+export { CardContainer, UserInfo };

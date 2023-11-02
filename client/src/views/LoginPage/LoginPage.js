@@ -27,12 +27,12 @@ function LoginPage() {
     });
 
     google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-      theme: "large", // Zmieniamy styl na wypełniony
-      size: "medium", // Zmieniamy rozmiar na średni
-      width: "200px", // Ustawiamy szerokość na 200 pikseli
-      height: "50px", // Ustawiamy wysokość na 50 pikseli
-      longtitle: true, // Ustawiamy długi tytuł
-      textColor: "#ffffff", // Ustawiamy kolor tekstu
+      theme: "large",
+      size: "medium",
+      width: "200px",
+      height: "50px",
+      longtitle: true,
+      textColor: "#ffffff",
     });
   }, []);
 

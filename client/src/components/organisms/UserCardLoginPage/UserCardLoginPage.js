@@ -1,10 +1,7 @@
 import React from "react";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
 
-import {
-  CardContainer,
-  UserInfo,
-  LogoutButton,
-} from "./UserCardLoginPage.style";
+import { CardContainer, UserInfo } from "./UserCardLoginPage.style";
 
 function UserCardLoginPage(props) {
   const { userObject } = props;
@@ -15,11 +12,15 @@ function UserCardLoginPage(props) {
   }
 
   return (
-    <CardContainer>
-      <UserInfo>Hi {userObject.name} !</UserInfo>
-      <p>If you want to change your accont, you need to log out first!</p>
-      <LogoutButton onClick={handleLogout}>Log out!</LogoutButton>
-    </CardContainer>
+    <>
+      <CardContainer>
+        <UserInfo>Hi {userObject.name} !</UserInfo>
+        <p>If you want to change your accont, you need to log out first!</p>
+        <CustomButton onClick={handleLogout} style={{ width: "100%" }}>
+          Log out!
+        </CustomButton>
+      </CardContainer>
+    </>
   );
 }
 

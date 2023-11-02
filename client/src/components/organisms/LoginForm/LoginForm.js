@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockIcon from "@mui/icons-material/Lock";
-import Button from "@mui/material/Button";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
+import TextFieldWithIcon from "../../molecules/TextFieldWithIcon/TextFieldWithIcon";
 
 import {
   CardContainer,
@@ -9,8 +10,6 @@ import {
   LogInOption,
   InputFields,
 } from "./LoginForm.style";
-
-import TextFieldWithIcon from "../../molecules/TextFieldWithIcon/TextFieldWithIcon";
 
 function LoginForm({ children }) {
   const [email, setEmail] = useState("");
@@ -53,9 +52,9 @@ function LoginForm({ children }) {
           required
           icon={<LockIcon />}
         />
-        <Button type="submit" variant="contained" color="primary">
+        <CustomButton type="submit" variant="contained" color="primary">
           Submit
-        </Button>
+        </CustomButton>
       </InputFields>
       <UserInfo>
         <div></div>
