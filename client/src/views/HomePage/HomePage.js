@@ -1,5 +1,7 @@
 import React from "react";
-
+import { StyledPage, RightSection, LeftSection } from "./StyledHomePage.style";
+import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
+import RightSectionContent from "../../components/organisms/RightSectionContent/RightSectionContent";
 function HomePage() {
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -9,12 +11,16 @@ function HomePage() {
 
   return (
     <>
-      <div>
-        <h1>Witaj na stronie głównej, {storedUser.name}!</h1>
-        <image src={storedUser.picture}></image>
+      <NavigationBar storedUser={storedUser}></NavigationBar>
+      <StyledPage>
+        <LeftSection>
+          <h1>Witaj na stronie głównej, {storedUser.name}!</h1>
+        </LeftSection>
 
-        {/* Dodaj inne informacje o użytkowniku */}
-      </div>
+        <RightSection>
+          <RightSectionContent></RightSectionContent>
+        </RightSection>
+      </StyledPage>
     </>
   );
 }
