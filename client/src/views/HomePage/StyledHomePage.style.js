@@ -9,6 +9,8 @@ const StyledPage = styled.div`
 
 const LeftSection = styled.div`
   width: 70%;
+  display: flex;
+  justify-content: center;
 `;
 
 const RightSection = styled.div`
@@ -18,4 +20,26 @@ const RightSection = styled.div`
   justify-content: center;
 `;
 
-export { StyledPage, RightSection, LeftSection };
+const StyledSelectionBar = styled.div`
+  height: 6vh;
+  margin-top: 10vh;
+`;
+const LeftSectionRightPanel = styled.div`
+  margin-left: 5vh;
+`;
+
+const LeftSectionLeftPanel = styled.div``;
+
+const ExpenseHistorySection = styled.div`
+  margin: 10vh;
+`;
+
+export {
+  StyledPage,
+  RightSection,
+  LeftSection,
+  StyledSelectionBar,
+  LeftSectionRightPanel,
+  LeftSectionLeftPanel,
+  ExpenseHistorySection,
+};

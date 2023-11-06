@@ -12,10 +12,9 @@ function LoginPage() {
   function handleCallbackResponse(response) {
     console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
-    console.log(userObject);
 
     localStorage.setItem("user", JSON.stringify(userObject));
-    navigate("/HomePage");
+    navigate("/HomePage", { state: { credential: response.credential } });
   }
 
   useEffect(() => {

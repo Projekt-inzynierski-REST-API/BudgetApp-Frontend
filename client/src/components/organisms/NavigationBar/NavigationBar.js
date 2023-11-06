@@ -9,7 +9,6 @@ import User from "../../molecules/SearchBar/SearchBar";
 import UserSection from "../../molecules/UserSection/UserSection";
 
 function NavigationBar({ storedUser }) {
-  console.log(storedUser);
   return (
     <>
       <NavigationBarField>

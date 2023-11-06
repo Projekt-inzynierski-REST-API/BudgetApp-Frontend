@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledRightSectionContent = styled.div`
+const StyledLastTransactionSection = styled.div`
   width: 90%;
 
   height: 70%;
@@ -16,4 +16,4 @@ const StyledRightSectionContent = styled.div`
   );
 `;
 
-export { StyledRightSectionContent };
+export { StyledLastTransactionSection };
