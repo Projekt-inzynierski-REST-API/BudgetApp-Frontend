@@ -1,5 +1,6 @@
 import HomePage from "../views/HomePage/HomePage";
 import LoginPage from "../views/LoginPage/LoginPage";
+import { GroupsPage } from "./GroupsPage/GroupsPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalStyle } from "../assets/styles/GlobalStyle";
 
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/HomePage" element={<HomePage />} />
+          <Route path="/GroupsPage" element={<GroupsPage />} />
         </Routes>
       </Router>
     </>
