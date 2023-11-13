@@ -62,7 +62,7 @@ export const JoinGroupForm = ({data}) => {
                         ))}
                 </SelectGroupName>
             </SelectBox>
-            <Button type="submit">Join</Button>
+            <Button type="submit">Join/Unjoin</Button>
         </Form>
     </>
   )

@@ -1,11 +1,11 @@
 import styled from "styled-components"
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const Headline = styled.h1`
     font-size: 36px;
     text-align: center;
 `;
 const Form = styled.form`
-
 `;
 
 const InputBox = styled.div`
@@ -13,7 +13,7 @@ const InputBox = styled.div`
     justify-content: center;
     width: 100%;
     height: 10px;
-    margin: 30px 0 70px 0;
+    margin: 30px 0 40px 0;
 `;
 
 const GroupName = styled.input`
@@ -45,5 +45,11 @@ const Button = styled.button`
     font-weight: 600;
 `;
 
-export {Headline, Form, InputBox, GroupName, Button};
+const MyLabel = styled(FormControlLabel)`
+&&{
+    margin: 0 0 0px 0px;
+}
+`;
+
+export {Headline, Form, InputBox, GroupName, Button, MyLabel};
 

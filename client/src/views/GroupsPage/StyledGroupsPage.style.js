@@ -21,7 +21,7 @@ const CreateGroupSection = styled.div`
 const CreateGroupContaier = styled.div`
     align-self: center;
     width: 50%;
-    height: 30vh;
+    height: 55vh;
     background: transparent;
     border: 2px solid rgba(0,0,0,.2);
     backdrop-filter: blur(20px);
@@ -63,7 +63,7 @@ const YourGroupsSection = styled.div`
 const YourGroupsContaier = styled.div`
     align-self: center;
     width: 50%;
-    height: 60vh;
+    height: 65vh;
     background: transparent;
     border: 2px solid rgba(0,0,0,.2);
     backdrop-filter: blur(20px);
