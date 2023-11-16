@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {StyledPage, CreateGroupContaier, CreateGroupSection, JoinToGroupContaier, JoinToGroupSection, YourGroupsContaier, YourGroupsSection,  } from "./StyledGroupsPage.style";
+import {StyledPage, CreateGroupContaier, YourGroupsContaier, CreateGroupColumn, YourGroupsColumn } from "./StyledGroupsPage.style";
 import { AddGroupForm } from "../../components/organisms/AddGroupForm/AddGroupForm";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
-import { JoinGroupForm } from "../../components/organisms/JoinGroupForm/JoinGroupForm";
 import { YoursGroups } from "../../components/organisms/YoursGroups/YoursGroups";
 
 export function GroupsPage() {
-  // pobranie tokenu z local storage
-  const credential = localStorage.getItem("token");
-  console.log("JWT Token from GroupPage: " + credential);
+
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
   // obiekt z grupami
@@ -19,15 +16,15 @@ export function GroupsPage() {
     try {
       const credential = localStorage.getItem("token");
       console.log(`Bearer ${credential}`);
-      const response = await fetch('https://9ac829e8-94a4-4c59-b710-132387fbbae3.mock.pstmn.io/api/dashboard/groups', {
+      const response = await fetch('http://localhost:1900/api/dashboard/groups', {
         method: 'GET',
         headers: {
-          // 'Authorization': `Bearer ${credential}`,
+          'Authorization': `Bearer ${credential}`,
           'Content-Type': 'application/json',
         },
       });
   
-      if (!response.ok) {
+      if (!response.status === 200) {
         if (response.status === 401) {
           console.error('Błąd uwierzytelnienia: Sprawdź poprawność tokena.');
         } else {
@@ -36,8 +33,8 @@ export function GroupsPage() {
         return;
       }
   
-      const jsonData = await response.json();
-      setAllGroups(jsonData);
+      const data = await response.json();
+      setAllGroups(data);
     } catch (error) {
       console.error('Wystąpił błąd podczas pobierania danych:', error);
     }
@@ -56,21 +53,16 @@ export function GroupsPage() {
     <>
       <NavigationBar storedUser={storedUser}></NavigationBar>
       <StyledPage>
-        <CreateGroupSection>
+        <CreateGroupColumn>
             <CreateGroupContaier>
                 <AddGroupForm />
             </CreateGroupContaier>
-        </CreateGroupSection>
-        <JoinToGroupSection>
-            <JoinToGroupContaier>
-                <JoinGroupForm data={allGroups} />
-            </JoinToGroupContaier>
-        </JoinToGroupSection>
-        <YourGroupsSection>
+        </CreateGroupColumn>
+        <YourGroupsColumn>
             <YourGroupsContaier>
-                <YoursGroups groups={allGroups} />
+                <YoursGroups groupsJson={allGroups} />
             </YourGroupsContaier>
-        </YourGroupsSection>
+        </YourGroupsColumn>
       </StyledPage>
     </>
   );

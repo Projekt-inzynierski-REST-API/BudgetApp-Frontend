@@ -6,24 +6,31 @@ const Headline = styled.h1`
 `;
 
 const RowsContainer = styled.div`
+    flex:1;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 `;
 
 const Row = styled.div`
     display: flex;
+    justify-content: space-evenly;
     align-items: center;
-    margin-bottom: 16px;
+    padding: 8px 0px;
+
+    &:hover {
+    background-color: #2980b9;
+  }
+
 `;
 
 const AvatarContainer = styled.div`
-    margin-right: 16px;
 `;
 
 const GroupName = styled.div`
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
-    margin-right: 16px;
 `;
 
 const RemoveFromGroup = styled.div`

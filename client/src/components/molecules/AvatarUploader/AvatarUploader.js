@@ -17,7 +17,7 @@ export const AvatarUploader = () => {
       {avatar ? (
         <GroupAvatar src={avatar} alt="Group Avatar"/>
       ) : (
-        <AvatarLabel htmlfor="avatarInput">
+        <AvatarLabel htmlFor="avatarInput">
           <AvatarImg src='/images/avatar/avatar.png' alt='avatar' />
           <input id="avatarInput" type="file" accept='image/*' onChange={handleAvatarChange} style={{display: 'none'}} />
         </AvatarLabel>

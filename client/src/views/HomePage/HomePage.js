@@ -9,6 +9,36 @@ function HomePage() {
     return <div>Nie znaleziono danych użytkownika.</div>;
   }
 
+  // pobranie tokenu z local storage
+  const credential = localStorage.getItem("token");
+
+  async function fetchLastTransaction() {
+    try {
+      const response = await fetch(
+        "http://localhost:1900/api/dashboard/last-transactions",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + credential,
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.log("Brak rekordów");
+      }
+    } catch (error) {
+      console.error("Error coo:", error);
+    }
+  }
+
+  fetchLastTransaction();
+
+
+
   return (
     <>
       <NavigationBar storedUser={storedUser}></NavigationBar>

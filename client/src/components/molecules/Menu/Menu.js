@@ -31,7 +31,7 @@ function SimpleAppBarWithMenu() {
       return;
     }
     setDrawerOpen(open);
-    navigate(pageAddress);
+    if(pageAddress != null) navigate(pageAddress);
   };
 
   return (

@@ -1,30 +1,27 @@
 import styled from "styled-components"
-import FormControlLabel from '@mui/material/FormControlLabel';
+
+const Form = styled.form`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
 
 const Headline = styled.h1`
     font-size: 36px;
     text-align: center;
 `;
-const Form = styled.form`
-`;
-
-const InputBox = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 10px;
-    margin: 30px 0 40px 0;
-`;
 
 const GroupName = styled.input`
     width: 100%;
+    height: 40px;
+    text-align: center;
     background: transparent;
     outline: none;
     border: 2px solid rgba(255,255,255,.2);
     border-radius: 40px;
     font-size: 16px;
     color: #fff;
-    padding: 20px 45px 20px 20px;
 
     &::placeholder {
         color: #fff; 
@@ -45,11 +42,5 @@ const Button = styled.button`
     font-weight: 600;
 `;
 
-const MyLabel = styled(FormControlLabel)`
-&&{
-    margin: 0 0 0px 0px;
-}
-`;
-
-export {Headline, Form, InputBox, GroupName, Button, MyLabel};
+export {Headline, Form, GroupName, Button};
 

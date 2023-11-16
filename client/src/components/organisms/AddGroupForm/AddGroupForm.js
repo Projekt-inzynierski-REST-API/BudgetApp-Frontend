@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { Headline, Form, InputBox, GroupName, Button, MyLabel } from './AddGroupForm.style';
-import { Checkbox } from '@mui/material';
+import { Headline, Form, GroupName, Button } from './AddGroupForm.style';
 import { AvatarUploader } from '../../molecules/AvatarUploader/AvatarUploader';
 
 export const AddGroupForm = () => {
@@ -39,16 +38,11 @@ export const AddGroupForm = () => {
   };
 
   return (
-    <>
         <Form onSubmit={handleSubmit}>
             <Headline>Add new group</Headline>
             <AvatarUploader/>
-            <InputBox>
-                <GroupName type="text" name='groupName' placeholder='GroupName' onChange={handleChange} required/>
-            </InputBox>
-            <MyLabel control={<Checkbox name='isMember' onChange={handleChange}/>} label="I'm member of this group" />
+            <GroupName type="text" name='groupName' placeholder='GroupName' onChange={handleChange} required/>
             <Button type="submit">Add</Button>
         </Form>
-    </>
   )
 }

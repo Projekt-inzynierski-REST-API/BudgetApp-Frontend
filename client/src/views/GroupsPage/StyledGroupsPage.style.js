@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledPage = styled.div`
   width: 100%;
-  height: 90.4vh;
+  height: 100vh;
   background: linear-gradient(to bottom, #add8e6, #d8bfd8);
   display: flex;
   flex-direction: row;
@@ -12,16 +12,17 @@ const StyledPage = styled.div`
 
 // Create Group
 
-const CreateGroupSection = styled.div`
+const CreateGroupColumn = styled.div`
   flex-grow: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: auto;
 `;
 
 const CreateGroupContaier = styled.div`
-    align-self: center;
-    width: 50%;
-    height: 55vh;
+    width: 40%;
+    height: 50vh;
     background: transparent;
     border: 2px solid rgba(0,0,0,.2);
     backdrop-filter: blur(20px);
@@ -52,25 +53,28 @@ const JoinToGroupContaier = styled.div`
     padding: 30px 40px;
 `;
 
-// Your Groups
+// Your 
 
-const YourGroupsSection = styled.div`
-  flex-grow: 1;
+const YourGroupsColumn = styled.div`
+  flex-grow:1;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: auto;
 `;
 
 const YourGroupsContaier = styled.div`
-    align-self: center;
-    width: 50%;
-    height: 65vh;
+    width: 70%;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
     background: transparent;
     border: 2px solid rgba(0,0,0,.2);
     backdrop-filter: blur(20px);
     box-shadow: 0 0 10px rgba(0,0,0,.2);
     color: #fff;
     border-radius: 10px;
-    padding: 30px 40px;;
+    padding: 30px 0px;;
 `;
 
-export { StyledPage, CreateGroupSection, JoinToGroupSection, YourGroupsSection, CreateGroupContaier, JoinToGroupContaier, YourGroupsContaier };
+export { StyledPage, JoinToGroupSection, CreateGroupContaier, JoinToGroupContaier, YourGroupsContaier, YourGroupsColumn, CreateGroupColumn};
