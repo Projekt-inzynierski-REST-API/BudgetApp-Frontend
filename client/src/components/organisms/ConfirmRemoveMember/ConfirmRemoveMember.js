@@ -7,9 +7,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
 
-export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId }) => {
+export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, getAllGroups }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-
   const handleAlertOpen = () => {
     setIsAlertOpen(true);
   }
@@ -51,6 +50,7 @@ export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId }
         return;
       }
       console.log('usunieto');
+      getAllGroups();
       // const data = response.json();
       // console.log(JSON.stringify(data));
     } catch (error) {

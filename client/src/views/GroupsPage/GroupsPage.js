@@ -5,49 +5,51 @@ import NavigationBar from "../../components/organisms/NavigationBar/NavigationBa
 import { YoursGroups } from "../../components/organisms/YoursGroups/YoursGroups";
 
 export function GroupsPage() {
+    // obiekt z grupami
+    const [allGroups, setAllGroups] = useState(false);
 
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
-  // obiekt z grupami
-  const [allGroups, setAllGroups] = useState(false);
-  
-  //funkcja pobierająca wszystkie grupy z bazy danych
-  const getAllGroups = async () => {
-    try {
-      const credential = localStorage.getItem("token");
-      console.log(`Bearer ${credential}`);
-      const response = await fetch('http://localhost:1900/api/dashboard/groups', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${credential}`,
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (!response.status === 200) {
-        if (response.status === 401) {
-          console.error('Błąd uwierzytelnienia: Sprawdź poprawność tokena.');
-        } else {
-          console.error(`Błąd HTTP: ${response.status}`);
+
+    //funkcja pobierająca wszystkie grupy z bazy danych
+    const getAllGroups = async () => {
+      try {
+        const credential = localStorage.getItem("token");
+        console.log(`Bearer ${credential}`);
+        const response = await fetch('http://localhost:1900/api/dashboard/groups', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${credential}`,
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (!response.status === 200) {
+          if (response.status === 401) {
+            console.error('Błąd uwierzytelnienia: Sprawdź poprawność tokena.');
+          } else {
+            console.error(`Błąd HTTP: ${response.status}`);
+          }
+          return;
         }
-        return;
+    
+        const data = await response.json();
+        setAllGroups(data.groups);
+      } catch (error) {
+        console.error('Wystąpił błąd podczas pobierania danych:', error);
       }
+    };
+
+
   
-      const data = await response.json();
-      setAllGroups(data);
-    } catch (error) {
-      console.error('Wystąpił błąd podczas pobierania danych:', error);
+    useEffect(() => {
+      getAllGroups();
+    }, []);
+
+    if (!allGroups) {
+      // Jeśli dane nie zostały jeszcze pobrane, możesz zwrócić np. komunikat "Ładowanie..."
+      return <p>Ładowanie...</p>;
     }
-  };
-
-  useEffect(() => {
-    getAllGroups();
-  }, [])
-
-  if (!allGroups) {
-    // Jeśli dane nie zostały jeszcze pobrane, możesz zwrócić np. komunikat "Ładowanie..."
-    return <p>Ładowanie...</p>;
-  }
   
   return (
     <>
@@ -55,12 +57,12 @@ export function GroupsPage() {
       <StyledPage>
         <CreateGroupColumn>
             <CreateGroupContaier>
-                <AddGroupForm />
+                <AddGroupForm getAllGroups={getAllGroups}/>
             </CreateGroupContaier>
         </CreateGroupColumn>
         <YourGroupsColumn>
             <YourGroupsContaier>
-                <YoursGroups groupsJson={allGroups} />
+                <YoursGroups allGroups={allGroups}/>
             </YourGroupsContaier>
         </YourGroupsColumn>
       </StyledPage>

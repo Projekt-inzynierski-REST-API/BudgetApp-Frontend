@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { StyledTableCell } from "./MembersTable.style";
 import { ConfirmRemoveMember } from "../ConfirmRemoveMember/ConfirmRemoveMember";
 
-export const MembersTable = ({ membersDetails, groupId }) => {
+export const MembersTable = ({ membersDetails, groupId, getAllGroups }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(false);
   
@@ -23,7 +23,7 @@ export const MembersTable = ({ membersDetails, groupId }) => {
 
   return (
     <>
-    <ConfirmRemoveMember isOpen={isConfirmOpen} onClose={handleConfirmClose} memberToRemove={memberToRemove} groupId={groupId}/>
+    <ConfirmRemoveMember isOpen={isConfirmOpen} onClose={handleConfirmClose} memberToRemove={memberToRemove} groupId={groupId} getAllGroups={getAllGroups}/>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
