@@ -6,9 +6,11 @@ export const AddGroupForm = ({ getAllGroups }) => {
   const [formData, setFormData] = useState({
     groupName: "",
   });
+  const [inputValue, setInputValue]= useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setInputValue(value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -39,7 +41,8 @@ export const AddGroupForm = ({ getAllGroups }) => {
       }
       const newGroup = await response.json();
       console.log(`dodano grupe: ${newGroup.name} o id: ${newGroup.id}`);
-      // getAllGroups(); // wywołuje funkcje do pobierania wszystkich grup przekazana jako prop z GroupsPage
+      setInputValue(''); // wyczyszczenie inputa
+      getAllGroups(); // wywołuje funkcje do pobierania wszystkich grup przekazana jako prop z GroupsPage
     } catch (error) {
       console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
@@ -53,6 +56,7 @@ export const AddGroupForm = ({ getAllGroups }) => {
         type="text"
         name="groupName"
         placeholder="GroupName"
+        value={inputValue}
         onChange={handleChange}
         required
       />

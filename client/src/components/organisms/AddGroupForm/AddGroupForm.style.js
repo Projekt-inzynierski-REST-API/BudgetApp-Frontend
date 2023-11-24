@@ -10,6 +10,9 @@ const Form = styled.form`
 const Headline = styled.h1`
     font-size: 36px;
     text-align: center;
+    @media (max-width: 1250px) {
+    font-size: 28px; // Dostosuj rozmiar czcionki dla ekranów o szerokości 1250px i mniejszej
+  }
 `;
 
 const GroupName = styled.input`

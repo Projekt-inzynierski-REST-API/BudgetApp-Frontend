@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import {
   StyledPage,
@@ -16,14 +16,14 @@ import { GroupInfo } from "../../components/organisms/GroupInfo/GroupInfo";
 export const GroupDetails = () => {
   const location = useLocation();
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
-  const [groupObject, setGroupObject] = useState(location.state?.groupObject); // odczytuje przekazane dane o grupie
+  const [groupDetailsObject, setGroupDetailsObject] = useState(location.state?.groupDetailsObject); // odczytuje przekazane dane o grupie
   const [tableKey, setTableKey] = useState(1); // Unikalny klucz komponentu
 
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   // Sprawdź, czy location.state zawiera oczekiwane dane
-  if (!groupObject) {
+  if (!groupDetailsObject) {
     // Przekieruj użytkownika lub wyrenderuj komunikat
     return <Navigate to="/HomePage" />;
   }
@@ -33,14 +33,17 @@ export const GroupDetails = () => {
     try {
       const credential = localStorage.getItem("token");
       console.log(`Bearer ${credential}`);
+      const dataToSend = { rows_number: 1 };
+
       const response = await fetch(
-        "http://localhost:1900/api/dashboard/groups",
+        `http://localhost:1900/api/groups/${groupDetailsObject.group_id}`,
         {
           method: "GET",
           headers: {
             Authorization: `Bearer ${credential}`,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(dataToSend)
         }
       );
 
@@ -54,13 +57,16 @@ export const GroupDetails = () => {
       }
 
       const data = await response.json();
-      setGroupObject(data.groups[0]);
-      // Po zmianie groupObject zmien klucz, aby ponownie załadować MembersTable
-      setTableKey((prevKey) => prevKey + 1);
+      console.log(data);
+      // setGroupDetailsObject(data.groups[0]);
+      // // Po zmianie groupDetailsObject zmien klucz, aby ponownie załadować MembersTable
+      // setTableKey((prevKey) => prevKey + 1);
     } catch (error) {
       console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
   };
+
+  getAllGroups();
 
   const handleAddMemberClick = () => {
     setIsAddFormOpen(true);
@@ -70,32 +76,32 @@ export const GroupDetails = () => {
     setIsAddFormOpen(false);
   };
 
-  return (
-    <>
-      <AddToGroupForm
-        isOpen={isAddFormOpen}
-        onClose={handleAddFormClose}
-        groupName={groupObject.group_name}
-      />
-      <NavigationBar storedUser={storedUser}></NavigationBar>
-      <StyledPage>
-        <HeaderGeneralInformation>General information</HeaderGeneralInformation>
-        <GroupInfoContainer>
-          <GroupInfo data={groupObject} />
-        </GroupInfoContainer>
-        <HeaderMembers>
-          Members
-          <AddMemberButton onClick={handleAddMemberClick} />
-        </HeaderMembers>
-        <StyledTableContainer>
-          <MembersTable
-            key={tableKey}
-            membersDetails={groupObject.members}
-            groupId={groupObject.group_id}
-            getAllGroups={getAllGroups}
-          />
-        </StyledTableContainer>
-      </StyledPage>
-    </>
-  );
+  // return (
+  //   <>
+  //     <AddToGroupForm
+  //       isOpen={isAddFormOpen}
+  //       onClose={handleAddFormClose}
+  //       groupName={groupDetailsObject.group_name}
+  //     />
+  //     <NavigationBar storedUser={storedUser}></NavigationBar>
+  //     <StyledPage>
+  //       <HeaderGeneralInformation>General information</HeaderGeneralInformation>
+  //       <GroupInfoContainer>
+  //         <GroupInfo data={groupDetailsObject} />
+  //       </GroupInfoContainer>
+  //       <HeaderMembers>
+  //         Members
+  //         <AddMemberButton onClick={handleAddMemberClick} />
+  //       </HeaderMembers>
+  //       <StyledTableContainer>
+  //         <MembersTable
+  //           key={tableKey}
+  //           membersDetails={groupDetailsObject.members}
+  //           groupId={groupDetailsObject.group_id}
+  //           getAllGroups={getAllGroups}
+  //         />
+  //       </StyledTableContainer>
+  //     </StyledPage>
+  //   </>
+  // );
 };
