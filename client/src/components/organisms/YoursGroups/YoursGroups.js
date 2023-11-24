@@ -28,7 +28,7 @@ export const YoursGroups = ({ allGroups, getAllGroups }) => {
       group_id: selectedObject.group_id,
       created_date: selectedObject.created_date,
     };
-    console.log(groupDetailsObject);
+    // console.log(groupDetailsObject);
     navigate("/GroupDetails", { state: { groupDetailsObject } });
   };
 
@@ -68,6 +68,7 @@ export const YoursGroups = ({ allGroups, getAllGroups }) => {
             <RemoveFromGroup>
               <IconButton
                 aria-label="delete"
+                sx={{color: "#fffff0"}}
                 onClick={(e) => {
                   e.stopPropagation(); // Zatrzymaj propagację zdarzeń
                   handleConfirmOpen(group, e); // Przekaż obiekt grupy, oraz obiekt zdarzenia do funkcji handleConfirmOpen

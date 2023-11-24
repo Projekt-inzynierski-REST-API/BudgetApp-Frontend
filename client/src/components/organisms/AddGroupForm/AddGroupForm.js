@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Headline, Form, GroupName, Button } from "./AddGroupForm.style";
 import { AvatarUploader } from "../../molecules/AvatarUploader/AvatarUploader";
+import { ConfirmAddGroup } from "../ConfirmAddGroup/ConfirmAddGroup";
 
 export const AddGroupForm = ({ getAllGroups }) => {
   const [formData, setFormData] = useState({
     groupName: "",
   });
-  const [inputValue, setInputValue]= useState('');
+  const [inputValue, setInputValue] = useState("");
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,48 +21,26 @@ export const AddGroupForm = ({ getAllGroups }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsConfirmOpen(true);
     console.log(formData.groupName);
-    try {
-      const credential = localStorage.getItem("token");
-      const response = await fetch("http://localhost:1900/api/group", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${credential}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: formData.groupName }),
-      });
-
-      if (!response.status === 200) {
-        if (response.status === 401) {
-          console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
-        } else {
-          console.error(`Błąd HTTP: ${response.status}`);
-        }
-        return;
-      }
-      const newGroup = await response.json();
-      console.log(`dodano grupe: ${newGroup.name} o id: ${newGroup.id}`);
-      setInputValue(''); // wyczyszczenie inputa
-      getAllGroups(); // wywołuje funkcje do pobierania wszystkich grup przekazana jako prop z GroupsPage
-    } catch (error) {
-      console.error("Wystąpił błąd podczas pobierania danych:", error);
-    }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Headline>Add new group</Headline>
-      <AvatarUploader />
-      <GroupName
-        type="text"
-        name="groupName"
-        placeholder="GroupName"
-        value={inputValue}
-        onChange={handleChange}
-        required
-      />
-      <Button type="submit">Add</Button>
-    </Form>
+    <>
+      <ConfirmAddGroup isOpen={isConfirmOpen} onClose={setIsConfirmOpen} groupToAdd={formData} getAllGroups={getAllGroups} setInputValue={setInputValue}/>
+      <Form onSubmit={handleSubmit}>
+        <Headline>Add new group</Headline>
+        <AvatarUploader />
+        <GroupName
+          type="text"
+          name="groupName"
+          placeholder="GroupName"
+          value={inputValue}
+          onChange={handleChange}
+          required
+        />
+        <Button type="submit">Add</Button>
+      </Form>
+    </>
   );
 };

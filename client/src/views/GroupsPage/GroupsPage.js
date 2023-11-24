@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  PageContainer,
   StyledPage,
   CreateGroupContaier,
   YourGroupsContaier,
@@ -14,7 +15,6 @@ import { YoursGroups } from "../../components/organisms/YoursGroups/YoursGroups"
 export function GroupsPage() {
   // obiekt z grupami
   const [allGroups, setAllGroups] = useState(false);
-  const [ isBackdropOpen, setIsBackdropOpen ] = useState(false);
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -55,13 +55,12 @@ export function GroupsPage() {
   }, []);
 
   if (!allGroups) {
-    // Jeśli dane nie zostały jeszcze pobrane, możesz zwrócić np. komunikat "Ładowanie..."
+    // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
     return <SimpleBackdrop isOpen={true} />
   }
 
   return (
-    <>
-      {/* <SimpleBackdrop isOpen={ isBackdropOpen }/> */}
+    <PageContainer>
       <NavigationBar storedUser={storedUser}></NavigationBar>
       <StyledPage>
         <CreateGroupColumn>
@@ -75,6 +74,6 @@ export function GroupsPage() {
           </YourGroupsContaier>
         </YourGroupsColumn>
       </StyledPage>
-    </>
+    </PageContainer>
   );
 }

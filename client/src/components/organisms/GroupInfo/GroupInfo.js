@@ -1,7 +1,7 @@
 import React from "react";
 import { BasicInfoRow } from "./GroupInfo.style";
 
-export const GroupInfo = ({data}) => {
+export const GroupInfo = ({ data, budget }) => {
   return (
     <>
       <BasicInfoRow>
@@ -14,7 +14,7 @@ export const GroupInfo = ({data}) => {
       </BasicInfoRow>
       <BasicInfoRow>
         <span style={{ fontWeight: 600 }}>Group budget: </span>
-        {data.group_budget}
+        {budget}
       </BasicInfoRow>
     </>
   );

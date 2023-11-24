@@ -8,10 +8,10 @@ import Button from "@mui/material/Button";
 import { StyledTableCell } from "./MembersTable.style";
 import { ConfirmRemoveMember } from "../ConfirmRemoveMember/ConfirmRemoveMember";
 
-export const MembersTable = ({ membersDetails, groupId, getAllGroups }) => {
+export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(false);
-  
+  // console.log(typeof membersDetails);
   const handleConfirmOpen = (member) => {
     setMemberToRemove(member);
     setIsConfirmOpen(true);
@@ -23,7 +23,7 @@ export const MembersTable = ({ membersDetails, groupId, getAllGroups }) => {
 
   return (
     <>
-    <ConfirmRemoveMember isOpen={isConfirmOpen} onClose={handleConfirmClose} memberToRemove={memberToRemove} groupId={groupId} getAllGroups={getAllGroups}/>
+    <ConfirmRemoveMember isOpen={isConfirmOpen} onClose={handleConfirmClose} memberToRemove={memberToRemove} groupId={groupId} getGroupInfo={getGroupInfo}/>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -33,8 +33,8 @@ export const MembersTable = ({ membersDetails, groupId, getAllGroups }) => {
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {membersDetails.map((member) => (
+        {/* <TableBody>
+          {groupObject.members.map((member) => (
             <TableRow
               key={member.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -55,7 +55,7 @@ export const MembersTable = ({ membersDetails, groupId, getAllGroups }) => {
               </StyledTableCell>
             </TableRow>
           ))}
-        </TableBody>
+        </TableBody> */}
       </Table>
     </>
   );
