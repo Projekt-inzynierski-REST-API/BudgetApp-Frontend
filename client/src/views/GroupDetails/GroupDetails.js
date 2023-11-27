@@ -94,7 +94,8 @@ export const GroupDetails = () => {
       <AddToGroupForm
         isOpen={isAddFormOpen}
         onClose={handleAddFormClose}
-        groupName={groupDetailsObject.group_name}
+        groupObject={groupDetailsObject}
+        getGroupInfo={getGroupInfo}
       />
       <NavigationBar storedUser={storedUser}></NavigationBar>
       <StyledPage>
