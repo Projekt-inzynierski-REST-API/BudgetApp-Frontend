@@ -33,7 +33,7 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
-        {/* <TableBody>
+        <TableBody>
           {groupObject.members.map((member) => (
             <TableRow
               key={member.id}
@@ -55,7 +55,7 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
               </StyledTableCell>
             </TableRow>
           ))}
-        </TableBody> */}
+        </TableBody>
       </Table>
     </>
   );

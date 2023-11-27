@@ -41,7 +41,7 @@ export const GroupDetails = () => {
       const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
       // `http://localhost:1900/api/group/${groupDetailsObject.group_id}`
       const response = await fetch(
-        `https://9ac829e8-94a4-4c59-b710-132387fbbae3.mock.pstmn.io/api/group/1`,
+        `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`,
         {
           method: "POST",
           headers: {
