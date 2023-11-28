@@ -30,23 +30,25 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
             <StyledTableCell align="center">First Name</StyledTableCell>
             <StyledTableCell align="center">Last Name</StyledTableCell>
             <StyledTableCell align="center">Email</StyledTableCell>
+            <StyledTableCell align="center">Account Balance</StyledTableCell>
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {groupObject.members.map((member) => (
             <TableRow
-              key={member.id}
+              key={member.member.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <StyledTableCell align="center">{member.name}</StyledTableCell>
-              <StyledTableCell align="center">{member.surname}</StyledTableCell>
-              <StyledTableCell align="center">{member.email}</StyledTableCell>
+              <StyledTableCell align="center">{member.member.name}</StyledTableCell>
+              <StyledTableCell align="center">{member.member.surname}</StyledTableCell>
+              <StyledTableCell align="center">{member.member.email}</StyledTableCell>
+              <StyledTableCell align="center">{member.member_account_balance}</StyledTableCell>
               <StyledTableCell align="right">
                 <Button
                   variant="contained"
                   color="error"
-                  onClick={() => handleConfirmOpen(member)}
+                  onClick={() => handleConfirmOpen(member.member)}
                   key={member.id}
                   startIcon={<DeleteIcon />}
                 >

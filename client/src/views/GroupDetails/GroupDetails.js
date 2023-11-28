@@ -100,7 +100,7 @@ export const GroupDetails = () => {
       <StyledPage>
         <HeaderGeneralInformation>General information</HeaderGeneralInformation>
         <GroupInfoContainer>
-          <GroupInfo data={groupDetailsObject} budget={groupObject.budget} />
+          <GroupInfo data={groupDetailsObject} budget={groupObject.group_budget} />
         </GroupInfoContainer>
         <HeaderMembers>
           Members
