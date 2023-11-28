@@ -37,11 +37,10 @@ export const GroupDetails = () => {
   const getGroupInfo = async () => {
     try {
       const credential = localStorage.getItem("token");
-      console.log(`Bearer ${credential}`);
       const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
-      // `http://localhost:1900/api/group/${groupDetailsObject.group_id}`
+      // `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`
       const response = await fetch(
-        `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`,
+        `http://localhost:1900/api/group/${groupDetailsObject.group_id}`,
         {
           method: "POST",
           headers: {
