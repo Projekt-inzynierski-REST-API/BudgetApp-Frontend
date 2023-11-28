@@ -35,16 +35,19 @@ export const ConfirmAddGroup = ({
     handleConfirmClose();
     try {
         const credential = localStorage.getItem("token");
+        const access_token = localStorage.getItem("access_token");
+        console.log(access_token);
         const response = await fetch("http://localhost:1900/api/group", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${credential}`,
+            "Access-Token": `${access_token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ name: groupToAdd.groupName }),
         });
   
-        if (!response.status === 200) {
+        if (!response.status === 201) {
           if (response.status === 401) {
             console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
           } else {
