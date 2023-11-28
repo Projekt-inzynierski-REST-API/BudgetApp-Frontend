@@ -30,12 +30,13 @@ export const ConfirmRemoveGroup = ({
   const credential = localStorage.getItem("token");
   const removeGroup = async (group_id) => {
     handleConfirmClose();
-
+    const access_token = localStorage.getItem("access_token");
     try {
       const response = fetch(`http://localhost:1900/api/group/${group_id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${credential}`,
+          "Access-Token": `${access_token}`,
           "Content-Type": "application/json",
         },
       });
