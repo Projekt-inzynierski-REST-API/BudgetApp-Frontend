@@ -38,14 +38,12 @@ function LoginPage() {
     console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
 
-    loginUser(response.credential, userObject);
-    // localStorage.setItem("user", JSON.stringify(userObject));
-    // navigate("/HomePage", { state: { credential: response.credential } });
-
+    //loginUser(response.credential, userObject);
     localStorage.setItem("user", JSON.stringify(userObject));
+
     // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
-    // navigate("/HomePage", { state: { credential: response.credential } });
+    navigate("/HomePage", { state: { credential: response.credential } });
   }
 
   useEffect(() => {
