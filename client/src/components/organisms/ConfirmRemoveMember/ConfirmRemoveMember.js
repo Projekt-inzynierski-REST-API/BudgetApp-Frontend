@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
 
-export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, getAllGroups }) => {
+export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, getGroupInfo }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const handleAlertOpen = () => {
     setIsAlertOpen(true);
@@ -22,12 +22,12 @@ export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, 
   }
 
   const credential = localStorage.getItem("token");
-  const removeMemberFromGroup = (memberIdToRemove) => {
+  const removeMemberFromGroup = async (memberIdToRemove) => {
 
     handleConfirmClose();
 
     try {
-      const response = fetch(
+      const response = await fetch(
         `http://localhost:1900/api/group/${groupId}/delete-user/${memberIdToRemove}`,
         {
           method: "POST",
@@ -49,13 +49,12 @@ export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, 
         }
         return;
       }
-      console.log('usunieto');
-      getAllGroups();
-      // const data = response.json();
-      // console.log(JSON.stringify(data));
+      const data = await response.json();
+      console.log('usunieto: ' + JSON.stringify(data));
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
+    getGroupInfo();
   };
 
   return (
