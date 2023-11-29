@@ -31,7 +31,7 @@ function SimpleAppBarWithMenu() {
       return;
     }
     setDrawerOpen(open);
-    if(pageAddress != null) navigate(pageAddress);
+    if (pageAddress != null) navigate(pageAddress);
   };
 
   return (
@@ -75,7 +75,7 @@ function SimpleAppBarWithMenu() {
           </IconButton>
         </>
         <List style={{ width: "50vh" }}>
-          <ListItem button onClick={toggleDrawer(false, '/HomePage')}>
+          <ListItem button onClick={toggleDrawer(false, "/HomePage")}>
             <ListItemText primary="Overview" />
           </ListItem>
 
@@ -88,20 +88,19 @@ function SimpleAppBarWithMenu() {
               toggleDrawer(false);
               navigate("/groups");
             }}
-          >
-            <ListItemText primary="Groups" />
+          />
+          <ListItemText primary="Groups" />
 
-          <ListItem button onClick={toggleDrawer(false, '/GroupsPage')}>
+          <ListItem button onClick={toggleDrawer(false, "/GroupsPage")}>
             <ListItemText primary="Groups " />
           </ListItem>
-          <ListItem button onClick={toggleDrawer(false, '/TransactionsPage')}>
+          <ListItem button onClick={toggleDrawer(false, "/TransactionsPage")}>
             <ListItemText primary="Transactions " />
           </ListItem>
-          <ListItem button onClick={toggleDrawer(false, '/ReportsPage')}>
+          <ListItem button onClick={toggleDrawer(false, "/ReportsPage")}>
             <ListItemText primary="Reports" />
-
           </ListItem>
-          <ListItem button onClick={toggleDrawer(false, '/BudgetsPage')}>
+          <ListItem button onClick={toggleDrawer(false, "/BudgetsPage")}>
             <ListItemText primary="Budgets" />
           </ListItem>
 
