@@ -41,6 +41,12 @@ function LoginPage() {
     loginUser(response.credential, userObject);
     // localStorage.setItem("user", JSON.stringify(userObject));
     // navigate("/HomePage", { state: { credential: response.credential } });
+
+    localStorage.setItem("user", JSON.stringify(userObject));
+    // zapisanie tokenu w local storage
+    localStorage.setItem("token", response.credential);
+    navigate("/HomePage", { state: { credential: response.credential } });
+
   }
 
   useEffect(() => {

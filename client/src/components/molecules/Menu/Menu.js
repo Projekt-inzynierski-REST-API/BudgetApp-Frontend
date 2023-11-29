@@ -23,7 +23,7 @@ function SimpleAppBarWithMenu() {
     localStorage.removeItem("user");
     navigate("/");
   };
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = (open, pageAddress) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -31,6 +31,7 @@ function SimpleAppBarWithMenu() {
       return;
     }
     setDrawerOpen(open);
+    if(pageAddress != null) navigate(pageAddress);
   };
 
   return (
@@ -74,9 +75,10 @@ function SimpleAppBarWithMenu() {
           </IconButton>
         </>
         <List style={{ width: "50vh" }}>
-          <ListItem button onClick={toggleDrawer(false)}>
+          <ListItem button onClick={toggleDrawer(false, '/HomePage')}>
             <ListItemText primary="Overview" />
           </ListItem>
+
           <ListItem button onClick={toggleDrawer(false)}>
             <ListItemText primary="Transactions" />
           </ListItem>
@@ -88,8 +90,18 @@ function SimpleAppBarWithMenu() {
             }}
           >
             <ListItemText primary="Groups" />
+
+          <ListItem button onClick={toggleDrawer(false, '/GroupsPage')}>
+            <ListItemText primary="Groups " />
           </ListItem>
-          <ListItem button onClick={toggleDrawer(false)}>
+          <ListItem button onClick={toggleDrawer(false, '/TransactionsPage')}>
+            <ListItemText primary="Transactions " />
+          </ListItem>
+          <ListItem button onClick={toggleDrawer(false, '/ReportsPage')}>
+            <ListItemText primary="Reports" />
+
+          </ListItem>
+          <ListItem button onClick={toggleDrawer(false, '/BudgetsPage')}>
             <ListItemText primary="Budgets" />
           </ListItem>
 

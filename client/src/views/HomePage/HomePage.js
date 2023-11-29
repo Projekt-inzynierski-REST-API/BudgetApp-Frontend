@@ -70,6 +70,7 @@ function HomePage() {
     }
   }
 
+
   async function fetchData(timePeriod) {
     try {
       const response = await fetch(
@@ -92,11 +93,34 @@ function HomePage() {
         console.log("Brak rekordów.");
       } else {
         setChartData(data);
+
+  // pobranie tokenu z local storage
+  const credential = localStorage.getItem("token");
+
+  async function fetchLastTransaction() {
+    try {
+      const response = await fetch(
+        "http://localhost:1900/api/dashboard/last-transactions",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + credential,
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.log("Brak rekordów");
+
       }
     } catch (error) {
       console.error("Error coo:", error);
     }
   }
+
 
   const sumTotalExpense = (data) => {
     if (data && data.data) {
@@ -124,6 +148,9 @@ function HomePage() {
   }
 
   console.log(groups);
+
+  fetchLastTransaction();
+
 
   return (
     <>
