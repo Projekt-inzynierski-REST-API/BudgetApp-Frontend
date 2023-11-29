@@ -1,4 +1,4 @@
-import {React, useState } from "react";
+import { React, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
@@ -19,11 +19,17 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
 
   const handleConfirmClose = () => {
     setIsConfirmOpen(false);
-  }
+  };
 
   return (
     <>
-    <ConfirmRemoveMember isOpen={isConfirmOpen} onClose={handleConfirmClose} memberToRemove={memberToRemove} groupId={groupId} getGroupInfo={getGroupInfo}/>
+      <ConfirmRemoveMember
+        isOpen={isConfirmOpen}
+        onClose={handleConfirmClose}
+        memberToRemove={memberToRemove}
+        groupId={groupId}
+        getGroupInfo={getGroupInfo}
+      />
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -40,20 +46,30 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
               key={member.member.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <StyledTableCell align="center">{member.member.name}</StyledTableCell>
-              <StyledTableCell align="center">{member.member.surname}</StyledTableCell>
-              <StyledTableCell align="center">{member.member.email}</StyledTableCell>
-              <StyledTableCell align="center">{member.member_account_balance}</StyledTableCell>
+              <StyledTableCell align="center">
+                {member.member.name}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {member.member.surname}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {member.member.email}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {member.member_account_balance}
+              </StyledTableCell>
               <StyledTableCell align="right">
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleConfirmOpen(member.member)}
-                  key={member.id}
-                  startIcon={<DeleteIcon />}
-                >
-                  Remove member
-                </Button>
+                {groupObject.should_show_members_account_balance && (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleConfirmOpen(member.member)}
+                    key={member.id}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Remove member
+                  </Button>
+                )}
               </StyledTableCell>
             </TableRow>
           ))}

@@ -26,12 +26,12 @@ export const GroupDetails = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const checkLocationState = () => {
-            // Sprawdź, czy location.state zawiera oczekiwane dane
-            if (!groupDetailsObject) {
-              // Przekieruj użytkownika
-              navigate('/HomePage');
-            }
-  }
+    // Sprawdź, czy location.state zawiera oczekiwane dane
+    if (!groupDetailsObject) {
+      // Przekieruj użytkownika
+      navigate("/HomePage");
+    }
+  };
 
   //funkcja pobierająca detailsy grupy z bazy danych
   const getGroupInfo = async () => {
@@ -100,11 +100,16 @@ export const GroupDetails = () => {
       <StyledPage>
         <HeaderGeneralInformation>General information</HeaderGeneralInformation>
         <GroupInfoContainer>
-          <GroupInfo data={groupDetailsObject} budget={groupObject.group_budget} />
+          <GroupInfo
+            data={groupDetailsObject}
+            budget={groupObject.group_budget}
+          />
         </GroupInfoContainer>
         <HeaderMembers>
           Members
-          <AddMemberButton onClick={handleAddMemberClick} />
+          {groupObject.should_show_members_account_balance && (
+            <AddMemberButton onClick={handleAddMemberClick} />
+          )}
         </HeaderMembers>
         <StyledTableContainer>
           <MembersTable
