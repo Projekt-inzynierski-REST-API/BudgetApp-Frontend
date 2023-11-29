@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   );
   border-radius: 12px;
 
-  margin-top: 12vh;
+  margin-top: 8vh;
   height: auto;
   padding-bottom: 10px;
   padding-top: 10px;

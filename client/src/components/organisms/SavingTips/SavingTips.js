@@ -1,30 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
-import { Card } from "@material-ui/core";
+import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
+import Advice from "../../../assets/icons/ADVICE.png";
 
-const tips = [
-  "Oszczędzaj regularnie, nawet małe kwoty.",
-  "Twórz budżet i trzymaj się go.",
-  "Unikaj zbędnych wydatków.",
-  "Rozważ inwestowanie na przyszłość.",
+const tipsData = [
+  {
+    text: "Oszczędzaj regularnie, nawet małe kwoty.",
+  },
+  {
+    text: "Twórz budżet i trzymaj się go.",
+  },
+  {
+    text: "Unikaj zbędnych wydatków.",
+  },
+  {
+    text: "Rozważ inwestowanie na przyszłość.",
+  },
 ];
 
 const SavingsTips = () => {
   const [index, setIndex] = useState(0);
 
   const props = useSpring({
-    opacity: 1,
     from: { opacity: 0 },
+    to: { opacity: 1 },
     reset: true,
     onRest: () => {
-      setIndex((prevIndex) => (prevIndex + 1) % tips.length);
+      setIndex((prevIndex) => (prevIndex + 1) % tipsData.length);
     },
+    config: { duration: 2000, tension: 50, friction: 5 }, // Przykładowa konfiguracja
   });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % tips.length);
-    }, 3000);
+      setIndex((prevIndex) => (prevIndex + 1) % tipsData.length);
+    }, 4000); // Czas wyświetlania jednej porady to 4 sekundy
 
     return () => clearInterval(intervalId);
   }, []);
@@ -32,7 +42,9 @@ const SavingsTips = () => {
   return (
     <animated.div style={props}>
       <Card>
-        <p>{tips[index]}</p>
+        <CardContent style={{}}>
+          <Typography variant="body1">{tipsData[index].text}</Typography>
+        </CardContent>
       </Card>
     </animated.div>
   );

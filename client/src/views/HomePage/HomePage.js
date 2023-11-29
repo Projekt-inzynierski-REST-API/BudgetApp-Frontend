@@ -7,7 +7,6 @@ import { useLocation } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import ExpenseSection from "../../components/organisms/ExpenseSection/ExpenseSection";
-import SavingsTips from "../../components/organisms/SavingTips/SavingTips";
 
 import {
   StyledPage,
@@ -29,6 +28,7 @@ function HomePage() {
   const [lastTransactions, setLastTransactions] = useState([]);
   const [groups, setGroups] = useState([]);
   const [totalExpense, setTotalExpense] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState("SEVEN_DAYS");
 
   async function fetchLastTransaction() {
     try {
@@ -109,7 +109,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    fetchData("ONE_MONTH");
+    fetchData("SEVEN_DAYS");
     fetchLastTransaction();
     fetchGroups();
   }, [credential]);
@@ -138,16 +138,45 @@ function HomePage() {
           <LeftSectionRightPanel>
             <StyledSelectionBar>
               <ButtonGroup size="medium">
-                <Button onClick={() => fetchData("SEVEN_DAYS")}>7 Days</Button>
-                <Button onClick={() => fetchData("ONE_MONTH")}>1 Month</Button>
-                <Button onClick={() => fetchData("THREE_MONTHS")}>
+                <Button
+                  onClick={() => {
+                    fetchData("SEVEN_DAYS");
+                    setSelectedPeriod("SEVEN_DAYS");
+                  }}
+                  variant={
+                    selectedPeriod === "SEVEN_DAYS" ? "contained" : "outlined"
+                  }
+                >
+                  7 Days
+                </Button>
+                <Button
+                  onClick={() => {
+                    fetchData("ONE_MONTH");
+                    setSelectedPeriod("ONE_MONTH");
+                  }}
+                  variant={
+                    selectedPeriod === "ONE_MONTH" ? "contained" : "outlined"
+                  }
+                >
+                  1 Month
+                </Button>
+                <Button
+                  onClick={() => {
+                    fetchData("THREE_MONTHS");
+                    setSelectedPeriod("THREE_MONTHS");
+                  }}
+                  variant={
+                    selectedPeriod === "THREE_MONTHS" ? "contained" : "outlined"
+                  }
+                >
                   3 Months
                 </Button>
               </ButtonGroup>
             </StyledSelectionBar>
-            <ExpenseSection totalExpense={totalExpense} />
 
-            <SavingsTips />
+            <ExpenseSection totalExpense={totalExpense} />
+            {/* 
+            <SavingsTips /> */}
           </LeftSectionRightPanel>
         </LeftSection>
 

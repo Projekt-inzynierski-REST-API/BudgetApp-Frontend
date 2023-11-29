@@ -84,6 +84,7 @@ function ChartSection({ chartData }) {
                 },
               },
             ],
+            itemLabels: window.innerWidth < 1200 ? false : true,
           },
         ]}
       />

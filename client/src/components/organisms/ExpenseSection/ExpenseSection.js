@@ -10,7 +10,8 @@ function ExpenseSection({ totalExpense }) {
       <TotalExpense />
       <StyledExpenseValue>
         -
-        <CountUp end={totalExpense} duration={2} /> zł
+        <CountUp end={totalExpense} duration={2} />
+        &nbsp;zł
       </StyledExpenseValue>
     </Wrapper>
   );
