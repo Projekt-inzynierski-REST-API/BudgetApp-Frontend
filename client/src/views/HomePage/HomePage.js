@@ -22,7 +22,7 @@ import {
 function HomePage() {
   const location = useLocation();
   const credential = location.state && location.state.credential;
-  //console.log("JWT Token from HomePage: " + credential);
+  console.log("JWT Token from HomePage: " + credential);
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const [chartData, setChartData] = useState([]);
@@ -44,7 +44,7 @@ function HomePage() {
         }
       );
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const data = await response.json();
         setLastTransactions(data);
       } else {
@@ -55,17 +55,44 @@ function HomePage() {
     }
   }
 
+  // async function fetchGroups() {
+  //   try {
+  //     const response = await fetch("http://localhost:1900/api/dashboard/groups", {
+  //       method: "GET",
+  //       Authorization: "Bearer " + credential,
+  //       "Content-Type": "application/json; charset=UTF-8",
+  //     });
+
+  //     if (response.status === 200) {
+  //       const data = await response.json();
+  //       setGroups(data);
+  //     } else {
+  //       console.log("Brak rekordów");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error coo:", error);
+  //   }
+  // }
+
   async function fetchGroups() {
     try {
-      const response = await fetch("http://localhost:4000/db", {
-        method: "GET",
-      });
+      const response = await fetch(
+        "http://localhost:1900/api/dashboard/groups",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + credential,
+            "Content-Type": "application/json; charset=UTF-8",
+          },
+        }
+      );
 
-      if (response.status == 200) {
-        const data = await response.json();
-        setGroups(data);
+      const data = await response.json();
+
+      if (data.length === 0) {
+        console.log("Brak rekordów.");
       } else {
-        console.log("Brak rekordów");
+        setGroups(data);
       }
     } catch (error) {
       console.error("Error coo:", error);
