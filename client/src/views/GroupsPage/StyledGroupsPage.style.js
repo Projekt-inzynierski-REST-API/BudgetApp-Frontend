@@ -8,8 +8,9 @@ const PageContainer = styled.div`
 
 const StyledPage = styled.div`
   flex: 1; /* Zajmij całą dostępną przestrzeń */
-  background: linear-gradient(to bottom, #add8e6, #d8bfd8);
+  /* background: linear-gradient(to bottom, #add8e6, #d8bfd8); */
   display: flex;
+
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
@@ -28,6 +29,7 @@ const CreateGroupColumn = styled.div`
   justify-content: center;
   align-items: center;
   height: auto;
+
   margin-top: 80px;
   @media (max-width: 1020px) {
     margin: 80px 0 100px 0;

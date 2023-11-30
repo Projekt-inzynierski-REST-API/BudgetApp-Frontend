@@ -34,15 +34,49 @@ function LoginPage() {
     }
   }
 
+  async function getCalendarAccessToken(credential) {
+    try {
+      const calendarId = "TU_WSTAW_ID_KALENDARZA";
+      const response = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/accessTokens`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + credential,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const calendarToken = await response.json();
+        console.log("Calendar Access Token:", calendarToken);
+        // Zapisz token dostępu do kalendarza w localStorage lub w inny sposób
+        localStorage.setItem("calendarToken", calendarToken);
+      } else {
+        throw new Error("Nie udało się uzyskać tokena dostępu do kalendarza");
+      }
+    } catch (error) {
+      console.error(
+        "Błąd podczas uzyskiwania tokena dostępu do kalendarza:",
+        error
+      );
+      throw error;
+    }
+  }
+
   function handleCallbackResponse(response) {
-    console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
 
     //loginUser(response.credential, userObject);
-    localStorage.setItem("user", JSON.stringify(userObject));
 
     // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
+    localStorage.setItem("user", JSON.stringify(userObject));
+
+    // Uzyskaj token dostępu do kalendarza
+    //getCalendarAccessToken(response.credential);
+
+    // nawigacja do homepage
     navigate("/HomePage", { state: { credential: response.credential } });
   }
 
@@ -61,6 +95,7 @@ function LoginPage() {
       height: "50px",
       longtitle: true,
       textColor: "#ffffff",
+      scopes: "profile email openid calendar: true",
     });
   }, []);
 

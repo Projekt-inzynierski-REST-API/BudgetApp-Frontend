@@ -46,10 +46,10 @@ function ChartSection({ chartData }) {
         borderWidth={1}
         borderColor={{
           from: "color",
-          modifiers: [["darker", 1.6]],
+          modifiers: [["darker", 2]],
         }}
         arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsTextColor="black"
         arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: "color" }}
         arcLabelsSkipAngle={10}
@@ -67,11 +67,11 @@ function ChartSection({ chartData }) {
             direction: "column",
             justify: false,
             translateX: window.innerWidth < 1200 ? 50 : 20,
-            translateY: window.innerWidth < 1200 ? -60 : 0,
+            translateY: window.innerWidth < 1200 ? 30 : 0,
             itemsSpacing: 8,
             itemWidth: 100,
             itemHeight: 18,
-            itemTextColor: "#999",
+            itemTextColor: "black",
             itemDirection: "left-to-right",
             itemOpacity: 1,
             symbolSize: 18,
@@ -80,7 +80,7 @@ function ChartSection({ chartData }) {
               {
                 on: "hover",
                 style: {
-                  itemTextColor: "#000",
+                  itemTextColor: "black",
                 },
               },
             ],

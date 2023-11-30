@@ -6,7 +6,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
-export const AddToGroupForm = ({ isOpen, onClose, groupObject, getGroupInfo }) => {
+export const AddToGroupForm = ({
+  isOpen,
+  onClose,
+  groupObject,
+  getGroupInfo,
+}) => {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true); // Dodanie stanu do śledzenia poprawności adresu e-mail
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,13 +28,13 @@ export const AddToGroupForm = ({ isOpen, onClose, groupObject, getGroupInfo }) =
       try {
         const credential = localStorage.getItem("token");
         const response = await fetch(
-          `http://localhost:1900/api/group/${groupObject.group_id}/add-user?email=${email}`,
+          `http://localhost:8081/api/group/${groupObject.group_id}/add-user?email=${email}`,
           {
             method: "POST",
             headers: {
               Authorization: `Bearer ${credential}`,
               "Content-Type": "application/json",
-            }
+            },
           }
         );
         if (!response.status === 200) {

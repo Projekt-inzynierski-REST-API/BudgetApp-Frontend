@@ -20,6 +20,7 @@ export function GroupsPage() {
 
   //funkcja pobierająca wszystkie grupy z bazy danych
   const getAllGroups = async () => {
+    console.log("pobieranie grupy funckja");
     try {
       const credential = localStorage.getItem("token");
       console.log(`Bearer ${credential}`);

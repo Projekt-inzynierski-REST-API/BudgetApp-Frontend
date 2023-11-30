@@ -26,22 +26,21 @@ export const GroupDetails = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const checkLocationState = () => {
-            // Sprawdź, czy location.state zawiera oczekiwane dane
-            if (!groupDetailsObject) {
-              // Przekieruj użytkownika
-              navigate('/HomePage');
-            }
-  }
+    // Sprawdź, czy location.state zawiera oczekiwane dane
+    if (!groupDetailsObject) {
+      // Przekieruj użytkownika
+      navigate("/HomePage");
+    }
+  };
 
   //funkcja pobierająca detailsy grupy z bazy danych
   const getGroupInfo = async () => {
     try {
       const credential = localStorage.getItem("token");
-      console.log(`Bearer ${credential}`);
       const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
-      // `http://localhost:1900/api/group/${groupDetailsObject.group_id}`
+      // `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`
       const response = await fetch(
-        `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`,
+        `http://localhost:8081/api/group/${groupDetailsObject.group_id}`,
         {
           method: "POST",
           headers: {
@@ -51,6 +50,8 @@ export const GroupDetails = () => {
           body: JSON.stringify(lastTransactionsAmount),
         }
       );
+
+      console.log(groupDetailsObject.group_id);
 
       if (!response.status === 200) {
         if (response.status === 401) {
@@ -101,11 +102,16 @@ export const GroupDetails = () => {
       <StyledPage>
         <HeaderGeneralInformation>General information</HeaderGeneralInformation>
         <GroupInfoContainer>
-          <GroupInfo data={groupDetailsObject} budget={groupObject.budget} />
+          <GroupInfo
+            data={groupDetailsObject}
+            budget={groupObject.group_budget}
+          />
         </GroupInfoContainer>
         <HeaderMembers>
           Members
-          <AddMemberButton onClick={handleAddMemberClick} />
+          {groupObject.should_show_members_account_balance && (
+            <AddMemberButton onClick={handleAddMemberClick} />
+          )}
         </HeaderMembers>
         <StyledTableContainer>
           <MembersTable
