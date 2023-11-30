@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import ExpenseSection from "../../components/organisms/ExpenseSection/ExpenseSection";
+import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 
 import {
   StyledPage,
@@ -121,7 +122,7 @@ function HomePage() {
   }, [chartData]);
 
   if (!chartData || !chartData.data) {
-    return <div style={{ marginTop: "11vh" }}>Loading...</div>;
+    return <SimpleBackdrop isOpen={true} />;
   }
 
   console.log(groups);

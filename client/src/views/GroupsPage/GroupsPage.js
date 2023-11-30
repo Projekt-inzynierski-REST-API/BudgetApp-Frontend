@@ -24,7 +24,7 @@ export function GroupsPage() {
       const credential = localStorage.getItem("token");
       console.log(`Bearer ${credential}`);
       const response = await fetch(
-        "http://localhost:1900/api/dashboard/groups",
+        "http://localhost:8081/api/dashboard/groups",
         {
           method: "GET",
           headers: {
@@ -56,7 +56,7 @@ export function GroupsPage() {
 
   if (!allGroups) {
     // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
-    return <SimpleBackdrop isOpen={true} />
+    return <SimpleBackdrop isOpen={true} />;
   }
 
   return (
