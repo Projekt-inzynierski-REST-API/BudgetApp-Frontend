@@ -78,7 +78,7 @@ function LastTransactionSection({ LastTransactionSectionData }) {
                     primary={
                       <span
                         style={{
-                          color: "red",
+                          color: "#ff3d00",
                           fontWeight: "bold",
                         }}
                       >

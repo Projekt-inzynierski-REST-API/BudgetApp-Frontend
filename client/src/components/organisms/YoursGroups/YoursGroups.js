@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export const YoursGroups = ({ allGroups, getAllGroups }) => {
+  console.log(allGroups);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [groupToRemove, setGroupToRemove] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export const YoursGroups = ({ allGroups, getAllGroups }) => {
     navigate("/GroupDetails", { state: { groupDetailsObject } });
   };
 
-    const handleConfirmOpen = (group, event) => {
+  const handleConfirmOpen = (group, event) => {
     event.stopPropagation(); // Zatrzymaj propagację zdarzeń
     setGroupToRemove(group);
     setIsConfirmOpen(true);
@@ -40,7 +41,7 @@ export const YoursGroups = ({ allGroups, getAllGroups }) => {
 
   const handleConfirmClose = () => {
     setIsConfirmOpen(false);
-  }
+  };
 
   return (
     <>
@@ -68,7 +69,7 @@ export const YoursGroups = ({ allGroups, getAllGroups }) => {
             <RemoveFromGroup>
               <IconButton
                 aria-label="delete"
-                sx={{color: "#fffff0"}}
+                sx={{ color: "#fffff0" }}
                 onClick={(e) => {
                   e.stopPropagation(); // Zatrzymaj propagację zdarzeń
                   handleConfirmOpen(group, e); // Przekaż obiekt grupy, oraz obiekt zdarzenia do funkcji handleConfirmOpen

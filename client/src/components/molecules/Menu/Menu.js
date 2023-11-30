@@ -82,13 +82,7 @@ function SimpleAppBarWithMenu() {
           <ListItem button onClick={toggleDrawer(false)}>
             <ListItemText primary="Transactions" />
           </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              toggleDrawer(false);
-              navigate("/groups");
-            }}
-          />
+
           <ListItem button onClick={toggleDrawer(false, "/GroupsPage")}>
             <ListItemText primary="Groups " />
           </ListItem>

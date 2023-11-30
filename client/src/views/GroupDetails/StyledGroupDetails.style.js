@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledPage = styled.div`
   width: 100%;
   height: 100vh;
-  background: linear-gradient(to bottom, #add8e6, #d8bfd8);
+  /* background: linear-gradient(to bottom, #add8e6, #d8bfd8); */
   display: flex;
   flex-direction: column;
 `;
@@ -60,5 +60,5 @@ export {
   HeaderGeneralInformation,
   HeaderMembers,
   GroupInfoContainer,
-  StyledTableContainer
+  StyledTableContainer,
 };

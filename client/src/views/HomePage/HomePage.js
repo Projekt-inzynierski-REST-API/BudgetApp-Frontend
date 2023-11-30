@@ -34,7 +34,7 @@ function HomePage() {
   async function fetchLastTransaction() {
     try {
       const response = await fetch(
-        "http://localhost:1900/api/dashboard/last-transactions",
+        "http://localhost:8081/api/dashboard/last-transactions",
         {
           method: "GET",
           headers: {
@@ -57,13 +57,21 @@ function HomePage() {
 
   async function fetchGroups() {
     try {
-      const response = await fetch("http://localhost:4000/db", {
-        method: "GET",
-      });
+      const response = await fetch(
+        "http://localhost:8081/api/dashboard/groups",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${credential}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status == 200) {
         const data = await response.json();
         setGroups(data);
+        console.log(data);
       } else {
         console.log("Brak rekordów");
       }
@@ -75,7 +83,7 @@ function HomePage() {
   async function fetchData(timePeriod) {
     try {
       const response = await fetch(
-        "http://localhost:1900/api/dashboard/chart",
+        "http://localhost:8081/api/dashboard/chart",
         {
           method: "POST",
           headers: {
@@ -139,7 +147,7 @@ function HomePage() {
 
           <LeftSectionRightPanel>
             <StyledSelectionBar>
-              <ButtonGroup size="medium">
+              <ButtonGroup size="large">
                 <Button
                   onClick={() => {
                     fetchData("SEVEN_DAYS");

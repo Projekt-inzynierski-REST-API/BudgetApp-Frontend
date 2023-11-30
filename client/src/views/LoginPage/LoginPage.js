@@ -6,14 +6,13 @@ import LoginForm from "../../components/organisms/LoginForm/LoginForm";
 import { StyledPage, GoogleButton } from "./StyledLoginPage.style";
 
 function LoginPage() {
-
-  const [clientToken, setClientToken] = useState({});
+  // const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [storedUser, setStoredUser] = useState(null);
 
   async function loginUser(tokenJWT, userObject) {
     try {
-      const response = await fetch("http://localhost:1900/api/auth/login", {
+      const response = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + tokenJWT,
@@ -37,14 +36,16 @@ function LoginPage() {
 
   async function getCalendarAccessToken(credential) {
     try {
-      const response = await fetch("URL_DO_GOOGLE_CALENDAR_API", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + credential,
-        },
-        // Dodaj ciało żądania, jeśli to konieczne
-        // body: JSON.stringify({}),
-      });
+      const calendarId = "TU_WSTAW_ID_KALENDARZA";
+      const response = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/accessTokens`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + credential,
+          },
+        }
+      );
 
       if (response.status === 200) {
         const calendarToken = await response.json();
@@ -73,15 +74,11 @@ function LoginPage() {
     localStorage.setItem("user", JSON.stringify(userObject));
 
     // Uzyskaj token dostępu do kalendarza
-    getCalendarAccessToken(response.credential);
+    //getCalendarAccessToken(response.credential);
 
     // nawigacja do homepage
     navigate("/HomePage", { state: { credential: response.credential } });
   }
-
-  const getToken = () => {
-    clientToken.requestAccessToken();
-  };
 
   useEffect(() => {
     /* global google */
@@ -100,19 +97,6 @@ function LoginPage() {
       textColor: "#ffffff",
       scopes: "profile email openid calendar: true",
     });
-
-    //tokenClient
-    setClientToken(
-      google.accounts.oauth2.initTokenClient({
-        client_id:
-          "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com",
-        scope: "https://www.googleapis.com/auth/calendar",
-        callback: (tokenResponse) => {
-          console.log(tokenResponse);
-          localStorage.setItem("access_token", tokenResponse.access_token);
-        },
-      })
-    );
   }, []);
 
   return (
@@ -122,7 +106,7 @@ function LoginPage() {
           <UserCardLoginPage userObject={storedUser} />
         ) : (
           <LoginForm>
-            <GoogleButton onClick={getToken} id="signInDiv"></GoogleButton>
+            <GoogleButton id="signInDiv"></GoogleButton>
           </LoginForm>
         )}
       </StyledPage>

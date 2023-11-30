@@ -11,11 +11,11 @@ export const ConfirmRemoveGroup = ({
   isOpen,
   onClose,
   groupToRemove,
-  getAllGroups
+  getAllGroups,
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
-    const handleAlertOpen = () => {
+  const handleAlertOpen = () => {
     setIsAlertOpen(true);
   };
 
@@ -32,7 +32,7 @@ export const ConfirmRemoveGroup = ({
     handleConfirmClose();
     const access_token = localStorage.getItem("access_token");
     try {
-      const response = fetch(`http://localhost:1900/api/group/${group_id}`, {
+      const response = fetch(`http://localhost:8081/api/group/${group_id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${credential}`,
@@ -52,7 +52,6 @@ export const ConfirmRemoveGroup = ({
         return;
       }
       const data = (await response).json();
-
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }

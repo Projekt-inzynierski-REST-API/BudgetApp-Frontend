@@ -40,7 +40,7 @@ export const GroupDetails = () => {
       const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
       // `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`
       const response = await fetch(
-        `http://localhost:1900/api/group/${groupDetailsObject.group_id}`,
+        `http://localhost:8081/api/group/${groupDetailsObject.group_id}`,
         {
           method: "POST",
           headers: {
@@ -50,6 +50,8 @@ export const GroupDetails = () => {
           body: JSON.stringify(lastTransactionsAmount),
         }
       );
+
+      console.log(groupDetailsObject.group_id);
 
       if (!response.status === 200) {
         if (response.status === 401) {

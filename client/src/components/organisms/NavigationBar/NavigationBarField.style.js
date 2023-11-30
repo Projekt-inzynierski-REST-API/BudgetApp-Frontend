@@ -4,7 +4,7 @@ const NavigationBarField = styled.div`
   width: 100%;
   height: auto;
   display: flex;
-  box-shadow: 6px 6px 6px 6px darkgray;
+  color: black;
   background-color: white;
   backdrop-filter: blur(5px);
 `;

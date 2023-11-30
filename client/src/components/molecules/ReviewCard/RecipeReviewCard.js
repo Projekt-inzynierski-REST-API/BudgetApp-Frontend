@@ -17,6 +17,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Grid from "@mui/material/Grid";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -34,8 +35,29 @@ export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
     onExpandClick && onExpandClick(); // Wywołaj funkcję onExpandClick przekazaną jako prop
   };
 
+  const navigate = useNavigate();
+
+  const handleManageGroupClick = (group) => {
+    // Przekazujemy dodatkowe informacje do nowej ścieżki
+    const group_budget = group.group_budget;
+
+    console.log(group);
+    navigate(`/GroupDetails`, {
+      state: { groupDetailsObject: { group, group_budget } },
+    });
+  };
+
   return (
-    <Card sx={{ maxWidth: 345, margin: 3 }}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        margin: 3,
+        boxShadow: "6px 6px 6px 6px rgba(13, 71, 161, 0.5)",
+        backdropFilter: "blur(5px)",
+        background:
+          "linear-gradient(to right top, rgba(200, 200, 200, 0.15), rgba(200, 200, 200, 0.15))",
+      }}
+    >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: "blue" }} aria-label="recipe">
@@ -47,18 +69,18 @@ export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
         //     <MoreVertIcon />
         //   </IconButton>
         // }
-        title={group.groupName}
-        subheader="September 14, 2023"
+        title={group.group_name}
+        subheader={new Date(group.created_date).toLocaleString()}
       />
 
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Group budget: {group.groupBudget}zł
+          Group budget: {group.group_budget} zł
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton ria-label="Remove Group">
-          <DeleteForeverIcon />
+        <IconButton aria-label="Manage Group">
+          <MoreVertIcon />
         </IconButton>
 
         <ExpandMore
@@ -72,10 +94,16 @@ export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Members of group: 4</Typography>
-          <Typography paragraph>jakieś pierdoły</Typography>
-          <Typography paragraph>coś o grupie, członkach</Typography>
-          <IconButton aria-label="Show more members">
+          <Typography paragraph>
+            Members of group: {group.members.length}
+          </Typography>
+          <Typography paragraph>
+            Group Owner: {group.members[0].name}, {group.members[0].email}
+          </Typography>
+
+          <Typography paragraph>Expense list:</Typography>
+
+          <IconButton aria-label="Show more.">
             <Typography>...More</Typography>
           </IconButton>
         </CardContent>

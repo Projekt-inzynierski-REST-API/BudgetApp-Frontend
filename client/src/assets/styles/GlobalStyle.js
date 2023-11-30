@@ -12,6 +12,16 @@ body, html {
   h2,h2,h3{
     font-family: "Roboto", sans-serif;
   }
+
+ 
+  background: linear-gradient(to bottom, #add8e6, #d8bfd8); 
+
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  color: "black";
+
+
+
 }
 
 `;

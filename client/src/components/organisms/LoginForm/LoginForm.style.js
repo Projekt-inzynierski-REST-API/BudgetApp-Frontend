@@ -7,7 +7,7 @@ const CardContainer = styled.div`
   position: relative;
   overflow: hidden;
   z-index: 1;
-  box-shadow: 6px 6px 6px 6px darkgray;
+  box-shadow: 6px 6px 6px 6px rgba(13, 71, 161, 0.5);
   background-color: white;
   backdrop-filter: blur(5px);
   background: linear-gradient(
