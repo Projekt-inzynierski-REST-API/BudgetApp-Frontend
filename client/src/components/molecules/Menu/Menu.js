@@ -75,30 +75,19 @@ function SimpleAppBarWithMenu() {
           </IconButton>
         </>
         <List style={{ width: "50vh" }}>
-          <ListItem button onClick={toggleDrawer(false, "/HomePage")}>
+        <ListItem button onClick={toggleDrawer(false, '/HomePage')}>
             <ListItemText primary="Overview" />
           </ListItem>
-
-          <ListItem button onClick={toggleDrawer(false)}>
-            <ListItemText primary="Transactions" />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              toggleDrawer(false);
-              navigate("/groups");
-            }}
-          />
-          {/* <ListItem button onClick={toggleDrawer(false, "/GroupsPage")}>
+          <ListItem button onClick={toggleDrawer(false, '/GroupsPage')}>
             <ListItemText primary="Groups " />
-          </ListItem> */}
-          <ListItem button onClick={toggleDrawer(false, "/TransactionsPage")}>
+          </ListItem>
+          <ListItem button onClick={toggleDrawer(false, '/TransactionsPage')}>
             <ListItemText primary="Transactions " />
           </ListItem>
-          <ListItem button onClick={toggleDrawer(false, "/ReportsPage")}>
+          <ListItem button onClick={toggleDrawer(false, '/ReportsPage')}>
             <ListItemText primary="Reports" />
           </ListItem>
-          <ListItem button onClick={toggleDrawer(false, "/BudgetsPage")}>
+          <ListItem button onClick={toggleDrawer(false, '/BudgetsPage')}>
             <ListItemText primary="Budgets" />
           </ListItem>
 
