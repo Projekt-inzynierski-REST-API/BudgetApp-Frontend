@@ -33,7 +33,7 @@ export const ConfirmRemoveMember = ({
 
     try {
       const response = await fetch(
-        `http://localhost:8081/api/group/${groupId}/delete-user/${memberIdToRemove}`,
+        `http://localhost:1900/api/group/${groupId}/delete-user/${memberIdToRemove}`,
         {
           method: "POST",
           headers: {

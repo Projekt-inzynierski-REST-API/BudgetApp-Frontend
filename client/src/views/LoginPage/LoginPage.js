@@ -9,10 +9,11 @@ function LoginPage() {
   // const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [storedUser, setStoredUser] = useState(null);
+  const [tokenClient, setTokenClient] = useState({});
 
   async function loginUser(tokenJWT, userObject) {
     try {
-      const response = await fetch("http://localhost:8081/api/auth/login", {
+      const response = await fetch("http://localhost:1900/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + tokenJWT,
@@ -34,51 +35,21 @@ function LoginPage() {
     }
   }
 
-  async function getCalendarAccessToken(credential) {
-    try {
-      const calendarId = "TU_WSTAW_ID_KALENDARZA";
-      const response = await fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/accessTokens`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + credential,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        const calendarToken = await response.json();
-        console.log("Calendar Access Token:", calendarToken);
-        // Zapisz token dostępu do kalendarza w localStorage lub w inny sposób
-        localStorage.setItem("calendarToken", calendarToken);
-      } else {
-        throw new Error("Nie udało się uzyskać tokena dostępu do kalendarza");
-      }
-    } catch (error) {
-      console.error(
-        "Błąd podczas uzyskiwania tokena dostępu do kalendarza:",
-        error
-      );
-      throw error;
-    }
-  }
-
   function handleCallbackResponse(response) {
+    console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
 
     //loginUser(response.credential, userObject);
+    localStorage.setItem("user", JSON.stringify(userObject));
 
     // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
-    localStorage.setItem("user", JSON.stringify(userObject));
-
-    // Uzyskaj token dostępu do kalendarza
-    //getCalendarAccessToken(response.credential);
-
-    // nawigacja do homepage
     navigate("/HomePage", { state: { credential: response.credential } });
   }
+
+  const getAccessToken = () => {
+    tokenClient.requestAccessToken();
+  };
 
   useEffect(() => {
     /* global google */
@@ -95,8 +66,21 @@ function LoginPage() {
       height: "50px",
       longtitle: true,
       textColor: "#ffffff",
-      scopes: "profile email openid calendar: true",
     });
+    
+    setTokenClient(
+      google.accounts.oauth2.initTokenClient({
+        client_id:
+          "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com",
+        scope: "https://www.googleapis.com/auth/calendar",
+        callback: (tokenResponse) => {
+          console.log(tokenResponse);
+          // zapisanie access_tokenu w local storage
+          localStorage.setItem("access_token", tokenResponse.access_token);
+        },
+      })
+    );
+
   }, []);
 
   return (
@@ -106,7 +90,10 @@ function LoginPage() {
           <UserCardLoginPage userObject={storedUser} />
         ) : (
           <LoginForm>
-            <GoogleButton id="signInDiv"></GoogleButton>
+            <GoogleButton
+              onClick={getAccessToken}
+              id="signInDiv"
+            ></GoogleButton>
           </LoginForm>
         )}
       </StyledPage>

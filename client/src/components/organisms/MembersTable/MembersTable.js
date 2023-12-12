@@ -11,6 +11,7 @@ import { ConfirmRemoveMember } from "../ConfirmRemoveMember/ConfirmRemoveMember"
 export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(false);
+  console.log('objekt: ', groupObject);
   // console.log(typeof membersDetails);
   const handleConfirmOpen = (member) => {
     setMemberToRemove(member);

@@ -36,7 +36,7 @@ export const ConfirmAddGroup = ({
     try {
       const credential = localStorage.getItem("token");
       const access_token = localStorage.getItem("access_token");
-      const response = await fetch("http://localhost:8081/api/group", {
+      const response = await fetch("http://localhost:1900/api/group", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${credential}`,

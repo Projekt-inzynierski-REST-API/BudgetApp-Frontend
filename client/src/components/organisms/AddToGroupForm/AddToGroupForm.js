@@ -28,7 +28,7 @@ export const AddToGroupForm = ({
       try {
         const credential = localStorage.getItem("token");
         const response = await fetch(
-          `http://localhost:8081/api/group/${groupObject.group_id}/add-user?email=${email}`,
+          `http://localhost:1900/api/group/${groupObject.group_id}/add-user?email=${email}`,
           {
             method: "POST",
             headers: {
