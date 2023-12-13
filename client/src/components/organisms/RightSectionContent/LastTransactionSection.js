@@ -48,7 +48,7 @@ function LastTransactionSection({ LastTransactionSectionData }) {
                   icon = INNE;
                   break;
               }
-
+              const uniqueKey = `${transaction.name}-${transaction.date}`;
               return (
                 <div
                   style={{
@@ -56,6 +56,7 @@ function LastTransactionSection({ LastTransactionSectionData }) {
                     width: "90%",
                     // backgroundColor: "red",
                   }}
+                  key={uniqueKey}
                 >
                   <ListItem style={{ marginBottom: "1px", marginTop: "1px" }}>
                     <ListItemAvatar>

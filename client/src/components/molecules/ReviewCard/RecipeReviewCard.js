@@ -31,21 +31,23 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
+  const navigate = useNavigate();
+
   const handleExpandClick = () => {
     onExpandClick && onExpandClick(); // Wywołaj funkcję onExpandClick przekazaną jako prop
   };
 
-  const navigate = useNavigate();
-
-  const handleManageGroupClick = (group) => {
-    // Przekazujemy dodatkowe informacje do nowej ścieżki
-    const group_budget = group.group_budget;
-
+  function handleManageGroupClick(group) {
     console.log(group);
-    navigate(`/GroupDetails`, {
-      state: { groupDetailsObject: { group, group_budget } },
-    });
-  };
+    console.log(`kliknięto grupe o id: ${group.group_id}`);
+    const groupDetailsObject = {
+      group_name: group.group_name,
+      group_id: group.group_id,
+      created_date: group.created_date,
+    };
+
+    navigate("/GroupDetails", { state: { groupDetailsObject } });
+  }
 
   return (
     <Card
@@ -79,10 +81,6 @@ export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="Manage Group">
-          <MoreVertIcon />
-        </IconButton>
-
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -101,10 +99,15 @@ export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
             Group Owner: {group.members[0].name}, {group.members[0].email}
           </Typography>
 
-          <Typography paragraph>Expense list:</Typography>
+          {/* <Typography paragraph>Expense list:</Typography> */}
 
-          <IconButton aria-label="Show more.">
-            <Typography>...More</Typography>
+          <IconButton
+            aria-label="Show more."
+            onClick={() => handleManageGroupClick(group)}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <MoreVertIcon />
+            <Typography style={{ marginLeft: "5px" }}>More</Typography>
           </IconButton>
         </CardContent>
       </Collapse>

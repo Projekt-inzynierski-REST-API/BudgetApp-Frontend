@@ -13,7 +13,7 @@ function LoginPage() {
 
   async function loginUser(tokenJWT, userObject) {
     try {
-      const response = await fetch("http://localhost:1900/api/auth/login", {
+      const response = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + tokenJWT,
@@ -47,10 +47,6 @@ function LoginPage() {
     navigate("/HomePage", { state: { credential: response.credential } });
   }
 
-  const getAccessToken = () => {
-    tokenClient.requestAccessToken();
-  };
-
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
@@ -67,7 +63,7 @@ function LoginPage() {
       longtitle: true,
       textColor: "#ffffff",
     });
-    
+
     setTokenClient(
       google.accounts.oauth2.initTokenClient({
         client_id:
@@ -80,8 +76,11 @@ function LoginPage() {
         },
       })
     );
-
   }, []);
+
+  const getAccessToken = () => {
+    tokenClient.requestAccessToken();
+  };
 
   return (
     <>
@@ -90,10 +89,7 @@ function LoginPage() {
           <UserCardLoginPage userObject={storedUser} />
         ) : (
           <LoginForm>
-            <GoogleButton
-              onClick={getAccessToken}
-              id="signInDiv"
-            ></GoogleButton>
+            <GoogleButton id="signInDiv"></GoogleButton>
           </LoginForm>
         )}
       </StyledPage>
