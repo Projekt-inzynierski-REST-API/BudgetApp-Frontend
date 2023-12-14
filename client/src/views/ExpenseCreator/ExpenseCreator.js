@@ -38,10 +38,10 @@ export const ExpenseCreator = () => {
   const navigate = useNavigate();
   const [categoriesObject, setCategoriesObject] = useState(false);
   const [allGroups, setAllGroups] = useState(false);
-  const [expenseName, setExpenseName] = useState(false);
-  const [expenseAmount, setExpenseAmount] = useState(false);
-  const [expenseCategoryId, setExpenseCategoryId] = useState(false);
-  const [expenseGroupId, setExpenseGroupId] = useState(false);
+  const [expenseName, setExpenseName] = useState('');
+  const [expenseAmount, setExpenseAmount] = useState('');
+  const [expenseCategoryId, setExpenseCategoryId] = useState('');
+  const [expenseGroupId, setExpenseGroupId] = useState('');
   const [expenseParticipantsIds, setExpenseParticipantsIds] = useState([]);
 
   const handleChangeName = (event) => setExpenseName(event.target.value);

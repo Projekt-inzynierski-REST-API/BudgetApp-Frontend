@@ -20,7 +20,7 @@ function LoginPage() {
         },
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(userObject));
         setStoredUser(userObject);
         navigate("/HomePage");
@@ -37,12 +37,12 @@ function LoginPage() {
     console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
 
-    //loginUser(response.credential, userObject);
     localStorage.setItem("user", JSON.stringify(userObject));
-
     // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
-    navigate("/HomePage");
+    loginUser(response.credential, userObject);
+
+    // navigate("/HomePage");
   }
 
   useEffect(() => {
