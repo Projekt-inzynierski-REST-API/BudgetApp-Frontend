@@ -20,14 +20,12 @@ import {
 } from "./StyledHomePage.style";
 
 function HomePage() {
-  const location = useLocation();
-  const credential = location.state && location.state.credential;
+  const credential = localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const [chartData, setChartData] = useState([]);
   const [lastTransactions, setLastTransactions] = useState([]);
   const [groups, setGroups] = useState([]);
-  const [totalExpense, setTotalExpense] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("SEVEN_DAYS");
   const [tokenClient, setTokenClient] = useState({});
 

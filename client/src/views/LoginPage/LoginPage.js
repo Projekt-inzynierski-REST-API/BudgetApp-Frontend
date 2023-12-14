@@ -23,9 +23,7 @@ function LoginPage() {
       if (response.status == 200) {
         localStorage.setItem("user", JSON.stringify(userObject));
         setStoredUser(userObject);
-        navigate("/HomePage", {
-          state: { credential: tokenJWT },
-        });
+        navigate("/HomePage");
       } else {
         throw new Error("Nie udało się zalogować");
       }
@@ -44,7 +42,7 @@ function LoginPage() {
 
     // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
-    navigate("/HomePage", { state: { credential: response.credential } });
+    navigate("/HomePage");
   }
 
   useEffect(() => {
