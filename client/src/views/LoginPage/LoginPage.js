@@ -87,7 +87,7 @@ function LoginPage() {
           <UserCardLoginPage userObject={storedUser} />
         ) : (
           <LoginForm>
-            <GoogleButton id="signInDiv"></GoogleButton>
+            <GoogleButton onClick={getAccessToken} id="signInDiv"></GoogleButton>
           </LoginForm>
         )}
       </StyledPage>
