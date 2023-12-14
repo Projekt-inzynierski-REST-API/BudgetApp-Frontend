@@ -17,7 +17,7 @@ function Expenses() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch("http://localhost:4000/expenses");
+      const response = await fetch("http://localhost:1900/expenses");
       if (!response.ok) {
         throw new Error("Failed to fetch expenses");
       }
