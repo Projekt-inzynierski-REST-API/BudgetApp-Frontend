@@ -14,7 +14,7 @@ function Groups({ groups }) {
       {Array.isArray(groups.groups) ? (
         groups.groups.map((group, index) => (
           <RecipeReviewCard
-            key={group.groupId}
+            key={group.group_id}
             group={group}
             expanded={index === expandedCard}
             onExpandClick={() => handleExpandClick(index)}

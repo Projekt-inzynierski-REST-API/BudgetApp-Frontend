@@ -100,7 +100,9 @@ export const GroupDetails = () => {
       />
       <NavigationBar storedUser={storedUser}></NavigationBar>
       <StyledPage>
-        <HeaderGeneralInformation>{groupDetailsObject.group_name}</HeaderGeneralInformation>
+        <HeaderGeneralInformation>
+          {groupDetailsObject.group_name}
+        </HeaderGeneralInformation>
         <GroupInfoContainer>
           <GroupInfo
             data={groupDetailsObject}
