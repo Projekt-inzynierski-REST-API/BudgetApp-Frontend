@@ -124,7 +124,7 @@ export const ExpenseCreator = () => {
 
   //funkcja dodająca wydatek do bazy danych
   const addExpense = async () => {
-    navigate("/GroupsPage");
+    navigate("/Expenses");
     try {
       const credential = localStorage.getItem("token");
 

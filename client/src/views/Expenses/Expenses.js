@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import ExpensesSection from "../../components/organisms/Expenses/ExpensesSection";
 import { Wrapper } from "./Expenses.style";
@@ -9,10 +9,11 @@ import AddIcon from "@material-ui/icons/Add";
 function Expenses() {
   const [expenses, setExpenses] = useState([]);
   const storedUser = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
   const handleAddExpenseClick = () => {
-    // Kliknięcie przycisku spowoduje nawigację do '/add-expense'
-    console.log("nawigacja i jazdaa");
+    // Kliknięcie przycisku spowoduje nawigację do '/ExpenseCreator'
+    navigate("/ExpenseCreator");
   };
 
   const fetchExpenses = async () => {
