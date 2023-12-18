@@ -25,7 +25,7 @@ export function GroupsPage() {
       const credential = localStorage.getItem("token");
       console.log(`Bearer ${credential}`);
       const response = await fetch(
-        "http://localhost:1900/api/dashboard/groups",
+        "http://localhost:8081/api/dashboard/groups",
         {
           method: "GET",
           headers: {

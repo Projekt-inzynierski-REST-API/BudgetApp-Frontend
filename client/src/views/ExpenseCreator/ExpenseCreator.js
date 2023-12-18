@@ -10,7 +10,7 @@ import {
   OutlinedInput,
   ListItemText,
   MenuItem,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import {
   StyledPage,
@@ -19,7 +19,7 @@ import {
   SecondHeader,
   FormContainer,
   Form,
-  AddExpenseButton
+  AddExpenseButton,
 } from "./StyledExpenseCreator.style";
 
 const ITEM_HEIGHT = 48;
@@ -38,10 +38,10 @@ export const ExpenseCreator = () => {
   const navigate = useNavigate();
   const [categoriesObject, setCategoriesObject] = useState(false);
   const [allGroups, setAllGroups] = useState(false);
-  const [expenseName, setExpenseName] = useState('');
-  const [expenseAmount, setExpenseAmount] = useState('');
-  const [expenseCategoryId, setExpenseCategoryId] = useState('');
-  const [expenseGroupId, setExpenseGroupId] = useState('');
+  const [expenseName, setExpenseName] = useState("");
+  const [expenseAmount, setExpenseAmount] = useState("");
+  const [expenseCategoryId, setExpenseCategoryId] = useState("");
+  const [expenseGroupId, setExpenseGroupId] = useState("");
   const [expenseParticipantsIds, setExpenseParticipantsIds] = useState([]);
 
   const handleChangeName = (event) => setExpenseName(event.target.value);
@@ -62,7 +62,7 @@ export const ExpenseCreator = () => {
     console.log("pobieranie kategorii");
     try {
       const credential = localStorage.getItem("token");
-      const response = await fetch("http://localhost:1900/api/category", {
+      const response = await fetch("http://localhost:8081/api/category", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${credential}`,
@@ -94,7 +94,7 @@ export const ExpenseCreator = () => {
     try {
       const credential = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:1900/api/dashboard/groups",
+        "http://localhost:8081/api/dashboard/groups",
         {
           method: "GET",
           headers: {
@@ -124,11 +124,10 @@ export const ExpenseCreator = () => {
 
   //funkcja dodająca wydatek do bazy danych
   const addExpense = async () => {
-    navigate("/Expenses");
     try {
       const credential = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:1900/api/expense", {
+      const response = await fetch("http://localhost:8081/api/expense", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${credential}`,
@@ -153,6 +152,8 @@ export const ExpenseCreator = () => {
       }
       // Przekieruj użytkownika
       console.log(`dodano wydatek`);
+      const data = await response.json();
+      navigate("/Expenses");
     } catch (error) {
       console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
@@ -249,7 +250,11 @@ export const ExpenseCreator = () => {
                 )}
             </Select>
 
-            <AddExpenseButton variant="contained" color="success" onClick={addExpense}>
+            <AddExpenseButton
+              variant="contained"
+              color="success"
+              onClick={addExpense}
+            >
               Add expense
             </AddExpenseButton>
           </Form>

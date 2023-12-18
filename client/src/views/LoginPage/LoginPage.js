@@ -13,7 +13,7 @@ function LoginPage() {
 
   async function loginUser(tokenJWT, userObject) {
     try {
-      const response = await fetch("http://localhost:1900/api/auth/login", {
+      const response = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + tokenJWT,
@@ -87,7 +87,10 @@ function LoginPage() {
           <UserCardLoginPage userObject={storedUser} />
         ) : (
           <LoginForm>
-            <GoogleButton onClick={getAccessToken} id="signInDiv"></GoogleButton>
+            <GoogleButton
+              onClick={getAccessToken}
+              id="signInDiv"
+            ></GoogleButton>
           </LoginForm>
         )}
       </StyledPage>

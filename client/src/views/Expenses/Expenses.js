@@ -7,64 +7,53 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 
 function Expenses() {
-  const [expenses, setExpenses] = useState([   
-        {
-          expenseId: 1,
-          expenseName: "Zakupy spozywcze",
-          amount: 100.0,
-          expenseDate: "hds",
-          groupName: "Jakaś grupa testowa",
-        },
-        {
-          expenseId: 2,
-          expenseName: "Kupno laptopa",
-          amount: 3140.0,
-          expenseDate: "hds",
-          groupName: "Jakaś grupa testowa",
-        },
-        {
-          expenseId: 3,
-          expenseName: "Karnet na siłke",
-          amount: 120.0,
-          expenseDate: "hds",
-          groupName: "Jakaś grupa testowa",
-        },
-        {
-          expenseId: 4,
-          expenseName: "Kupno słuchawek",
-          amount: 250.0,
-          expenseDate: "hds",
-          groupName: "Jakaś grupa testowa",
-        },
-  ]);
+  const [expenses, setExpenses] = useState([]);
+  const [totalExpenses, setTotalExpenses] = useState("");
+  const [totalAmount, setTotalAmount] = useState("");
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
   const handleAddExpenseClick = () => {
-    // Kliknięcie przycisku spowoduje nawigację do '/ExpenseCreator'
     navigate("/ExpenseCreator");
   };
 
   const fetchExpenses = async () => {
-    // try {
-    //   const response = await fetch("http://localhost:1900/expenses");
-    //   if (!response.ok) {
-    //     throw new Error("Failed to fetch expenses");
-    //   }
-    //   const expensesData = await response.json();
-    //   setExpenses(expensesData);
-    // } catch (error) {
-    //   console.error("Error fetching expenses:", error.message);
-    // }
+    try {
+      const credential = localStorage.getItem("token");
+      const response = await fetch(
+        "http://localhost:8081/api/expense/getLast",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${credential}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            rows_number: 10,
+          }),
+        }
+      );
+      if (!response.status === 201) {
+        if (response.status === 401) {
+          console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
+        } else {
+          console.error(`Błąd HTTP: ${response.status}`);
+        }
+        return;
+      }
+
+      const data = await response.json();
+      setExpenses(data.expenses);
+      setTotalAmount(data.totalAmount);
+      setTotalExpenses(data.totalExpenses);
+    } catch (error) {
+      console.error("Wystąpił błąd podczas pobierania danych:", error);
+    }
   };
 
   useEffect(() => {
     fetchExpenses();
   }, []);
-
-  useEffect(() => {
-    console.log(expenses);
-  }, [expenses]);
 
   return (
     <>
@@ -72,7 +61,8 @@ function Expenses() {
       <Wrapper>
         <h1>Expenses Tracker</h1>
         <h2>
-          You have spent 0 zł <br /> In a total of expenses!{" "}
+          You have spent {totalAmount} zł <br /> In a total of {totalExpenses}{" "}
+          expenses!{" "}
         </h2>
         <Fab color="primary" aria-label="add" onClick={handleAddExpenseClick}>
           <AddIcon />

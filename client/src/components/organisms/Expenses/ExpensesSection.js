@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import ExpenseCard from "../../molecules/ExpenseCard/ExpenseCard";
 import { Wrapper } from "./ExpensesSection.style";
+import { SimpleBackdrop } from "../../molecules/SimpleBackdrop/SimpleBackdrop";
 
 function ExpensesSection({ expenses }) {
   return (
     <Wrapper>
       {Array.isArray(expenses) && expenses.length > 0 ? (
         expenses.map((expense, index) => (
-          <ExpenseCard key={expense.expenseId} expenseDetail={expense} />
+          <ExpenseCard
+            key={expense.id}
+            expenseDetail={expense}
+            enxpenseDate={expense.date}
+          />
         ))
       ) : (
-        <p>No data for Expenses</p>
+        <SimpleBackdrop isOpen={true} />
       )}
     </Wrapper>
   );
