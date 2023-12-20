@@ -50,6 +50,11 @@ const Form = styled.form`
 const FormRow = styled.div`
   display: flex;
   flex-direction: row;
+  @media (max-width: 850px) {
+    flex-direction: column;
+    align-content: center;
+    align-items: normal;
+  }
 `;
 
 const Column = styled.div`
