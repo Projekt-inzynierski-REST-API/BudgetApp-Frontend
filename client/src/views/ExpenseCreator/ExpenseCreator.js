@@ -2,6 +2,8 @@ import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Select,
   InputLabel,
@@ -11,15 +13,22 @@ import {
   ListItemText,
   MenuItem,
   Checkbox,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import {
   StyledPage,
+  Expense,
+  CalendarEvent,
   HeaderContainer,
   FirstHeader,
   SecondHeader,
-  FormContainer,
   Form,
+  FormRow,
   AddExpenseButton,
+  MyLocalizationProvider,
+  Column,
+  ButtonContainer,
 } from "./StyledExpenseCreator.style";
 
 const ITEM_HEIGHT = 48;
@@ -43,12 +52,23 @@ export const ExpenseCreator = () => {
   const [expenseCategoryId, setExpenseCategoryId] = useState("");
   const [expenseGroupId, setExpenseGroupId] = useState("");
   const [expenseParticipantsIds, setExpenseParticipantsIds] = useState([]);
-
+  const [eventStartDate, setEventStartDate] = useState("");
+  const [eventEndDate, setEventEndDate] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [switchState, setSwitchState] = useState(false);
   const handleChangeName = (event) => setExpenseName(event.target.value);
   const handleChangeAmount = (event) => setExpenseAmount(event.target.value);
   const handleChangeCategory = (event) =>
     setExpenseCategoryId(event.target.value); // ustawiam id wybranej kategorii
   const handleChangeGroup = (event) => setExpenseGroupId(event.target.value); // ustawiam id wybranej grupy
+  const handleChangeStartDate = (event) =>
+    setEventStartDate(event.target.value);
+  const handleChangeEndDate = (event) => setEventEndDate(event.target.value);
+  const handleChangeLocation = (event) => setEventLocation(event.target.value);
+  const handleChangeDescription = (event) =>
+    setEventDescription(event.target.value);
+  const handleSwitch = (event) => setSwitchState(!switchState);
 
   const handleChangeParticipants = (event) =>
     setExpenseParticipantsIds(
@@ -62,7 +82,7 @@ export const ExpenseCreator = () => {
     console.log("pobieranie kategorii");
     try {
       const credential = localStorage.getItem("token");
-      const response = await fetch("http://localhost:8081/api/category", {
+      const response = await fetch("http://localhost:1900/api/category", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${credential}`,
@@ -94,7 +114,7 @@ export const ExpenseCreator = () => {
     try {
       const credential = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:8081/api/dashboard/groups",
+        "http://localhost:1900/api/dashboard/groups",
         {
           method: "GET",
           headers: {
@@ -123,11 +143,12 @@ export const ExpenseCreator = () => {
   };
 
   //funkcja dodająca wydatek do bazy danych
-  const addExpense = async () => {
+  const addExpense = async (event) => {
+    event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
     try {
       const credential = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:8081/api/expense", {
+      const response = await fetch("http://localhost:1900/api/expense", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${credential}`,
@@ -177,88 +198,154 @@ export const ExpenseCreator = () => {
           <FirstHeader>Expense Creator</FirstHeader>
           <SecondHeader>Add Expense</SecondHeader>
         </HeaderContainer>
-        <FormContainer>
-          <Form>
-            <InputLabel>Expense Name</InputLabel>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              onChange={handleChangeName}
-              required
-            />
-            <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-amount"
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
-              onChange={handleChangeAmount}
-              required
-            />
-            <InputLabel>Group</InputLabel>
-            <Select label="group" onChange={handleChangeGroup}>
-              {allGroups.map((group) => (
-                <MenuItem key={group.group_id} value={group.group_id}>
-                  {group.group_name}
-                </MenuItem>
-              ))}
-            </Select>
-
-            <InputLabel>Category</InputLabel>
-            <Select label="category" onChange={handleChangeCategory}>
-              {categoriesObject.map((category) => (
-                <MenuItem key={category.id} value={category.id}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
-
-            <InputLabel>Expense participants</InputLabel>
-            <Select
-              disabled={!expenseGroupId}
-              multiple
-              value={expenseParticipantsIds}
-              onChange={handleChangeParticipants}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) =>
-                selected
-                  .map((id) => {
-                    const member = allGroups
-                      .filter((group) => group.group_id === expenseGroupId)
-                      .flatMap((filteredGroup) =>
-                        filteredGroup.members.filter((m) => m.id === id)
-                      )[0];
-                    return member ? `${member.name} ${member.surname}` : "";
-                  })
-                  .join(", ")
-              }
-              MenuProps={MenuProps}
-            >
-              {allGroups
-                .filter((group) => group.group_id === expenseGroupId) // tylko członkowie wybranej wczesniej grupy
-                .map((filteredGroup) =>
-                  filteredGroup.members.map((member) => (
-                    <MenuItem key={member.id} value={member.id}>
-                      <Checkbox
-                        checked={expenseParticipantsIds.includes(member.id)}
-                      />
-                      <ListItemText
-                        primary={`${member.name} ${member.surname}`}
-                      />
+        <Form onSubmit={addExpense}>
+          <FormRow>
+            <Expense>
+              <Column>
+                <InputLabel>Expense Name</InputLabel>
+                <TextField
+                  id="outlined-basic"
+                  variant="outlined"
+                  onChange={handleChangeName}
+                  required
+                />
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Amount
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  onChange={handleChangeAmount}
+                  required
+                />
+                <InputLabel>Group</InputLabel>
+                <Select label="group" onChange={handleChangeGroup} required>
+                  {allGroups.map((group) => (
+                    <MenuItem key={group.group_id} value={group.group_id}>
+                      {group.group_name}
                     </MenuItem>
-                  ))
-                )}
-            </Select>
+                  ))}
+                </Select>
 
-            <AddExpenseButton
-              variant="contained"
-              color="success"
-              onClick={addExpense}
-            >
-              Add expense
-            </AddExpenseButton>
-          </Form>
-        </FormContainer>
+                <InputLabel>Category</InputLabel>
+                <Select
+                  label="category"
+                  onChange={handleChangeCategory}
+                  required
+                >
+                  {categoriesObject.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                <InputLabel>Expense participants</InputLabel>
+                <Select
+                  disabled={!expenseGroupId}
+                  multiple
+                  value={expenseParticipantsIds}
+                  onChange={handleChangeParticipants}
+                  input={<OutlinedInput label="Tag" />}
+                  required
+                  renderValue={(selected) =>
+                    selected
+                      .map((id) => {
+                        const member = allGroups
+                          .filter((group) => group.group_id === expenseGroupId)
+                          .flatMap((filteredGroup) =>
+                            filteredGroup.members.filter((m) => m.id === id)
+                          )[0];
+                        return member ? `${member.name} ${member.surname}` : "";
+                      })
+                      .join(", ")
+                  }
+                  MenuProps={MenuProps}
+                >
+                  {allGroups
+                    .filter((group) => group.group_id === expenseGroupId) // tylko członkowie wybranej wczesniej grupy
+                    .map((filteredGroup) =>
+                      filteredGroup.members.map((member) => (
+                        <MenuItem key={member.id} value={member.id}>
+                          <Checkbox
+                            checked={expenseParticipantsIds.includes(member.id)}
+                          />
+                          <ListItemText
+                            primary={`${member.name} ${member.surname}`}
+                          />
+                        </MenuItem>
+                      ))
+                    )}
+                </Select>
+              </Column>
+            </Expense>
+            <CalendarEvent>
+              <Column>
+                {switchState ? (
+                  <MyLocalizationProvider dateAdapter={AdapterDayjs}>
+                    <InputLabel>Event's start date</InputLabel>
+                    <DatePicker
+                      value={eventStartDate}
+                      onChange={(newValue) => setEventStartDate(newValue)}
+                      required
+                    />
+                    <InputLabel>Event's end date</InputLabel>
+                    <DatePicker
+                      value={eventEndDate}
+                      onChange={(newValue) => setEventEndDate(newValue)}
+                      required
+                    />
+                    <InputLabel>Event location</InputLabel>
+                    <TextField
+                      variant="outlined"
+                      onChange={handleChangeLocation}
+                      required
+                    />
+                    <InputLabel>Description</InputLabel>
+                    <TextField
+                      variant="outlined"
+                      onChange={handleChangeDescription}
+                      multiline
+                      rows={4}
+                      required
+                    />
+                    {/* </Form> */}
+                  </MyLocalizationProvider>
+                ) : (
+                  ""
+                )}
+              </Column>
+            </CalendarEvent>
+          </FormRow>
+          <FormRow>
+            <ButtonContainer>
+              <Column>
+                <FormControlLabel
+                  disabled={!(expenseParticipantsIds.length > 0)}
+                  control={
+                    <Switch
+                      onChange={handleSwitch}
+                      value={switchState}
+                      color="primary"
+                    />
+                  }
+                  label="Add as event to Google Calendar"
+                  labelPlacement="start"
+                />
+                <AddExpenseButton
+                  variant="contained"
+                  color="success"
+                  type="submit"
+                >
+                  Add expense
+                </AddExpenseButton>
+              </Column>
+            </ButtonContainer>
+            <ButtonContainer></ButtonContainer>
+          </FormRow>
+        </Form>
       </StyledPage>
     </>
   );

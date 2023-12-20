@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Button } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const StyledPage = styled.div`
   flex: 1; /* Zajmij całą dostępną przestrzeń */
@@ -7,49 +8,86 @@ const StyledPage = styled.div`
   display: flex;
   height: 100vh;
   flex-direction: column;
+  font-family: "Roboto", sans-serif;
+`;
+
+const Expense = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  font-family: 'Roboto', sans-serif;
+`;
+
+const CalendarEvent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const HeaderContainer = styled.div`
-  flex: 1;
-  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 50%;
 `;
 
 const FirstHeader = styled.h1`
   font-size: 50px;
+  width:95%;
 `;
 
 const SecondHeader = styled.h2`
   font-size: 40px;
-`;
-
-const FormContainer = styled.div`
-  flex: 2;
-  width: 90%;
-  display: flex;
-  justify-content: flex-start;
+  width:95%;
 `;
 
 const Form = styled.form`
   display: flex;
-  width: 50%;
+  flex-direction: column;
+`;
+
+const FormRow = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Column = styled.div`
+  display: flex;
+  width: 90%;
   flex-direction: column;
   align-items: space-around;
 `;
 
+const ButtonContainer = styled.div`
+  display:flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const AddExpenseButton = styled(Button)`
-  width: 20%;
+  width: 25%;
   align-self: flex-end;
-  margin-top: 10px;
+`;
+
+const MyLocalizationProvider = styled(LocalizationProvider)`
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
 `;
 
 export {
   StyledPage,
   HeaderContainer,
+  Expense,
+  CalendarEvent,
   FirstHeader,
   SecondHeader,
-  FormContainer,
   Form,
-  AddExpenseButton
+  FormRow,
+  AddExpenseButton,
+  MyLocalizationProvider,
+  Column,
+  ButtonContainer
 };

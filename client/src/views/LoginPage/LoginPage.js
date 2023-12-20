@@ -5,6 +5,11 @@ import UserCardLoginPage from "../../components/organisms/UserCardLoginPage/User
 import LoginForm from "../../components/organisms/LoginForm/LoginForm";
 import { StyledPage, GoogleButton } from "./StyledLoginPage.style";
 
+const CLIENT_ID =
+  "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com";
+const SCOPES =
+  "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/userinfo.email";
+
 function LoginPage() {
   // const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -13,7 +18,7 @@ function LoginPage() {
 
   async function loginUser(tokenJWT, userObject) {
     try {
-      const response = await fetch("http://localhost:8081/api/auth/login", {
+      const response = await fetch("http://localhost:1900/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + tokenJWT,
@@ -48,8 +53,7 @@ function LoginPage() {
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
-      client_id:
-        "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com",
+      client_id: CLIENT_ID,
       callback: handleCallbackResponse,
     });
 
@@ -64,9 +68,8 @@ function LoginPage() {
 
     setTokenClient(
       google.accounts.oauth2.initTokenClient({
-        client_id:
-          "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com",
-        scope: "https://www.googleapis.com/auth/calendar",
+        client_id: CLIENT_ID,
+        scope: SCOPES,
         callback: (tokenResponse) => {
           console.log(tokenResponse);
           // zapisanie access_tokenu w local storage

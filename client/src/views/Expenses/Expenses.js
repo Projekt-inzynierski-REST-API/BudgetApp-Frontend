@@ -21,7 +21,7 @@ function Expenses() {
     try {
       const credential = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:8081/api/expense/getLast",
+        "http://localhost:1900/api/expense/getLast",
         {
           method: "POST",
           headers: {
