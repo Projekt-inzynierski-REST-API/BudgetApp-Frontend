@@ -1,8 +1,9 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { format } from 'date-fns';
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Select,
@@ -56,19 +57,24 @@ export const ExpenseCreator = () => {
   const [eventEndDate, setEventEndDate] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-  const [switchState, setSwitchState] = useState(false);
+  const [addAsEvent, setAddAsEvent] = useState(false);
+
   const handleChangeName = (event) => setExpenseName(event.target.value);
   const handleChangeAmount = (event) => setExpenseAmount(event.target.value);
   const handleChangeCategory = (event) =>
     setExpenseCategoryId(event.target.value); // ustawiam id wybranej kategorii
   const handleChangeGroup = (event) => setExpenseGroupId(event.target.value); // ustawiam id wybranej grupy
-  const handleChangeStartDate = (event) =>
-    setEventStartDate(event.target.value);
-  const handleChangeEndDate = (event) => setEventEndDate(event.target.value);
   const handleChangeLocation = (event) => setEventLocation(event.target.value);
-  const handleChangeDescription = (event) =>
-    setEventDescription(event.target.value);
-  const handleSwitch = (event) => setSwitchState(!switchState);
+  const handleChangeDescription = (event) => setEventDescription(event.target.value);
+  const handleStartDate = (event) => {
+    const formattedDate = format(event.$d, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    setEventStartDate(formattedDate);
+  };
+  const handleEndDate = (event) => {
+    const formattedDate = format(event.$d, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    setEventEndDate(formattedDate);
+  };
+  const handleSwitch = (event) => setAddAsEvent(!addAsEvent);
 
   const handleChangeParticipants = (event) =>
     setExpenseParticipantsIds(
@@ -145,14 +151,17 @@ export const ExpenseCreator = () => {
   //funkcja dodająca wydatek do bazy danych
   const addExpense = async (event) => {
     event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
+
     try {
       const credential = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("access_token");
 
       const response = await fetch("http://localhost:1900/api/expense", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${credential}`,
           "Content-Type": "application/json",
+          "Access-Token": accessToken,
         },
         body: JSON.stringify({
           name: expenseName,
@@ -160,6 +169,11 @@ export const ExpenseCreator = () => {
           category_id: expenseCategoryId,
           group_id: expenseGroupId,
           participants_ids: expenseParticipantsIds,
+          event_start_date: eventStartDate,
+          event_end_date: eventEndDate,
+          event_description: eventDescription,
+          event_location: eventLocation,
+          add_to_calendar: addAsEvent
         }),
       });
 
@@ -185,6 +199,10 @@ export const ExpenseCreator = () => {
     getAllGroups();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(()=>{
+    console.log(eventStartDate);
+  }, [eventStartDate]);
 
   if (!categoriesObject || !allGroups) {
     // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
@@ -283,18 +301,18 @@ export const ExpenseCreator = () => {
             </Expense>
             <CalendarEvent>
               <Column>
-                {switchState ? (
+                {addAsEvent ? (
                   <MyLocalizationProvider dateAdapter={AdapterDayjs}>
                     <InputLabel>Event's start date</InputLabel>
-                    <DatePicker
+                    <DateTimePicker
                       value={eventStartDate}
-                      onChange={(newValue) => setEventStartDate(newValue)}
+                      onChange={(newValue) => handleStartDate(newValue)}
                       required
                     />
                     <InputLabel>Event's end date</InputLabel>
-                    <DatePicker
+                    <DateTimePicker
                       value={eventEndDate}
-                      onChange={(newValue) => setEventEndDate(newValue)}
+                      onChange={(newValue) => handleEndDate(newValue)}
                       required
                     />
                     <InputLabel>Event location</InputLabel>
@@ -311,7 +329,6 @@ export const ExpenseCreator = () => {
                       rows={4}
                       required
                     />
-                    {/* </Form> */}
                   </MyLocalizationProvider>
                 ) : (
                   ""
@@ -327,7 +344,7 @@ export const ExpenseCreator = () => {
                   control={
                     <Switch
                       onChange={handleSwitch}
-                      value={switchState}
+                      value={addAsEvent}
                       color="primary"
                     />
                   }
