@@ -47,6 +47,12 @@ const HeaderMembers = styled.div`
   font-weight: 600;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  column-gap: 10px;
+  justify-content: space-between;
+`;
+
 const StyledTableContainer = styled(TableContainer)`
   && {
     width: 95%;
@@ -59,6 +65,7 @@ export {
   StyledPage,
   HeaderGeneralInformation,
   HeaderMembers,
+  ButtonsContainer,
   GroupInfoContainer,
   StyledTableContainer,
 };

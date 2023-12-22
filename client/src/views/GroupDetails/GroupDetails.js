@@ -4,13 +4,16 @@ import {
   StyledPage,
   HeaderGeneralInformation,
   HeaderMembers,
+  ButtonsContainer,
   GroupInfoContainer,
   StyledTableContainer,
 } from "../GroupDetails/StyledGroupDetails.style";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 import { AddToGroupForm } from "../../components/organisms/AddToGroupForm/AddToGroupForm";
+import { ChangeAccountBalanceForm } from "../../components/organisms/ChangeAccountBalanceForm/ChangeAccountBalanceForm";
 import { AddMemberButton } from "../../components/atoms/AddMemberButton/AddMemberButton";
+import { ChangeAccountBalanceButton } from "../../components/atoms/ChangeAccountBalanceButton/ChangeAccountBalanceButton";
 import { MembersTable } from "../../components/organisms/MembersTable/MembersTable";
 import { GroupInfo } from "../../components/organisms/GroupInfo/GroupInfo";
 
@@ -19,6 +22,7 @@ export const GroupDetails = () => {
   const navigate = useNavigate();
   const [tableKey, setTableKey] = useState(1); // Unikalny klucz komponentu
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [isAccountBalanceFormOpen, setIsAccountBalanceFormOpen] = useState(false);
   const [groupObject, setGroupObject] = useState(false);
   const groupDetailsObject = location.state?.groupDetailsObject; // odczytuje przekazane dane o grupie
 
@@ -38,7 +42,6 @@ export const GroupDetails = () => {
     try {
       const credential = localStorage.getItem("token");
       const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
-      // `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`
       const response = await fetch(
         `http://localhost:1900/api/group/${groupDetailsObject.group_id}`,
         {
@@ -86,15 +89,29 @@ export const GroupDetails = () => {
     setIsAddFormOpen(true);
   };
 
+  const handleAccountBalanceClick = () => {
+    setIsAccountBalanceFormOpen(true);
+  };
+
   const handleAddFormClose = () => {
     setIsAddFormOpen(false);
   };
+
+  const handleAccountBalanceFormClose = () => {
+    setIsAccountBalanceFormOpen(false);
+  }
 
   return (
     <>
       <AddToGroupForm
         isOpen={isAddFormOpen}
         onClose={handleAddFormClose}
+        groupObject={groupDetailsObject}
+        getGroupInfo={getGroupInfo}
+      />
+      <ChangeAccountBalanceForm
+        isOpen={isAccountBalanceFormOpen}
+        onClose={handleAccountBalanceFormClose}
         groupObject={groupDetailsObject}
         getGroupInfo={getGroupInfo}
       />
@@ -112,9 +129,12 @@ export const GroupDetails = () => {
         </GroupInfoContainer>
         <HeaderMembers>
           Members
-          {groupObject.should_show_members_account_balance && (
-            <AddMemberButton onClick={handleAddMemberClick} />
-          )}
+          <ButtonsContainer>
+            <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+            {groupObject.should_show_members_account_balance && (
+              <AddMemberButton onClick={handleAddMemberClick} />
+            )}
+          </ButtonsContainer>
         </HeaderMembers>
         <StyledTableContainer>
           <MembersTable
