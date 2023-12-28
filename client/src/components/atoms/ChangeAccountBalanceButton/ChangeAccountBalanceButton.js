@@ -5,7 +5,7 @@ export const ChangeAccountBalanceButton = ({onClick}) => {
     <StyledButton
     value="Change account balance"
     variant="contained"
-    color="success"
+    color="secondary"
     onClick={onClick}
   >
     Change Account Balance
