@@ -11,6 +11,9 @@ import { ConfirmRemoveMember } from "../ConfirmRemoveMember/ConfirmRemoveMember"
 export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(false);
+  // pobranie danych usera(nazwa, mail itp.)
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+
   console.log('objekt: ', groupObject);
   // console.log(typeof membersDetails);
   const handleConfirmOpen = (member) => {
@@ -60,7 +63,7 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
                 {member.member_account_balance}
               </StyledTableCell>
               <StyledTableCell align="right">
-                {groupObject.should_show_members_account_balance && (
+                {(groupObject.should_show_members_account_balance && (storedUser.email != member.member.email)) &&  (
                   <Button
                     variant="contained"
                     color="error"

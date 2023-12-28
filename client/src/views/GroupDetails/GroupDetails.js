@@ -16,6 +16,8 @@ import { AddMemberButton } from "../../components/atoms/AddMemberButton/AddMembe
 import { ChangeAccountBalanceButton } from "../../components/atoms/ChangeAccountBalanceButton/ChangeAccountBalanceButton";
 import { MembersTable } from "../../components/organisms/MembersTable/MembersTable";
 import { GroupInfo } from "../../components/organisms/GroupInfo/GroupInfo";
+import { LeaveGroupButton } from "../../components/atoms/LeaveGroupButton/LeaveGroupButton";
+import { ConfirmLeaveGroup } from "../../components/organisms/ConfirmLeaveGroup/ConfirmLeaveGroup";
 
 export const GroupDetails = () => {
   const location = useLocation();
@@ -24,6 +26,7 @@ export const GroupDetails = () => {
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isAccountBalanceFormOpen, setIsAccountBalanceFormOpen] = useState(false);
   const [groupObject, setGroupObject] = useState(false);
+  const [isLeaveGroupConfirmOpen, setIsLeaveGroupConfirmOpen] = useState(false);
   const groupDetailsObject = location.state?.groupDetailsObject; // odczytuje przekazane dane o grupie
 
   // pobranie danych usera(nazwa, mail itp.)
@@ -85,24 +88,20 @@ export const GroupDetails = () => {
     return <SimpleBackdrop isOpen={true} />;
   }
 
-  const handleAddMemberClick = () => {
-    setIsAddFormOpen(true);
-  };
-
-  const handleAccountBalanceClick = () => {
-    setIsAccountBalanceFormOpen(true);
-  };
-
-  const handleAddFormClose = () => {
-    setIsAddFormOpen(false);
-  };
-
-  const handleAccountBalanceFormClose = () => {
-    setIsAccountBalanceFormOpen(false);
-  }
+  const handleAddMemberClick = () => setIsAddFormOpen(true);
+  const handleAccountBalanceClick = () => setIsAccountBalanceFormOpen(true);
+  const handleAddFormClose = () => setIsAddFormOpen(false);
+  const handleAccountBalanceFormClose = () => setIsAccountBalanceFormOpen(false);
+  const handleLeaveGroupConfirmOpen = () => setIsLeaveGroupConfirmOpen(true);
+  const handleLeaveGroupConfirmClose = () => setIsLeaveGroupConfirmOpen(false);
 
   return (
     <>
+      <ConfirmLeaveGroup
+        isOpen={isLeaveGroupConfirmOpen}
+        onClose={handleLeaveGroupConfirmClose}
+        groupDetails={groupDetailsObject}
+      />
       <AddToGroupForm
         isOpen={isAddFormOpen}
         onClose={handleAddFormClose}
@@ -130,9 +129,16 @@ export const GroupDetails = () => {
         <HeaderMembers>
           Members
           <ButtonsContainer>
-            <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
-            {groupObject.should_show_members_account_balance && (
-              <AddMemberButton onClick={handleAddMemberClick} />
+            {groupObject.should_show_members_account_balance ? (
+              <>
+                <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+                <AddMemberButton onClick={handleAddMemberClick} />
+              </>
+            ) : (
+              <>
+                <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+                <LeaveGroupButton onClick={handleLeaveGroupConfirmOpen} />
+              </>
             )}
           </ButtonsContainer>
         </HeaderMembers>
