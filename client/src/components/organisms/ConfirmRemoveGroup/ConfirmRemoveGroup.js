@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
+import { AlertMoreUsers } from "../AlertMoreUsers/AlertMoreUsers";
 
 export const ConfirmRemoveGroup = ({
   isOpen,
@@ -14,19 +15,22 @@ export const ConfirmRemoveGroup = ({
   getAllGroups,
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isAlertMoreUsersOpen, setIsAlertMoreUsersOpen] = useState(false);
 
-  const handleAlertOpen = () => {
-    setIsAlertOpen(true);
-  };
+  const handleAlertMoreUsersOpen = () => setIsAlertMoreUsersOpen(true);
+  const handleAlertMoreUsersClose = () => setIsAlertMoreUsersOpen(false);
+  const handleAlertOpen = () => setIsAlertOpen(true);
+  const handleAlertClose = () => setIsAlertOpen(false);
+  const handleConfirmClose = () => onClose(false);
 
-  const handleAlertClose = () => {
-    setIsAlertOpen(false);
-  };
-
-  const handleConfirmClose = () => {
-    onClose(false);
-  };
-
+  const handleDeleteClick = () => {
+    if(!groupToRemove.members.length === 1){
+      handleConfirmClose();
+      handleAlertMoreUsersOpen();
+    }else{
+      removeGroup(groupToRemove.group_id);
+    }
+  }
   const credential = localStorage.getItem("token");
   const removeGroup = async (group_id) => {
     handleConfirmClose();
@@ -59,6 +63,7 @@ export const ConfirmRemoveGroup = ({
   return (
     <>
       <AlertNoGroupOwner isOpen={isAlertOpen} onClose={handleAlertClose} />
+      <AlertMoreUsers isOpen={isAlertMoreUsersOpen} onClose={handleAlertMoreUsersClose} />
       <Dialog
         open={isOpen}
         onClose={handleConfirmClose}
@@ -74,7 +79,7 @@ export const ConfirmRemoveGroup = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => removeGroup(groupToRemove.group_id)}>
+          <Button onClick={handleDeleteClick}>
             Delete
           </Button>
           <Button onClick={handleConfirmClose}>Cancel</Button>
