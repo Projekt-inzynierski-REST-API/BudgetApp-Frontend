@@ -12,6 +12,8 @@ export const AddToGroupForm = ({
   groupObject,
   getGroupInfo,
 }) => {
+  // state do sprawdzenia czy button add group został już klikniety
+  const [hasBeenClicked, setHasBeenClicked] = useState(false);
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true); // Dodanie stanu do śledzenia poprawności adresu e-mail
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,6 +55,14 @@ export const AddToGroupForm = ({
       getGroupInfo();
       handleClose();
     }
+    setHasBeenClicked(false);
+  };
+
+  const handleClick = () => {
+    if (!hasBeenClicked) {
+      setHasBeenClicked(true);
+      addToGroup();
+    }
   };
 
   const handleEmailChange = (event) => {
@@ -87,7 +97,7 @@ export const AddToGroupForm = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={addToGroup}>Add</Button>
+          <Button onClick={handleClick}>Add</Button>
         </DialogActions>
       </Dialog>
     </>
