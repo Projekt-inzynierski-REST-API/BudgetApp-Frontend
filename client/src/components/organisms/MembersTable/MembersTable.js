@@ -7,15 +7,25 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import { StyledTableCell } from "./MembersTable.style";
 import { ConfirmRemoveMember } from "../ConfirmRemoveMember/ConfirmRemoveMember";
+import { ConfirmDeleteGroup } from "../ConfirmDeleteGroup/ConfirmDeleteGroup";
 
-export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
+export const MembersTable = ({ groupName, groupObject, groupId, getGroupInfo }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isDeleteGroupConfirmOpen, setIsDeleteGroupConfirmOpen] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(false);
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   console.log('objekt: ', groupObject);
-  // console.log(typeof membersDetails);
+
+  const handleConfirmDeleteGroupOpen = () => {
+    setIsDeleteGroupConfirmOpen(true);
+  }
+
+  const handleConfirmDeleteGroupClose = () => {
+    setIsDeleteGroupConfirmOpen(false);
+  }
+
   const handleConfirmOpen = (member) => {
     setMemberToRemove(member);
     setIsConfirmOpen(true);
@@ -33,6 +43,12 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
         memberToRemove={memberToRemove}
         groupId={groupId}
         getGroupInfo={getGroupInfo}
+      />
+      <ConfirmDeleteGroup
+        isOpen={isDeleteGroupConfirmOpen}
+        onClose={handleConfirmDeleteGroupClose}
+        groupId={groupId}
+        groupName={groupName}
       />
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -63,7 +79,7 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
                 {member.member_account_balance}
               </StyledTableCell>
               <StyledTableCell align="right">
-                {(groupObject.should_show_members_account_balance && (storedUser.email != member.member.email)) &&  (
+                {(groupObject.should_show_members_account_balance && (storedUser.email !== member.member.email)) &&  (
                   <Button
                     variant="contained"
                     color="error"
@@ -72,6 +88,17 @@ export const MembersTable = ({ groupObject, groupId, getGroupInfo }) => {
                     startIcon={<DeleteIcon />}
                   >
                     Remove member
+                  </Button>
+                )}
+                {(groupObject.members.length === 1) &&  (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleConfirmDeleteGroupOpen}
+                    key={member.id}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete group
                   </Button>
                 )}
               </StyledTableCell>

@@ -145,6 +145,7 @@ export const GroupDetails = () => {
         <StyledTableContainer>
           <MembersTable
             key={tableKey}
+            groupName={groupDetailsObject.group_name}
             groupObject={groupObject}
             groupId={groupDetailsObject.group_id}
             getGroupInfo={getGroupInfo}
