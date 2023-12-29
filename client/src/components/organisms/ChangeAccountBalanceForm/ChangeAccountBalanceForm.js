@@ -1,10 +1,11 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { InputAdornment, OutlinedInput } from "@mui/material";
+import { HelperText } from "./ChangeAccountBalance.style";
 
 export const ChangeAccountBalanceForm = ({
   isOpen,
@@ -15,13 +16,23 @@ export const ChangeAccountBalanceForm = ({
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const [accountBalance, setAccountBalance] = useState(false);
-
-  const handleClose = () => onClose(false);
-  const handleBalanceChange = (event) => setAccountBalance(event.target.value);
+  const [isValidAccountBalance, setIsValidAccountBalance] = useState(false);
+  const [displayHelperText, setDisplayHelperText] = useState(false);
+  const handleClose = () => {
+    onClose(false);
+    setDisplayHelperText(false);
+    setAccountBalance(false);
+  }
+  const handleBalanceChange = (event) => {
+    const newAccountBalance = event.target.value;
+    // Sprawdź, czy wartość jest liczbą
+    setIsValidAccountBalance(!isNaN(parseFloat(newAccountBalance)) && isFinite(newAccountBalance));
+    setAccountBalance(newAccountBalance);
+  };
 
   const changeBalance = async () => {
-    // nie można wysłać pustego
-    if (accountBalance) {
+    // nie można wysłać pustego ani nie liczby
+    if (accountBalance && isValidAccountBalance) {
       try {
         const credential = localStorage.getItem("token");
         const response = await fetch(
@@ -33,9 +44,9 @@ export const ChangeAccountBalanceForm = ({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                groupId: groupObject.group_id,
-                amount: accountBalance
-              }),
+              groupId: groupObject.group_id,
+              amount: accountBalance,
+            }),
           }
         );
         if (!response.status === 200) {
@@ -50,9 +61,10 @@ export const ChangeAccountBalanceForm = ({
       } catch (error) {
         console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
-    }
-    getGroupInfo();
-    handleClose();
+      getGroupInfo();
+      handleClose();
+    }else setDisplayHelperText(true);
+
   };
 
   return (
@@ -77,6 +89,7 @@ export const ChangeAccountBalanceForm = ({
             value={accountBalance}
             onChange={handleBalanceChange}
           />
+          {displayHelperText && <HelperText>You must enter a number!</HelperText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

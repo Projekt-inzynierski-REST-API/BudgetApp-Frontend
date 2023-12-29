@@ -24,7 +24,7 @@ export const AddToGroupForm = ({
 
   const addToGroup = async () => {
     // nie można wysłać pustego ani nie bedacego mailem
-    if (email != "" && isValidEmail) {
+    if (email !== "" && isValidEmail) {
       try {
         const credential = localStorage.getItem("token");
         const response = await fetch(
@@ -50,9 +50,9 @@ export const AddToGroupForm = ({
       } catch (error) {
         console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
+      getGroupInfo();
+      handleClose();
     }
-    getGroupInfo();
-    handleClose();
   };
 
   const handleEmailChange = (event) => {

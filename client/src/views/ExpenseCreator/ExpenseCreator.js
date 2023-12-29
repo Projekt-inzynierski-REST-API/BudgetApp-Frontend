@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -46,6 +46,8 @@ const MenuProps = {
 export const ExpenseCreator = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+  // state do sprawdzenia czy button add group został już klikniety
+  const [hasBeenClicked, setHasBeenClicked] = useState(false);
   const [categoriesObject, setCategoriesObject] = useState(false);
   const [allGroups, setAllGroups] = useState(false);
   const [expenseName, setExpenseName] = useState("");
@@ -65,7 +67,8 @@ export const ExpenseCreator = () => {
     setExpenseCategoryId(event.target.value); // ustawiam id wybranej kategorii
   const handleChangeGroup = (event) => setExpenseGroupId(event.target.value); // ustawiam id wybranej grupy
   const handleChangeLocation = (event) => setEventLocation(event.target.value);
-  const handleChangeDescription = (event) => setEventDescription(event.target.value);
+  const handleChangeDescription = (event) =>
+    setEventDescription(event.target.value);
   const handleStartDate = (event) => {
     const formattedDate = format(event.$d, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
     setEventStartDate(formattedDate);
@@ -149,9 +152,7 @@ export const ExpenseCreator = () => {
   };
 
   //funkcja dodająca wydatek do bazy danych
-  const addExpense = async (event) => {
-    event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
-
+  const addExpense = async () => {
     try {
       const credential = localStorage.getItem("token");
       const accessToken = localStorage.getItem("access_token");
@@ -173,7 +174,7 @@ export const ExpenseCreator = () => {
           event_end_date: eventEndDate,
           event_description: eventDescription,
           event_location: eventLocation,
-          add_to_calendar: addAsEvent
+          add_to_calendar: addAsEvent,
         }),
       });
 
@@ -192,6 +193,15 @@ export const ExpenseCreator = () => {
     } catch (error) {
       console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
+    setHasBeenClicked(false);
+  };
+
+  const handleClick = (event) => {
+    event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
+    if(!hasBeenClicked){
+      setHasBeenClicked(true);
+      addExpense();
+    }
   };
 
   useEffect(() => {
@@ -199,10 +209,6 @@ export const ExpenseCreator = () => {
     getAllGroups();
     // eslint-disable-next-line
   }, []);
-
-  useEffect(()=>{
-    console.log(eventStartDate);
-  }, [eventStartDate]);
 
   if (!categoriesObject || !allGroups) {
     // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
@@ -216,7 +222,7 @@ export const ExpenseCreator = () => {
           <FirstHeader>Expense Creator</FirstHeader>
           <SecondHeader>Add Expense</SecondHeader>
         </HeaderContainer>
-        <Form onSubmit={addExpense}>
+        <Form onSubmit={handleClick}>
           <FormRow>
             <Expense>
               <Column>

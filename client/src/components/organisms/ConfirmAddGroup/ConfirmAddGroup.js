@@ -5,7 +5,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
 
 export const ConfirmAddGroup = ({
   isOpen,
@@ -14,22 +13,21 @@ export const ConfirmAddGroup = ({
   getAllGroups,
   setInputValue,
 }) => {
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-
-  const handleAlertOpen = () => {
-    setIsAlertOpen(true);
-  };
-
-  const handleAlertClose = () => {
-    setIsAlertOpen(false);
-  };
+  // state do sprawdzenia czy button add group został już klikniety
+  const [hasBeenClicked, setHasBeenClicked] = useState(false);
 
   const handleConfirmClose = () => {
     setInputValue("");
     onClose(false);
   };
 
-  const credential = localStorage.getItem("token");
+  const handleClick = (groupId) => {
+    // Wykonaj kod tylko jeśli przycisk nie był wcześniej kliknięty
+    if (!hasBeenClicked) {
+      setHasBeenClicked(true);
+      addGroup(groupId);
+    }
+  };
 
   const addGroup = async (e) => {
     handleConfirmClose();
@@ -60,11 +58,11 @@ export const ConfirmAddGroup = ({
       console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
     getAllGroups(); // wywołuje funkcje do pobierania wszystkich grup przekazana jako prop z GroupsPage
+    setHasBeenClicked(false);
   };
 
   return (
     <>
-      <AlertNoGroupOwner isOpen={isAlertOpen} onClose={handleAlertClose} />
       <Dialog
         open={isOpen}
         onClose={handleConfirmClose}
@@ -80,7 +78,7 @@ export const ConfirmAddGroup = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => addGroup(groupToAdd.group_id)}>
+          <Button onClick={() => handleClick(groupToAdd.group_id)}>
             Add group
           </Button>
           <Button onClick={handleConfirmClose}>Cancel</Button>
