@@ -8,8 +8,8 @@ const StyledLastTransactionSection = styled.div`
   border-radius: 12px;
   margin-bottom: 3vh;
   font-family: "Nunito", sans-serif;
+  box-shadow: 6px 6px 6px 6px rgba(13, 71, 161, 0.5);
 
-  box-shadow: 6px 6px 6px 6px darkgray;
   background-color: white;
   backdrop-filter: blur(5px);
   background: linear-gradient(

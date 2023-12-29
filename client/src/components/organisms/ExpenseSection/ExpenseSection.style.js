@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  box-shadow: 6px 6px 6px 6px darkgray;
+  box-shadow: 6px 6px 6px 6px rgba(13, 71, 161, 0.5);
   backdrop-filter: blur(5px);
   background: linear-gradient(
     to right top,
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   );
   border-radius: 12px;
 
-  margin-top: 8vh;
+  margin-top: 3vh;
   height: auto;
   padding-bottom: 10px;
   padding-top: 10px;
@@ -23,7 +23,8 @@ const Wrapper = styled.div`
 `;
 
 const StyledExpenseValue = styled.div`
-  color: red;
+  color: #ff3d00;
+
   display: flex;
   justify-content: center;
   font-size: 30px;

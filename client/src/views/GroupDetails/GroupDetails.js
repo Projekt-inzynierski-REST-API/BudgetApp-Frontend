@@ -4,44 +4,49 @@ import {
   StyledPage,
   HeaderGeneralInformation,
   HeaderMembers,
+  ButtonsContainer,
   GroupInfoContainer,
   StyledTableContainer,
 } from "../GroupDetails/StyledGroupDetails.style";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 import { AddToGroupForm } from "../../components/organisms/AddToGroupForm/AddToGroupForm";
+import { ChangeAccountBalanceForm } from "../../components/organisms/ChangeAccountBalanceForm/ChangeAccountBalanceForm";
 import { AddMemberButton } from "../../components/atoms/AddMemberButton/AddMemberButton";
+import { ChangeAccountBalanceButton } from "../../components/atoms/ChangeAccountBalanceButton/ChangeAccountBalanceButton";
 import { MembersTable } from "../../components/organisms/MembersTable/MembersTable";
 import { GroupInfo } from "../../components/organisms/GroupInfo/GroupInfo";
+import { LeaveGroupButton } from "../../components/atoms/LeaveGroupButton/LeaveGroupButton";
+import { ConfirmLeaveGroup } from "../../components/organisms/ConfirmLeaveGroup/ConfirmLeaveGroup";
 
 export const GroupDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [tableKey, setTableKey] = useState(1); // Unikalny klucz komponentu
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [isAccountBalanceFormOpen, setIsAccountBalanceFormOpen] = useState(false);
   const [groupObject, setGroupObject] = useState(false);
+  const [isLeaveGroupConfirmOpen, setIsLeaveGroupConfirmOpen] = useState(false);
   const groupDetailsObject = location.state?.groupDetailsObject; // odczytuje przekazane dane o grupie
 
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const checkLocationState = () => {
-            // Sprawdź, czy location.state zawiera oczekiwane dane
-            if (!groupDetailsObject) {
-              // Przekieruj użytkownika
-              navigate('/HomePage');
-            }
-  }
+    // Sprawdź, czy location.state zawiera oczekiwane dane
+    if (!groupDetailsObject) {
+      // Przekieruj użytkownika
+      navigate("/HomePage");
+    }
+  };
 
   //funkcja pobierająca detailsy grupy z bazy danych
   const getGroupInfo = async () => {
     try {
       const credential = localStorage.getItem("token");
-      console.log(`Bearer ${credential}`);
       const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
-      // `http://localhost:1900/api/group/${groupDetailsObject.group_id}`
       const response = await fetch(
-        `https://8c12db1a-4097-4f51-badc-960a0843144f.mock.pstmn.io/api/group/1`,
+        `http://localhost:1900/api/group/${groupDetailsObject.group_id}`,
         {
           method: "POST",
           headers: {
@@ -51,6 +56,8 @@ export const GroupDetails = () => {
           body: JSON.stringify(lastTransactionsAmount),
         }
       );
+
+      console.log(groupDetailsObject.group_id);
 
       if (!response.status === 200) {
         if (response.status === 401) {
@@ -81,31 +88,59 @@ export const GroupDetails = () => {
     return <SimpleBackdrop isOpen={true} />;
   }
 
-  const handleAddMemberClick = () => {
-    setIsAddFormOpen(true);
-  };
-
-  const handleAddFormClose = () => {
-    setIsAddFormOpen(false);
-  };
+  const handleAddMemberClick = () => setIsAddFormOpen(true);
+  const handleAccountBalanceClick = () => setIsAccountBalanceFormOpen(true);
+  const handleAddFormClose = () => setIsAddFormOpen(false);
+  const handleAccountBalanceFormClose = () => setIsAccountBalanceFormOpen(false);
+  const handleLeaveGroupConfirmOpen = () => setIsLeaveGroupConfirmOpen(true);
+  const handleLeaveGroupConfirmClose = () => setIsLeaveGroupConfirmOpen(false);
 
   return (
     <>
+      <ConfirmLeaveGroup
+        isOpen={isLeaveGroupConfirmOpen}
+        onClose={handleLeaveGroupConfirmClose}
+        groupDetails={groupDetailsObject}
+      />
       <AddToGroupForm
         isOpen={isAddFormOpen}
         onClose={handleAddFormClose}
         groupObject={groupDetailsObject}
         getGroupInfo={getGroupInfo}
       />
+      <ChangeAccountBalanceForm
+        isOpen={isAccountBalanceFormOpen}
+        onClose={handleAccountBalanceFormClose}
+        groupObject={groupDetailsObject}
+        getGroupInfo={getGroupInfo}
+      />
       <NavigationBar storedUser={storedUser}></NavigationBar>
       <StyledPage>
-        <HeaderGeneralInformation>General information</HeaderGeneralInformation>
+        <HeaderGeneralInformation>
+          {groupDetailsObject.group_name}
+        </HeaderGeneralInformation>
         <GroupInfoContainer>
-          <GroupInfo data={groupDetailsObject} budget={groupObject.budget} />
+          <GroupInfo
+            data={groupDetailsObject}
+            membersAmount={groupObject.members.length}
+            budget={groupObject.group_budget}
+          />
         </GroupInfoContainer>
         <HeaderMembers>
           Members
-          <AddMemberButton onClick={handleAddMemberClick} />
+          <ButtonsContainer>
+            {groupObject.should_show_members_account_balance ? (
+              <>
+                <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+                <AddMemberButton onClick={handleAddMemberClick} />
+              </>
+            ) : (
+              <>
+                <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+                <LeaveGroupButton onClick={handleLeaveGroupConfirmOpen} />
+              </>
+            )}
+          </ButtonsContainer>
         </HeaderMembers>
         <StyledTableContainer>
           <MembersTable

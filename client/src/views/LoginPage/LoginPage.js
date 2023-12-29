@@ -5,26 +5,30 @@ import UserCardLoginPage from "../../components/organisms/UserCardLoginPage/User
 import LoginForm from "../../components/organisms/LoginForm/LoginForm";
 import { StyledPage, GoogleButton } from "./StyledLoginPage.style";
 
+const CLIENT_ID =
+  "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com";
+const SCOPES =
+  "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/userinfo.email";
+
 function LoginPage() {
   // const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [storedUser, setStoredUser] = useState(null);
+  const [tokenClient, setTokenClient] = useState({});
 
   async function loginUser(tokenJWT, userObject) {
     try {
-      const response = await fetch("http://localhost:8081/api/auth/login", {
+      const response = await fetch("http://localhost:1900/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + tokenJWT,
         },
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(userObject));
         setStoredUser(userObject);
-        navigate("/HomePage", {
-          state: { credential: tokenJWT },
-        });
+        navigate("/HomePage");
       } else {
         throw new Error("Nie udało się zalogować");
       }
@@ -38,19 +42,18 @@ function LoginPage() {
     console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
 
-    //loginUser(response.credential, userObject);
     localStorage.setItem("user", JSON.stringify(userObject));
-
     // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
-    navigate("/HomePage", { state: { credential: response.credential } });
+    loginUser(response.credential, userObject);
+
+    // navigate("/HomePage");
   }
 
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
-      client_id:
-        "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com",
+      client_id: CLIENT_ID,
       callback: handleCallbackResponse,
     });
 
@@ -62,7 +65,23 @@ function LoginPage() {
       longtitle: true,
       textColor: "#ffffff",
     });
+
+    setTokenClient(
+      google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: (tokenResponse) => {
+          console.log(tokenResponse);
+          // zapisanie access_tokenu w local storage
+          localStorage.setItem("access_token", tokenResponse.access_token);
+        },
+      })
+    );
   }, []);
+
+  const getAccessToken = () => {
+    tokenClient.requestAccessToken();
+  };
 
   return (
     <>
@@ -71,7 +90,10 @@ function LoginPage() {
           <UserCardLoginPage userObject={storedUser} />
         ) : (
           <LoginForm>
-            <GoogleButton id="signInDiv"></GoogleButton>
+            <GoogleButton
+              onClick={getAccessToken}
+              id="signInDiv"
+            ></GoogleButton>
           </LoginForm>
         )}
       </StyledPage>

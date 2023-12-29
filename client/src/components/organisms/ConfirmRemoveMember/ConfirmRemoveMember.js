@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,27 +7,32 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
 
-export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, getAllGroups }) => {
+export const ConfirmRemoveMember = ({
+  isOpen,
+  onClose,
+  memberToRemove,
+  groupId,
+  getGroupInfo,
+}) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const handleAlertOpen = () => {
     setIsAlertOpen(true);
-  }
+  };
 
   const handleAlertClose = () => {
     setIsAlertOpen(false);
-  }
+  };
 
   const handleConfirmClose = () => {
-      onClose(false);
-  }
+    onClose(false);
+  };
 
   const credential = localStorage.getItem("token");
-  const removeMemberFromGroup = (memberIdToRemove) => {
-
+  const removeMemberFromGroup = async (memberIdToRemove) => {
     handleConfirmClose();
 
     try {
-      const response = fetch(
+      const response = await fetch(
         `http://localhost:1900/api/group/${groupId}/delete-user/${memberIdToRemove}`,
         {
           method: "POST",
@@ -49,13 +54,12 @@ export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, 
         }
         return;
       }
-      console.log('usunieto');
-      getAllGroups();
-      // const data = response.json();
-      // console.log(JSON.stringify(data));
+      const data = await response.json();
+      console.log("usunieto: " + JSON.stringify(data));
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
+    getGroupInfo();
   };
 
   return (
@@ -67,21 +71,21 @@ export const ConfirmRemoveMember = ({ isOpen, onClose, memberToRemove, groupId, 
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure?"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          If you want to remove the user <span style={{fontWeight:600}}>{memberToRemove.name} {memberToRemove.surname}</span> from the group, click Remove
+            If you want to remove the user{" "}
+            <span style={{ fontWeight: 600 }}>
+              {memberToRemove.name} {memberToRemove.surname}
+            </span>{" "}
+            from the group, click Remove
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => removeMemberFromGroup(memberToRemove.id)}>
             Remove
           </Button>
-          <Button onClick={handleConfirmClose}>
-            Cancel
-          </Button>
+          <Button onClick={handleConfirmClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
     </>

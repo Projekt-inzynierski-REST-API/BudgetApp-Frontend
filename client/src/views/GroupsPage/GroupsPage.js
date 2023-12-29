@@ -20,11 +20,12 @@ export function GroupsPage() {
 
   //funkcja pobierająca wszystkie grupy z bazy danych
   const getAllGroups = async () => {
+    console.log("pobieranie grupy funckja");
     try {
       const credential = localStorage.getItem("token");
       console.log(`Bearer ${credential}`);
       const response = await fetch(
-        "http://localhost:8081/api/dashboard/groups",
+        "http://localhost:1900/api/dashboard/groups",
         {
           method: "GET",
           headers: {
