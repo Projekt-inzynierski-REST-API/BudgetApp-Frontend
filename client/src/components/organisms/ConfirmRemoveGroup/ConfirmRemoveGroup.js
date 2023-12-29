@@ -32,7 +32,7 @@ export const ConfirmRemoveGroup = ({
     handleConfirmClose();
     const access_token = localStorage.getItem("access_token");
     try {
-      const response = fetch(`http://localhost:1900/api/group/${group_id}`, {
+      const response = await fetch(`http://localhost:1900/api/group/${group_id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${credential}`,
@@ -41,13 +41,11 @@ export const ConfirmRemoveGroup = ({
         },
       });
 
-      if (!response.status === 200) {
+      if (!response.ok) {
         if (response.status === 401) {
           console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
-        } else {
-          // !!!!!!!!!!!!!!!!DOROBIĆ OBSŁUGĘ BŁĘDU JEŚLI JEST WIĘCEJ CZŁONKÓW GRUPY NIŻ TYLKO TY!!!!!!!!!
-          handleAlertOpen(); // wywołanie alertu że jest więcej członków grupy niż 1
-          console.error(`Błąd HTTP: ${response.status}`);
+        }else if(response.status === 400) {
+          handleAlertOpen(); // wywołanie alertu że nie jesteś ownerem grupy
         }
         return;
       }
@@ -70,14 +68,14 @@ export const ConfirmRemoveGroup = ({
         <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            If you want to remove{" "}
+            If you want to delete{" "}
             <span style={{ fontWeight: 600 }}>{groupToRemove.group_name}</span>,
-            click Remove
+            click Delete
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => removeGroup(groupToRemove.group_id)}>
-            Remove
+            Delete
           </Button>
           <Button onClick={handleConfirmClose}>Cancel</Button>
         </DialogActions>

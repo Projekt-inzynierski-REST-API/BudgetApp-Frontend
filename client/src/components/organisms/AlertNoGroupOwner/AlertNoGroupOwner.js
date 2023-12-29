@@ -19,11 +19,11 @@ export const AlertNoGroupOwner = (({ isOpen, onClose }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Error deleting group member"}
+        {"Error group deleting"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          The group member was not removed because you are not the group owner
+          The group was not deleted because you are not the group owner
         </DialogContentText>
       </DialogContent>
       <DialogActions>
