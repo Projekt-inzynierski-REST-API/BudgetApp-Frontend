@@ -24,7 +24,7 @@ export const ConfirmRemoveGroup = ({
   const handleConfirmClose = () => onClose(false);
 
   const handleDeleteClick = () => {
-    if(!groupToRemove.members.length === 1){
+    if(groupToRemove.members.length !== 1){
       handleConfirmClose();
       handleAlertMoreUsersOpen();
     }else{
