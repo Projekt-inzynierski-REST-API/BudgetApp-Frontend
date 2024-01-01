@@ -5,6 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { AlertUserNoExist } from "../AlertUserNoExist/AlertUserNoExist";
 
 export const AddToGroupForm = ({
   isOpen,
@@ -15,6 +16,7 @@ export const AddToGroupForm = ({
   // state do sprawdzenia czy button add group został już klikniety
   const [hasBeenClicked, setHasBeenClicked] = useState(false);
   const [email, setEmail] = useState("");
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(true); // Dodanie stanu do śledzenia poprawności adresu e-mail
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -28,6 +30,7 @@ export const AddToGroupForm = ({
     // nie można wysłać pustego ani nie bedacego mailem
     if (email !== "" && isValidEmail) {
       try {
+        handleClose();
         const credential = localStorage.getItem("token");
         const response = await fetch(
           `http://localhost:1900/api/group/${groupObject.group_id}/add-user?email=${email}`,
@@ -39,10 +42,13 @@ export const AddToGroupForm = ({
             },
           }
         );
-        if (!response.status === 200) {
+        if (!response.ok) {
           if (response.status === 401) {
             console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
-          } else {
+          } else if(response.status === 400){
+            handleAlertOpen(); // wywołanie alertu że nie ma takiego usera
+          }
+          else {
             console.error(`Błąd HTTP: ${response.status}`);
           }
           return;
@@ -53,17 +59,20 @@ export const AddToGroupForm = ({
         console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
       getGroupInfo();
-      handleClose();
     }
-    setHasBeenClicked(false);
   };
 
   const handleClick = () => {
+    console.log(`hasBeenClicked: ${hasBeenClicked}`);
     if (!hasBeenClicked) {
       setHasBeenClicked(true);
       addToGroup();
+      setHasBeenClicked(false);
     }
   };
+
+  const handleAlertClose = () => setIsAlertOpen(false);
+  const handleAlertOpen = () => setIsAlertOpen(true);
 
   const handleEmailChange = (event) => {
     const newEmail = event.target.value;
@@ -74,6 +83,7 @@ export const AddToGroupForm = ({
 
   return (
     <>
+    <AlertUserNoExist isOpen={isAlertOpen} onClose={handleAlertClose} />
       <Dialog open={isOpen} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>
