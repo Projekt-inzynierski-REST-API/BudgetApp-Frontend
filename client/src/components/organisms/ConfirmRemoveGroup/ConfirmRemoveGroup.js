@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
 import { AlertMoreUsers } from "../AlertMoreUsers/AlertMoreUsers";
+import { SimpleBackdrop } from "../../molecules/SimpleBackdrop/SimpleBackdrop";
 
 export const ConfirmRemoveGroup = ({
   isOpen,
@@ -16,6 +17,7 @@ export const ConfirmRemoveGroup = ({
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isAlertMoreUsersOpen, setIsAlertMoreUsersOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAlertMoreUsersOpen = () => setIsAlertMoreUsersOpen(true);
   const handleAlertMoreUsersClose = () => setIsAlertMoreUsersOpen(false);
@@ -24,31 +26,35 @@ export const ConfirmRemoveGroup = ({
   const handleConfirmClose = () => onClose(false);
 
   const handleDeleteClick = () => {
-    if(groupToRemove.members.length !== 1){
+    if (groupToRemove.members.length !== 1) {
       handleConfirmClose();
       handleAlertMoreUsersOpen();
-    }else{
+    } else {
       removeGroup(groupToRemove.group_id);
     }
-  }
+  };
   const credential = localStorage.getItem("token");
   const removeGroup = async (group_id) => {
     handleConfirmClose();
+    setIsLoading(true);
     const access_token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`http://localhost:1900/api/group/${group_id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${credential}`,
-          "Access-Token": `${access_token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:1900/api/group/${group_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${credential}`,
+            "Access-Token": `${access_token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         if (response.status === 401) {
           console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
-        }else if(response.status === 400) {
+        } else if (response.status === 400) {
           handleAlertOpen(); // wywołanie alertu że nie jesteś ownerem grupy
         }
         return;
@@ -58,12 +64,17 @@ export const ConfirmRemoveGroup = ({
       console.error("There was a problem with the fetch operation:", error);
     }
     getAllGroups();
+    setIsLoading(false);
   };
 
   return (
     <>
+      <SimpleBackdrop isOpen={isLoading} />
       <AlertNoGroupOwner isOpen={isAlertOpen} onClose={handleAlertClose} />
-      <AlertMoreUsers isOpen={isAlertMoreUsersOpen} onClose={handleAlertMoreUsersClose} />
+      <AlertMoreUsers
+        isOpen={isAlertMoreUsersOpen}
+        onClose={handleAlertMoreUsersClose}
+      />
       <Dialog
         open={isOpen}
         onClose={handleConfirmClose}
@@ -79,9 +90,7 @@ export const ConfirmRemoveGroup = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteClick}>
-            Delete
-          </Button>
+          <Button onClick={handleDeleteClick}>Delete</Button>
           <Button onClick={handleConfirmClose}>Cancel</Button>
         </DialogActions>
       </Dialog>

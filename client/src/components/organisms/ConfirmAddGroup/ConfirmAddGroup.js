@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { SimpleBackdrop } from "../../molecules/SimpleBackdrop/SimpleBackdrop";
 
 export const ConfirmAddGroup = ({
   isOpen,
@@ -15,6 +16,7 @@ export const ConfirmAddGroup = ({
 }) => {
   // state do sprawdzenia czy button add group został już klikniety
   const [hasBeenClicked, setHasBeenClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleConfirmClose = () => {
     setInputValue("");
@@ -31,6 +33,7 @@ export const ConfirmAddGroup = ({
 
   const addGroup = async (e) => {
     handleConfirmClose();
+    setIsLoading(true);
     try {
       const credential = localStorage.getItem("token");
       const access_token = localStorage.getItem("access_token");
@@ -59,10 +62,12 @@ export const ConfirmAddGroup = ({
     }
     getAllGroups(); // wywołuje funkcje do pobierania wszystkich grup przekazana jako prop z GroupsPage
     setHasBeenClicked(false);
+    setIsLoading(false);
   };
 
   return (
     <>
+      <SimpleBackdrop isOpen={isLoading} />
       <Dialog
         open={isOpen}
         onClose={handleConfirmClose}
