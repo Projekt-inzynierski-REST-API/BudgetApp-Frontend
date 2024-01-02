@@ -4,6 +4,7 @@ import styled from "styled-components";
 const StyledPage = styled.div`
   width: 100%;
   height: 100vh;
+  background: url('images/backgrounds/background.jpg') center/cover no-repeat;
   /* background: linear-gradient(to bottom, #add8e6, #d8bfd8); */
   display: flex;
   flex-direction: column;
@@ -16,10 +17,14 @@ const HeaderGeneralInformation = styled.div`
   align-self: center;
   text-align: left;
   padding: 20px 20px 10px 20px;
-  color: black;
+  color: #272540;
   font-size: 32px;
   font-weight: 600;
   border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  cursor: default;
+  @media (max-width: 1200px) {
+    padding: 20px 0px 20px 0px;
+  }
 `;
 
 const GroupInfoContainer = styled.div`
@@ -35,6 +40,7 @@ const GroupInfoContainer = styled.div`
 
 const HeaderMembers = styled.div`
   display: flex;
+  flex-wrap: wrap;
   font-family: Arial, Helvetica, sans-serif;
   font-variant: small-caps;
   justify-content: space-between;
@@ -42,9 +48,14 @@ const HeaderMembers = styled.div`
   align-self: center;
   text-align: left;
   padding: 20px 20px;
-  color: black;
+  color: #272540;
   font-size: 32px;
   font-weight: 600;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  cursor: default;
+  @media (max-width: 1200px) {
+    padding: 20px 0px 20px 0px;
+  }
 `;
 
 const ButtonsContainer = styled.div`
@@ -58,6 +69,7 @@ const StyledTableContainer = styled(TableContainer)`
     width: 95%;
     min-height: 20vh;
     align-self: center;
+    padding: 30px 40px;
   }
 `;
 

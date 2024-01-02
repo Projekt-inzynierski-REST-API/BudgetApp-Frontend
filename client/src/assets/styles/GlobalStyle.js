@@ -13,10 +13,11 @@ body, html {
     font-family: "Roboto", sans-serif;
   }
 
- 
-  background: linear-gradient(to bottom, #add8e6, #d8bfd8); 
+  background: url('images/backgrounds/background.jpg') center/cover no-repeat;
 
-  background: #add8e6;
+  /* background: linear-gradient(to bottom, #add8e6, #d8bfd8);  */
+
+  /* background: #add8e6; */
   font-family: 'Roboto', sans-serif;
   color: "black";
 

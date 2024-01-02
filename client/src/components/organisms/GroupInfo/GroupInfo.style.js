@@ -1,4 +1,4 @@
-import styled from "styled-components";
+ import styled from "styled-components";
 
 const GroupInfoDiv = styled.div`
   min-height: 15vh;
@@ -39,7 +39,9 @@ const Header = styled.h2`
   margin: 0px;
   padding: 10px 0;
   text-align: center;
-  color: black;
+  color: #FFF6F2;
+  /* color: #151333; */
+  cursor: default;
   @media (max-width: 1020px) {
     font-size: 25px;
   }
@@ -54,7 +56,8 @@ const InfoRow = styled.div`
   padding: 10px 0;
   flex-direction: row;
   justify-content: center;
-  color: black;
+  color: #151333;
+  cursor: default;
 `;
 
 const Icon = styled.img`

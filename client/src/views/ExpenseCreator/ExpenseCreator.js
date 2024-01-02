@@ -23,7 +23,6 @@ import {
   CalendarEvent,
   HeaderContainer,
   FirstHeader,
-  SecondHeader,
   Form,
   FormRow,
   AddExpenseButton,
@@ -198,7 +197,7 @@ export const ExpenseCreator = () => {
 
   const handleClick = (event) => {
     event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
-    if(!hasBeenClicked){
+    if (!hasBeenClicked) {
       setHasBeenClicked(true);
       addExpense();
     }
@@ -220,19 +219,31 @@ export const ExpenseCreator = () => {
       <StyledPage>
         <HeaderContainer>
           <FirstHeader>Expense Creator</FirstHeader>
-          <SecondHeader>Add Expense</SecondHeader>
         </HeaderContainer>
         <Form onSubmit={handleClick}>
           <FormRow>
             <Expense>
               <Column>
                 <InputLabel>Expense Name</InputLabel>
-                <TextField
-                  id="outlined-basic"
-                  variant="outlined"
-                  onChange={handleChangeName}
-                  required
-                />
+                  <TextField
+                    id="outlined-basic"
+                    variant="outlined"
+                    onChange={handleChangeName}
+                    required
+                    sx={{ 
+                      '& .MuiInputBase-input': {
+                        backgroundColor: 'transparent',
+                        // Dodatkowe stylizacje, jeśli są potrzebne
+                      },
+                      '& .MuiInputBase-input:focus': {
+                        backgroundColor: 'transparent',
+                        // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                      },
+                      '& .MuiInputBase-input:-webkit-autofill': {
+                        transition: 'background-color 5000s ease-in-out 0s', // Wydłuża czas animacji autofill
+                      }
+                      }}
+                  />
                 <InputLabel htmlFor="outlined-adornment-amount">
                   Amount
                 </InputLabel>
@@ -241,8 +252,22 @@ export const ExpenseCreator = () => {
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
+                  
                   onChange={handleChangeAmount}
                   required
+                  sx={{ 
+                    '& .MuiInputBase-input': {
+                      backgroundColor: 'transparent',
+                      // Dodatkowe stylizacje, jeśli są potrzebne
+                    },
+                    '& .MuiInputBase-input:focus': {
+                      backgroundColor: 'transparent',
+                      // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                    },
+                    '& .MuiInputBase-input:-webkit-autofill': {
+                      transition: 'background-color 5000s ease-in-out 0s', // Wydłuża czas animacji autofill
+                    }
+                    }}
                 />
                 <InputLabel>Group</InputLabel>
                 <Select label="group" onChange={handleChangeGroup} required>
@@ -326,6 +351,19 @@ export const ExpenseCreator = () => {
                       variant="outlined"
                       onChange={handleChangeLocation}
                       required
+                      sx={{ 
+                        '& .MuiInputBase-input': {
+                          backgroundColor: 'transparent',
+                          // Dodatkowe stylizacje, jeśli są potrzebne
+                        },
+                        '& .MuiInputBase-input:focus': {
+                          backgroundColor: 'transparent',
+                          // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                        },
+                        '& .MuiInputBase-input:-webkit-autofill': {
+                          transition: 'background-color 5000s ease-in-out 0s', // Wydłuża czas animacji autofill
+                        }
+                        }}
                     />
                     <InputLabel>Description</InputLabel>
                     <TextField
