@@ -79,6 +79,10 @@ const MyLocalizationProvider = styled(LocalizationProvider)`
   align-items: space-around;
 `;
 
+const HelperText = styled.p`
+    color: red;
+`;
+
 export {
   StyledPage,
   HeaderContainer,
@@ -90,5 +94,6 @@ export {
   AddExpenseButton,
   MyLocalizationProvider,
   Column,
-  ButtonContainer
+  ButtonContainer,
+  HelperText
 };
