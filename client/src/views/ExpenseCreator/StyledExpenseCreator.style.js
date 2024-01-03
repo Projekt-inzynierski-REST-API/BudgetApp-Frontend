@@ -81,6 +81,7 @@ const MyLocalizationProvider = styled(LocalizationProvider)`
 
 const HelperText = styled.p`
     color: red;
+    margin:0;
 `;
 
 export {
