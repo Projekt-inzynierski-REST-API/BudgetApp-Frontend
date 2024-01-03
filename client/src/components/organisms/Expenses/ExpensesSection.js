@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import ExpenseCard from "../../molecules/ExpenseCard/ExpenseCard";
 import { Wrapper } from "./ExpensesSection.style";
-import { SimpleBackdrop } from "../../molecules/SimpleBackdrop/SimpleBackdrop";
 
 function ExpensesSection({ expenses }) {
   return (
     <Wrapper>
+      {console.log(expenses)}
       {Array.isArray(expenses) && expenses.length > 0 ? (
         expenses.map((expense, index) => (
           <ExpenseCard
@@ -15,7 +15,7 @@ function ExpensesSection({ expenses }) {
           />
         ))
       ) : (
-        <SimpleBackdrop isOpen={true} />
+        <div>No data</div>
       )}
     </Wrapper>
   );

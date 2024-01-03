@@ -45,10 +45,9 @@ export const AddToGroupForm = ({
         if (!response.ok) {
           if (response.status === 401) {
             console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
-          } else if(response.status === 400){
+          } else if (response.status === 400) {
             handleAlertOpen(); // wywołanie alertu że nie ma takiego usera
-          }
-          else {
+          } else {
             console.error(`Błąd HTTP: ${response.status}`);
           }
           return;
@@ -83,7 +82,7 @@ export const AddToGroupForm = ({
 
   return (
     <>
-    <AlertUserNoExist isOpen={isAlertOpen} onClose={handleAlertClose} />
+      <AlertUserNoExist isOpen={isAlertOpen} onClose={handleAlertClose} />
       <Dialog open={isOpen} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>

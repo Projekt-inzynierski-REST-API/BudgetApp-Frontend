@@ -13,6 +13,11 @@ function Expenses() {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
+  const handleUnauthorized = () => {
+    alert("Twoja sesja wygasła, zaloguj się ponownie.");
+    navigate("/");
+  };
+
   const handleAddExpenseClick = () => {
     navigate("/ExpenseCreator");
   };
@@ -35,7 +40,8 @@ function Expenses() {
       );
       if (!response.status === 201) {
         if (response.status === 401) {
-          console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
+          handleUnauthorized();
+          return;
         } else {
           console.error(`Błąd HTTP: ${response.status}`);
         }
