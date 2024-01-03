@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
   @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200&family=Roboto:wght@100;300&display=swap");
 
 body, html {
-  /* height: 100%; */
+  height: 100%;
   margin: 0;
   font-family: 'Roboto';
   overflow-x: hidden;
