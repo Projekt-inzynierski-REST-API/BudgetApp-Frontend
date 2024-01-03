@@ -97,6 +97,10 @@ export const ExpenseCreator = () => {
         : event.target.value
     );
 
+  const handleUnauthorized = () => {
+    alert("Twoja sesja wygasła, zaloguj się ponownie.");
+    navigate("/");
+  };
   //funkcja pobierająca wszystkie kategorie z bazy danych
   const getAllCategories = async () => {
     console.log("pobieranie kategorii");
@@ -112,7 +116,8 @@ export const ExpenseCreator = () => {
 
       if (!(response.status === 200)) {
         if (response.status === 401) {
-          console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
+          handleUnauthorized();
+          return;
         } else {
           console.error(`Błąd HTTP: ${response.status}`);
         }
@@ -146,7 +151,8 @@ export const ExpenseCreator = () => {
 
       if (!(response.status === 200)) {
         if (response.status === 401) {
-          console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
+          handleUnauthorized();
+          return;
         } else {
           console.error(`Błąd HTTP: ${response.status}`);
         }
@@ -196,12 +202,13 @@ export const ExpenseCreator = () => {
           }),
         });
 
-        if (!response.status === 201) {
-          if (response.status === 401) {
-            console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
-          } else {
-            console.error(`Błąd HTTP: ${response.status}`);
-          }
+
+      if (!response.status === 201) {
+        if (response.status === 401) {
+          handleUnauthorized();
+          return;
+        } else {
+          console.error(`Błąd HTTP: ${response.status}`);
           return;
         }
         // Przekieruj użytkownika

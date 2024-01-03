@@ -11,12 +11,19 @@ import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/Simple
 import { AddGroupForm } from "../../components/organisms/AddGroupForm/AddGroupForm";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { YoursGroups } from "../../components/organisms/YoursGroups/YoursGroups";
+import { useNavigate } from "react-router-dom";
 
 export function GroupsPage() {
   // obiekt z grupami
   const [allGroups, setAllGroups] = useState(false);
   // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+
+  const handleUnauthorized = () => {
+    alert("Twoja sesja wygasła, zaloguj się ponownie.");
+    navigate("/");
+  };
 
   //funkcja pobierająca wszystkie grupy z bazy danych
   const getAllGroups = async () => {
@@ -37,7 +44,8 @@ export function GroupsPage() {
 
       if (!(response.status === 200)) {
         if (response.status === 401) {
-          console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
+          handleUnauthorized();
+          return;
         } else {
           console.error(`Błąd HTTP: ${response.status}`);
         }

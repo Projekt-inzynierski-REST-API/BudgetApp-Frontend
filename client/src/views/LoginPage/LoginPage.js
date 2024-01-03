@@ -5,16 +5,17 @@ import UserCardLoginPage from "../../components/organisms/UserCardLoginPage/User
 import LoginForm from "../../components/organisms/LoginForm/LoginForm";
 import { StyledPage, GoogleButton } from "./StyledLoginPage.style";
 
+/* global google */
 const CLIENT_ID =
   "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com";
 const SCOPES =
   "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/userinfo.email";
 
 function LoginPage() {
-  // const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [storedUser, setStoredUser] = useState(null);
   const [tokenClient, setTokenClient] = useState({});
+  const [authorized, setAuthorized] = useState(false);
 
   async function loginUser(tokenJWT, userObject) {
     try {
@@ -26,8 +27,6 @@ function LoginPage() {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(userObject));
-        setStoredUser(userObject);
         navigate("/HomePage");
       } else {
         throw new Error("Nie udało się zalogować");
@@ -41,61 +40,97 @@ function LoginPage() {
   function handleCallbackResponse(response) {
     console.log("Encoded JWT ID Token: " + response.credential);
     const userObject = jwtDecode(response.credential);
-
+    setStoredUser(userObject);
     localStorage.setItem("user", JSON.stringify(userObject));
-    // zapisanie tokenu w local storage
     localStorage.setItem("token", response.credential);
-    loginUser(response.credential, userObject);
 
-    // navigate("/HomePage");
+    const newTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: (tokenResponse) => {
+        console.log(
+          "Google Calendar Access Token:",
+          tokenResponse.access_token
+        );
+        localStorage.setItem("access_token", tokenResponse.access_token);
+
+        verifyUserIdentity(
+          response.credential,
+          tokenResponse.access_token,
+          userObject
+        ).catch((error) =>
+          console.error("Weryfikacja tożsamości nieudana:", error)
+        );
+      },
+    });
+    newTokenClient.requestAccessToken({ prompt: "consent" });
+    setTokenClient(newTokenClient);
+  }
+
+  async function verifyUserIdentity(idToken, accessToken, userObject) {
+    const decodedJWT = jwtDecode(idToken);
+    const jwtEmail = decodedJWT.email;
+
+    const calendarApiResponse = await fetch(
+      "https://www.googleapis.com/calendar/v3/users/me/calendarList",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!calendarApiResponse.ok) {
+      throw new Error("Nie udało się uzyskać danych z Google Calendar API");
+    }
+
+    const calendarData = await calendarApiResponse.json();
+    const userCalendar = calendarData.items.find(
+      (item) => item.id === jwtEmail
+    );
+
+    if (userCalendar) {
+      setAuthorized(true);
+    } else {
+      setAuthorized(false);
+      alert(
+        "Użyj wspólnego konta do uzyskania dostępu do kalendarza Google oraz autoryzacji!"
+      );
+    }
   }
 
   useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: CLIENT_ID,
-      callback: handleCallbackResponse,
-    });
-
-    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-      theme: "large",
-      size: "medium",
-      width: "200px",
-      height: "50px",
-      longtitle: true,
-      textColor: "#ffffff",
-    });
-
-    setTokenClient(
-      google.accounts.oauth2.initTokenClient({
+    if (typeof google !== "undefined") {
+      google.accounts.id.initialize({
         client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: (tokenResponse) => {
-          console.log(tokenResponse);
-          // zapisanie access_tokenu w local storage
-          localStorage.setItem("access_token", tokenResponse.access_token);
-        },
-      })
-    );
+        callback: handleCallbackResponse,
+      });
+
+      google.accounts.id.renderButton(document.getElementById("signInDiv"), {
+        theme: "outline",
+        size: "large",
+        text: "continue_with",
+        shape: "pill",
+        logo_alignment: "left",
+      });
+    } else {
+      console.error("Google API is not loaded");
+    }
   }, []);
 
-  const getAccessToken = () => {
-    tokenClient.requestAccessToken();
-  };
+  useEffect(() => {
+    console.log("Authorized:", authorized, "Stored User:", storedUser);
+    if (authorized) {
+      loginUser(localStorage.getItem("token"), storedUser);
+    }
+  }, [authorized, storedUser]);
 
   return (
     <>
       <StyledPage>
-        {storedUser ? (
-          <UserCardLoginPage userObject={storedUser} />
-        ) : (
-          <LoginForm>
-            <GoogleButton
-              onClick={getAccessToken}
-              id="signInDiv"
-            ></GoogleButton>
-          </LoginForm>
-        )}
+        <LoginForm>
+          <GoogleButton id="signInDiv"></GoogleButton>
+        </LoginForm>
       </StyledPage>
     </>
   );

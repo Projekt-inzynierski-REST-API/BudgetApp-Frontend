@@ -22,11 +22,13 @@ export const ChangeAccountBalanceForm = ({
     onClose(false);
     setDisplayHelperText(false);
     setAccountBalance(false);
-  }
+  };
   const handleBalanceChange = (event) => {
     const newAccountBalance = event.target.value;
     // Sprawdź, czy wartość jest liczbą
-    setIsValidAccountBalance(!isNaN(parseFloat(newAccountBalance)) && isFinite(newAccountBalance));
+    setIsValidAccountBalance(
+      !isNaN(parseFloat(newAccountBalance)) && isFinite(newAccountBalance)
+    );
     setAccountBalance(newAccountBalance);
   };
 
@@ -63,8 +65,7 @@ export const ChangeAccountBalanceForm = ({
       }
       getGroupInfo();
       handleClose();
-    }else setDisplayHelperText(true);
-
+    } else setDisplayHelperText(true);
   };
 
   return (
@@ -89,7 +90,9 @@ export const ChangeAccountBalanceForm = ({
             value={accountBalance}
             onChange={handleBalanceChange}
           />
-          {displayHelperText && <HelperText>You must enter a number!</HelperText>}
+          {displayHelperText && (
+            <HelperText>You must enter a number!</HelperText>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

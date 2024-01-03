@@ -24,7 +24,8 @@ export const GroupDetails = () => {
   const navigate = useNavigate();
   const [tableKey, setTableKey] = useState(1); // Unikalny klucz komponentu
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
-  const [isAccountBalanceFormOpen, setIsAccountBalanceFormOpen] = useState(false);
+  const [isAccountBalanceFormOpen, setIsAccountBalanceFormOpen] =
+    useState(false);
   const [groupObject, setGroupObject] = useState(false);
   const [isLeaveGroupConfirmOpen, setIsLeaveGroupConfirmOpen] = useState(false);
   const groupDetailsObject = location.state?.groupDetailsObject; // odczytuje przekazane dane o grupie
@@ -38,6 +39,11 @@ export const GroupDetails = () => {
       // Przekieruj użytkownika
       navigate("/HomePage");
     }
+  };
+
+  const handleUnauthorized = () => {
+    alert("Twoja sesja wygasła, zaloguj się ponownie.");
+    navigate("/");
   };
 
   //funkcja pobierająca detailsy grupy z bazy danych
@@ -59,6 +65,10 @@ export const GroupDetails = () => {
 
       console.log(groupDetailsObject.group_id);
 
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
       if (!response.status === 200) {
         if (response.status === 401) {
           console.error("Błąd uwierzytelnienia: Sprawdź poprawność tokena.");
@@ -91,7 +101,8 @@ export const GroupDetails = () => {
   const handleAddMemberClick = () => setIsAddFormOpen(true);
   const handleAccountBalanceClick = () => setIsAccountBalanceFormOpen(true);
   const handleAddFormClose = () => setIsAddFormOpen(false);
-  const handleAccountBalanceFormClose = () => setIsAccountBalanceFormOpen(false);
+  const handleAccountBalanceFormClose = () =>
+    setIsAccountBalanceFormOpen(false);
   const handleLeaveGroupConfirmOpen = () => setIsLeaveGroupConfirmOpen(true);
   const handleLeaveGroupConfirmClose = () => setIsLeaveGroupConfirmOpen(false);
 
@@ -131,12 +142,16 @@ export const GroupDetails = () => {
           <ButtonsContainer>
             {groupObject.should_show_members_account_balance ? (
               <>
-                <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+                <ChangeAccountBalanceButton
+                  onClick={handleAccountBalanceClick}
+                />
                 <AddMemberButton onClick={handleAddMemberClick} />
               </>
             ) : (
               <>
-                <ChangeAccountBalanceButton onClick={handleAccountBalanceClick} />
+                <ChangeAccountBalanceButton
+                  onClick={handleAccountBalanceClick}
+                />
                 <LeaveGroupButton onClick={handleLeaveGroupConfirmOpen} />
               </>
             )}

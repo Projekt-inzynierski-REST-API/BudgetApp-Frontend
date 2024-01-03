@@ -17,22 +17,24 @@ function ChartSection({ chartData }) {
     };
   }, []);
 
-  if (!chartData || !chartData.data || !chartData.legend || !chartData.type) {
-    return <div>No data available for the chart.</div>;
-  }
-  const pieChartData = chartData
-    ? chartData.data.map((item) => ({
-        id: chartData.legend.items.find(
-          (legendItem) => legendItem.id === item.category.id
-        ).value,
-        label: `${
-          chartData.legend.items.find(
+  const defaultChartData = [
+    { id: "NoData", label: "Brak danych ", value: 100 },
+  ];
+
+  const pieChartData =
+    chartData && chartData.data && chartData.data.length > 0
+      ? chartData.data.map((item) => ({
+          id: chartData.legend.items.find(
             (legendItem) => legendItem.id === item.category.id
-          ).value
-        }  - ${item.category.value} zł`,
-        value: `${item.percentage.toFixed(2)} `,
-      }))
-    : [];
+          ).value,
+          label: `${
+            chartData.legend.items.find(
+              (legendItem) => legendItem.id === item.category.id
+            ).value
+          }  - ${item.category.value} zł`,
+          value: `${item.percentage.toFixed(2)}`,
+        }))
+      : defaultChartData;
 
   return (
     <StyledChartSection>
@@ -57,6 +59,7 @@ function ChartSection({ chartData }) {
           from: "color",
           modifiers: [["darker", 2]],
         }}
+        arcLabelsRadiusOffset={0.6}
         animate={true}
         motionStiffness={90}
         motionDamping={15}

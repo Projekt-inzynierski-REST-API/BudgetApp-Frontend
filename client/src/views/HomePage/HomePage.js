@@ -8,6 +8,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import ExpenseSection from "../../components/organisms/ExpenseSection/ExpenseSection";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
+import { useNavigate } from "react-router-dom";
 
 import {
   StyledPage,
@@ -28,6 +29,17 @@ function HomePage() {
   const [groups, setGroups] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("SEVEN_DAYS");
   const [tokenClient, setTokenClient] = useState({});
+  const [isUnauthorized, setIsUnauthorized] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLoginRedirect = () => {
+    navigate("/");
+  };
+
+  const handleUnauthorized = () => {
+    alert("Twoja sesja wygasła, zaloguj się ponownie.");
+    navigate("/");
+  };
 
   async function fetchLastTransaction() {
     try {
@@ -42,6 +54,10 @@ function HomePage() {
         }
       );
 
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
       if (response.status === 200) {
         const data = await response.json();
         setLastTransactions(data);
@@ -49,7 +65,7 @@ function HomePage() {
         console.log("Brak rekordów");
       }
     } catch (error) {
-      console.error("Error coo:", error);
+      console.error("Error:", error);
     }
   }
 
@@ -68,6 +84,10 @@ function HomePage() {
 
       const data = await response.json();
 
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
       if (data.length === 0) {
         console.log("Brak rekordów.");
       } else {
@@ -96,6 +116,11 @@ function HomePage() {
 
       const data = await response.json();
       console.log(data);
+
+      if (response.status == 401) {
+        handleUnauthorized();
+        return;
+      }
       if (data.length === 0) {
         console.log("Brak rekordów.");
       } else {
@@ -116,33 +141,6 @@ function HomePage() {
     fetchGroups();
   }, [credential]);
 
-  // useEffect(() => {
-  //   /* global google */
-  //   google.accounts.oauth2.initTokenClient({
-  //     client_id:
-  //       "627005936862-g942r7eqn2505l8f0nirkfl8lgb8ls8f.apps.googleusercontent.com",
-  //     scope: "https://www.googleapis.com/auth/calendar",
-  //     callback: (tokenResponse) => {
-  //       console.log("google calendar token");
-  //       console.log(tokenResponse);
-  //       setTokenClient(tokenClient);
-  //       // zapisanie access_tokenu w local storage
-  //       localStorage.setItem("access_token", tokenResponse.access_token);
-  //     },
-  //   });
-
-  //   google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-  //     theme: "large",
-  //     size: "medium",
-  //     width: "200px",
-  //     height: "50px",
-  //     longtitle: true,
-  //     textColor: "#ffffff",
-  //   });
-
-  //   google.accounts.oauth2.prompt();
-  // }, []);
-
   if (!chartData || !chartData.data) {
     return <SimpleBackdrop isOpen={true} />;
   }
@@ -151,7 +149,6 @@ function HomePage() {
 
   return (
     <>
-      {/* <div id="signInDiv" onClick={getAccessToken}></div> */}
       <NavigationBar storedUser={storedUser}></NavigationBar>
       <h2 style={{ marginLeft: 30 }}>Overall </h2>
       <StyledPage>

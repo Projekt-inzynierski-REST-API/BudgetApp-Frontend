@@ -62,14 +62,11 @@ export const ConfirmDeleteGroup = ({ isOpen, onClose, groupId, groupName }) => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             If you want to delete group:
-            <span style={{ fontWeight: 600 }}> {groupName}</span>,
-            click Delete
+            <span style={{ fontWeight: 600 }}> {groupName}</span>, click Delete
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => leaveGroup(groupId)}>
-            Delete
-          </Button>
+          <Button onClick={() => leaveGroup(groupId)}>Delete</Button>
           <Button onClick={handleConfirmClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
