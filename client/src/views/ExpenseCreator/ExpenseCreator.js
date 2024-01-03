@@ -65,10 +65,9 @@ export const ExpenseCreator = () => {
   const handleChangeName = (event) => setExpenseName(event.target.value);
   const handleChangeAmount = (event) => {
     const newAmount = event.target.value;
-    // Sprawdź, czy wartość jest liczbą
-    setIsValidAmout(
-      !isNaN(parseFloat(newAmount)) && isFinite(newAmount)
-    );
+    // Sprawdź, czy wartość jest liczbą lub pusty string
+    if((!isNaN(parseFloat(newAmount)) && isFinite(newAmount)) || (newAmount === "")) setIsValidAmout(true);
+    else setIsValidAmout(false);
     setExpenseAmount(event.target.value);
   };
   const handleChangeCategory = (event) =>
@@ -203,8 +202,8 @@ export const ExpenseCreator = () => {
       } catch (error) {
         console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
-      setHasBeenClicked(false);
     }
+      setHasBeenClicked(false);
   };
 
   const handleClick = (event) => {
