@@ -8,6 +8,7 @@ const PageContainer = styled.div`
 
 const StyledPage = styled.div`
   flex: 1; /* Zajmij całą dostępną przestrzeń */
+  background: url('images/backgrounds/background.jpg') center/cover no-repeat;
   /* background: linear-gradient(to bottom, #add8e6, #d8bfd8); */
   display: flex;
 
@@ -43,39 +44,18 @@ const CreateGroupContaier = styled.div`
   border: 2px solid rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(20px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  color: rgba(0, 0, 0, 0.8);
+  color: #272540;
   text-shadow: 2px 1px 4px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   padding: 30px 40px;
   @media (max-width: 1020px) {
-    width: 50%;
+    width: 70%;
     padding: 30px 0;
   }
   @media (max-width: 960px) {
-    width: 60%;
+    width: 85%;
     padding: 30px 0;
   }
-`;
-
-// Join to Group
-
-const JoinToGroupSection = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
-`;
-
-const JoinToGroupContaier = styled.div`
-  align-self: center;
-  width: 50%;
-  height: 30vh;
-  background: transparent;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  color: #fff;
-  border-radius: 10px;
-  padding: 30px 40px;
 `;
 
 // Your
@@ -101,24 +81,22 @@ const YourGroupsContaier = styled.div`
   border: 2px solid rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(20px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  color: rgba(0, 0, 0, 0.8);
+  color: #272540;
   text-shadow: 2px 1px 4px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   padding: 30px 0px;
   @media (max-width: 1020px) {
-    width: 50%;
+    width: 70%;
   }
   @media (max-width: 960px) {
-    width: 60%;
+    width: 85%;
   }
 `;
 
 export {
   PageContainer,
   StyledPage,
-  JoinToGroupSection,
   CreateGroupContaier,
-  JoinToGroupContaier,
   YourGroupsContaier,
   YourGroupsColumn,
   CreateGroupColumn,

@@ -4,8 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
-import { StyledTableCell } from "./MembersTable.style";
+import { StyledTableCell, RemoveMemberButton } from "./MembersTable.style";
 import { ConfirmRemoveMember } from "../ConfirmRemoveMember/ConfirmRemoveMember";
 import { ConfirmDeleteGroup } from "../ConfirmDeleteGroup/ConfirmDeleteGroup";
 
@@ -80,7 +79,7 @@ export const MembersTable = ({ groupName, groupObject, groupId, getGroupInfo }) 
               </StyledTableCell>
               <StyledTableCell align="right">
                 {(groupObject.should_show_members_account_balance && (storedUser.email !== member.member.email)) &&  (
-                  <Button
+                  <RemoveMemberButton
                     variant="contained"
                     color="error"
                     onClick={() => handleConfirmOpen(member.member)}
@@ -88,10 +87,11 @@ export const MembersTable = ({ groupName, groupObject, groupId, getGroupInfo }) 
                     startIcon={<DeleteIcon />}
                   >
                     Remove member
-                  </Button>
+                  </RemoveMemberButton>
                 )}
                 {(groupObject.members.length === 1) &&  (
-                  <Button
+                  <RemoveMemberButton
+
                     variant="contained"
                     color="error"
                     onClick={handleConfirmDeleteGroupOpen}
@@ -99,7 +99,7 @@ export const MembersTable = ({ groupName, groupObject, groupId, getGroupInfo }) 
                     startIcon={<DeleteIcon />}
                   >
                     Delete group
-                  </Button>
+                  </RemoveMemberButton>
                 )}
               </StyledTableCell>
             </TableRow>

@@ -15,7 +15,7 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
-  Switch,
+  Switch
 } from "@mui/material";
 import {
   StyledPage,
@@ -23,13 +23,13 @@ import {
   CalendarEvent,
   HeaderContainer,
   FirstHeader,
-  SecondHeader,
   Form,
   FormRow,
   AddExpenseButton,
   MyLocalizationProvider,
   Column,
   ButtonContainer,
+  HelperText
 } from "./StyledExpenseCreator.style";
 
 const ITEM_HEIGHT = 48;
@@ -52,17 +52,26 @@ export const ExpenseCreator = () => {
   const [allGroups, setAllGroups] = useState(false);
   const [expenseName, setExpenseName] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
+  const [isValidAmount, setIsValidAmout] = useState(true);
   const [expenseCategoryId, setExpenseCategoryId] = useState("");
   const [expenseGroupId, setExpenseGroupId] = useState("");
   const [expenseParticipantsIds, setExpenseParticipantsIds] = useState([]);
   const [eventStartDate, setEventStartDate] = useState("");
+  const [isSetStartDate, setIsSetStartDate] = useState(false);
+  const [isSetEndDate, setIsSetEndDate] = useState(false);
   const [eventEndDate, setEventEndDate] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [addAsEvent, setAddAsEvent] = useState(false);
 
   const handleChangeName = (event) => setExpenseName(event.target.value);
-  const handleChangeAmount = (event) => setExpenseAmount(event.target.value);
+  const handleChangeAmount = (event) => {
+    const newAmount = event.target.value;
+    // Sprawdź, czy wartość jest liczbą lub pusty string
+    if((!isNaN(parseFloat(newAmount)) && isFinite(newAmount)) || (newAmount === "")) setIsValidAmout(true);
+    else setIsValidAmout(false);
+    setExpenseAmount(event.target.value);
+  };
   const handleChangeCategory = (event) =>
     setExpenseCategoryId(event.target.value); // ustawiam id wybranej kategorii
   const handleChangeGroup = (event) => setExpenseGroupId(event.target.value); // ustawiam id wybranej grupy
@@ -70,10 +79,12 @@ export const ExpenseCreator = () => {
   const handleChangeDescription = (event) =>
     setEventDescription(event.target.value);
   const handleStartDate = (event) => {
+    setIsSetStartDate(true);
     const formattedDate = format(event.$d, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
     setEventStartDate(formattedDate);
   };
   const handleEndDate = (event) => {
+    setIsSetEndDate(true);
     const formattedDate = format(event.$d, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
     setEventEndDate(formattedDate);
   };
@@ -159,30 +170,38 @@ export const ExpenseCreator = () => {
 
   //funkcja dodająca wydatek do bazy danych
   const addExpense = async () => {
-    try {
-      const credential = localStorage.getItem("token");
-      const accessToken = localStorage.getItem("access_token");
+    let canAddExpense = false;
+    if(addAsEvent){
+      if(isSetStartDate && isSetEndDate) canAddExpense = true;
+      else canAddExpense = false;
+    }else canAddExpense = true;
+    // jeśli amount jest liczbą i zmienna canAddExpense jest na true
+    if (isValidAmount && canAddExpense) {
+      try {
+        const credential = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("access_token");
 
-      const response = await fetch("http://localhost:1900/api/expense", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${credential}`,
-          "Content-Type": "application/json",
-          "Access-Token": accessToken,
-        },
-        body: JSON.stringify({
-          name: expenseName,
-          amount: expenseAmount,
-          category_id: expenseCategoryId,
-          group_id: expenseGroupId,
-          participants_ids: expenseParticipantsIds,
-          event_start_date: eventStartDate,
-          event_end_date: eventEndDate,
-          event_description: eventDescription,
-          event_location: eventLocation,
-          add_to_calendar: addAsEvent,
-        }),
-      });
+        const response = await fetch("http://localhost:1900/api/expense", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${credential}`,
+            "Content-Type": "application/json",
+            "Access-Token": accessToken,
+          },
+          body: JSON.stringify({
+            name: expenseName,
+            amount: expenseAmount,
+            category_id: expenseCategoryId,
+            group_id: expenseGroupId,
+            participants_ids: expenseParticipantsIds,
+            event_start_date: eventStartDate,
+            event_end_date: eventEndDate,
+            event_description: eventDescription,
+            event_location: eventLocation,
+            add_to_calendar: addAsEvent,
+          }),
+        });
+
 
       if (!response.status === 201) {
         if (response.status === 401) {
@@ -190,17 +209,17 @@ export const ExpenseCreator = () => {
           return;
         } else {
           console.error(`Błąd HTTP: ${response.status}`);
+          return;
         }
-        return;
+        // Przekieruj użytkownika
+        console.log(`dodano wydatek`);
+        const data = await response.json();
+        navigate("/Expenses");
+      } catch (error) {
+        console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
-      // Przekieruj użytkownika
-      console.log(`dodano wydatek`);
-      const data = await response.json();
-      navigate("/Expenses");
-    } catch (error) {
-      console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
-    setHasBeenClicked(false);
+      setHasBeenClicked(false);
   };
 
   const handleClick = (event) => {
@@ -227,7 +246,6 @@ export const ExpenseCreator = () => {
       <StyledPage>
         <HeaderContainer>
           <FirstHeader>Expense Creator</FirstHeader>
-          <SecondHeader>Add Expense</SecondHeader>
         </HeaderContainer>
         <Form onSubmit={handleClick}>
           <FormRow>
@@ -239,6 +257,19 @@ export const ExpenseCreator = () => {
                   variant="outlined"
                   onChange={handleChangeName}
                   required
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:focus": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:-webkit-autofill": {
+                      transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
+                    },
+                  }}
                 />
                 <InputLabel htmlFor="outlined-adornment-amount">
                   Amount
@@ -250,7 +281,21 @@ export const ExpenseCreator = () => {
                   }
                   onChange={handleChangeAmount}
                   required
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:focus": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:-webkit-autofill": {
+                      transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
+                    },
+                  }}
                 />
+                {!isValidAmount && <HelperText>You must enter a number!</HelperText>}
                 <InputLabel>Group</InputLabel>
                 <Select label="group" onChange={handleChangeGroup} required>
                   {allGroups.map((group) => (
@@ -320,19 +365,32 @@ export const ExpenseCreator = () => {
                     <DateTimePicker
                       value={eventStartDate}
                       onChange={(newValue) => handleStartDate(newValue)}
-                      required
                     />
+                    {!isSetStartDate && <HelperText>You must choose event's start date!</HelperText>}
                     <InputLabel>Event's end date</InputLabel>
                     <DateTimePicker
                       value={eventEndDate}
                       onChange={(newValue) => handleEndDate(newValue)}
-                      required
                     />
+                    {!isSetEndDate && <HelperText>You must choose event's end date!</HelperText>}
                     <InputLabel>Event location</InputLabel>
                     <TextField
                       variant="outlined"
                       onChange={handleChangeLocation}
                       required
+                      sx={{
+                        "& .MuiInputBase-input": {
+                          backgroundColor: "transparent",
+                          // Dodatkowe stylizacje, jeśli są potrzebne
+                        },
+                        "& .MuiInputBase-input:focus": {
+                          backgroundColor: "transparent",
+                          // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                        },
+                        "& .MuiInputBase-input:-webkit-autofill": {
+                          transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
+                        },
+                      }}
                     />
                     <InputLabel>Description</InputLabel>
                     <TextField

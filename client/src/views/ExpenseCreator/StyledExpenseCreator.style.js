@@ -33,12 +33,9 @@ const HeaderContainer = styled.div`
 `;
 
 const FirstHeader = styled.h1`
+  color: #272540;
   font-size: 50px;
-  width:95%;
-`;
-
-const SecondHeader = styled.h2`
-  font-size: 40px;
+  font-variant: small-caps;
   width:95%;
 `;
 
@@ -82,17 +79,22 @@ const MyLocalizationProvider = styled(LocalizationProvider)`
   align-items: space-around;
 `;
 
+const HelperText = styled.p`
+    color: red;
+    margin:0;
+`;
+
 export {
   StyledPage,
   HeaderContainer,
   Expense,
   CalendarEvent,
   FirstHeader,
-  SecondHeader,
   Form,
   FormRow,
   AddExpenseButton,
   MyLocalizationProvider,
   Column,
-  ButtonContainer
+  ButtonContainer,
+  HelperText
 };

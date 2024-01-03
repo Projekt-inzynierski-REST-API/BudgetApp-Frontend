@@ -4,8 +4,8 @@ const NavigationBarField = styled.div`
   width: 100%;
   height: auto;
   display: flex;
-  color: black;
-  background-color: white;
+  color: white;
+  background: rgba(0,0,0,0.3);
   backdrop-filter: blur(5px);
 `;
 const LeftSection = styled.div`
@@ -19,6 +19,7 @@ const RightSection = styled.div`
   justify-content: flex-end;
   width: 30%;
   height: auto;
+  cursor: default;
 `;
 
 export { NavigationBarField, LeftSection, RightSection };

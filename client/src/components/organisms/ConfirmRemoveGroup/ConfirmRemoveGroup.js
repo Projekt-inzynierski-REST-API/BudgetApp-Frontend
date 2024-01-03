@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { AlertNoGroupOwner } from "../AlertNoGroupOwner/AlertNoGroupOwner";
 import { AlertMoreUsers } from "../AlertMoreUsers/AlertMoreUsers";
+import { SimpleBackdrop } from "../../molecules/SimpleBackdrop/SimpleBackdrop";
 
 export const ConfirmRemoveGroup = ({
   isOpen,
@@ -16,6 +17,7 @@ export const ConfirmRemoveGroup = ({
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isAlertMoreUsersOpen, setIsAlertMoreUsersOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAlertMoreUsersOpen = () => setIsAlertMoreUsersOpen(true);
   const handleAlertMoreUsersClose = () => setIsAlertMoreUsersOpen(false);
@@ -34,6 +36,7 @@ export const ConfirmRemoveGroup = ({
   const credential = localStorage.getItem("token");
   const removeGroup = async (group_id) => {
     handleConfirmClose();
+    setIsLoading(true);
     const access_token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
@@ -61,10 +64,12 @@ export const ConfirmRemoveGroup = ({
       console.error("There was a problem with the fetch operation:", error);
     }
     getAllGroups();
+    setIsLoading(false);
   };
 
   return (
     <>
+      <SimpleBackdrop isOpen={isLoading} />
       <AlertNoGroupOwner isOpen={isAlertOpen} onClose={handleAlertClose} />
       <AlertMoreUsers
         isOpen={isAlertMoreUsersOpen}
