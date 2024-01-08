@@ -5,6 +5,7 @@ import NavigationBar from "../../components/organisms/NavigationBar/NavigationBa
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Footer from "../../components/organisms/Footer/Footer";
 import {
   Select,
   InputLabel,
@@ -15,7 +16,7 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
-  Switch
+  Switch,
 } from "@mui/material";
 import {
   StyledPage,
@@ -29,7 +30,7 @@ import {
   MyLocalizationProvider,
   Column,
   ButtonContainer,
-  HelperText
+  HelperText,
 } from "./StyledExpenseCreator.style";
 
 const ITEM_HEIGHT = 48;
@@ -68,7 +69,11 @@ export const ExpenseCreator = () => {
   const handleChangeAmount = (event) => {
     const newAmount = event.target.value;
     // Sprawdź, czy wartość jest liczbą lub pusty string
-    if((!isNaN(parseFloat(newAmount)) && isFinite(newAmount)) || (newAmount === "")) setIsValidAmout(true);
+    if (
+      (!isNaN(parseFloat(newAmount)) && isFinite(newAmount)) ||
+      newAmount === ""
+    )
+      setIsValidAmout(true);
     else setIsValidAmout(false);
     setExpenseAmount(event.target.value);
   };
@@ -171,10 +176,10 @@ export const ExpenseCreator = () => {
   //funkcja dodająca wydatek do bazy danych
   const addExpense = async () => {
     let canAddExpense = false;
-    if(addAsEvent){
-      if(isSetStartDate && isSetEndDate) canAddExpense = true;
+    if (addAsEvent) {
+      if (isSetStartDate && isSetEndDate) canAddExpense = true;
       else canAddExpense = false;
-    }else canAddExpense = true;
+    } else canAddExpense = true;
     // jeśli amount jest liczbą i zmienna canAddExpense jest na true
     if (isValidAmount && canAddExpense) {
       try {
@@ -202,24 +207,23 @@ export const ExpenseCreator = () => {
           }),
         });
 
-
-      if (!response.status === 201) {
-        if (response.status === 401) {
-          handleUnauthorized();
-          return;
-        } else {
-          console.error(`Błąd HTTP: ${response.status}`);
-          return;
+        if (!response.status === 201) {
+          if (response.status === 401) {
+            handleUnauthorized();
+            return;
+          } else {
+            console.error(`Błąd HTTP: ${response.status}`);
+          }
+          // Przekieruj użytkownika
+          console.log(`dodano wydatek`);
+          const data = await response.json();
+          navigate("/Expenses");
         }
-        // Przekieruj użytkownika
-        console.log(`dodano wydatek`);
-        const data = await response.json();
-        navigate("/Expenses");
       } catch (error) {
         console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
     }
-      setHasBeenClicked(false);
+    setHasBeenClicked(false);
   };
 
   const handleClick = (event) => {
@@ -295,7 +299,9 @@ export const ExpenseCreator = () => {
                     },
                   }}
                 />
-                {!isValidAmount && <HelperText>You must enter a number!</HelperText>}
+                {!isValidAmount && (
+                  <HelperText>You must enter a number!</HelperText>
+                )}
                 <InputLabel>Group</InputLabel>
                 <Select label="group" onChange={handleChangeGroup} required>
                   {allGroups.map((group) => (
@@ -366,13 +372,19 @@ export const ExpenseCreator = () => {
                       value={eventStartDate}
                       onChange={(newValue) => handleStartDate(newValue)}
                     />
-                    {!isSetStartDate && <HelperText>You must choose event's start date!</HelperText>}
+                    {!isSetStartDate && (
+                      <HelperText>
+                        You must choose event's start date!
+                      </HelperText>
+                    )}
                     <InputLabel>Event's end date</InputLabel>
                     <DateTimePicker
                       value={eventEndDate}
                       onChange={(newValue) => handleEndDate(newValue)}
                     />
-                    {!isSetEndDate && <HelperText>You must choose event's end date!</HelperText>}
+                    {!isSetEndDate && (
+                      <HelperText>You must choose event's end date!</HelperText>
+                    )}
                     <InputLabel>Event location</InputLabel>
                     <TextField
                       variant="outlined"
@@ -435,6 +447,7 @@ export const ExpenseCreator = () => {
           </FormRow>
         </Form>
       </StyledPage>
+      <Footer />
     </>
   );
 };

@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
+import { useNavigate, useLocation } from "react-router-dom";
 import ExpensesSection from "../../components/organisms/Expenses/ExpensesSection";
-import { Wrapper } from "./Expenses.style";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import {
+  Wrapper,
+  FirstHeader,
+  AddExpenseButton,
+  ExpensesWrapper,
+} from "./Expenses.style";
+import Footer from "../../components/organisms/Footer/Footer";
 
 function Expenses() {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
   const [expenses, setExpenses] = useState([]);
   const [totalExpenses, setTotalExpenses] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleUnauthorized = () => {
@@ -59,23 +64,30 @@ function Expenses() {
 
   useEffect(() => {
     fetchExpenses();
-  }, []);
+  }, [location]);
 
   return (
     <>
-      <NavigationBar storedUser={storedUser} />
+      <NavigationBar storedUser={storedUser}></NavigationBar>
       <Wrapper>
-        <h1>Expenses Tracker</h1>
-        <h2>
+        <FirstHeader>
           You have spent {totalAmount} zł <br /> In a total of {totalExpenses}{" "}
           expenses!{" "}
-        </h2>
-        <Fab color="primary" aria-label="add" onClick={handleAddExpenseClick}>
-          <AddIcon />
-        </Fab>
-      </Wrapper>
+        </FirstHeader>
 
-      <ExpensesSection expenses={expenses} />
+        <AddExpenseButton
+          variant="contained"
+          color="secondary"
+          type="submit"
+          onClick={handleAddExpenseClick}
+        >
+          Add expense
+        </AddExpenseButton>
+      </Wrapper>
+      <ExpensesWrapper>
+        <ExpensesSection expenses={expenses} />
+      </ExpensesWrapper>
+      <Footer />
     </>
   );
 }

@@ -11,7 +11,7 @@ function Groups({ groups }) {
 
   return (
     <Wrapper>
-      {Array.isArray(groups.groups) ? (
+      {Array.isArray(groups.groups) && groups.groups.length > 0 ? (
         groups.groups.map((group, index) => (
           <RecipeReviewCard
             key={group.group_id}
@@ -21,7 +21,16 @@ function Groups({ groups }) {
           ></RecipeReviewCard>
         ))
       ) : (
-        <p>Brak danych grup</p>
+        <p
+          style={{
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center",
+          }}
+        >
+          Brak grup do wyświetlenia.
+        </p>
       )}
     </Wrapper>
   );

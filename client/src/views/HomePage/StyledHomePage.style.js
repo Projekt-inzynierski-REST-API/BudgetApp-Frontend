@@ -73,6 +73,15 @@ const LeftSectionLeftPanel = styled.div`
 const GroupsSection = styled.div`
   width: 100%;
   height: auto;
+  margin-bottom: 10vh;
+`;
+
+const FirstHeader = styled.h2`
+  color: #272540;
+  font-size: 50px;
+  font-variant: small-caps;
+  width: 95%;
+  margin-left: 5%;
 `;
 
 export {
@@ -83,4 +92,5 @@ export {
   LeftSectionRightPanel,
   LeftSectionLeftPanel,
   GroupsSection,
+  FirstHeader,
 };

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "@mui/material";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,4 +16,21 @@ const Wrapper = styled.div`
   }
 `;
 
-export { Wrapper };
+const ExpensesWrapper = styled.div`
+  width: 100%;
+  height: 60vh;
+  margin-bottom: 5vh;
+`;
+
+const FirstHeader = styled.h2`
+  color: #272540;
+  font-size: 50px;
+  font-variant: small-caps;
+  width: 95%;
+`;
+
+const AddExpenseButton = styled(Button)`
+  width: 25%;
+`;
+
+export { Wrapper, FirstHeader, AddExpenseButton, ExpensesWrapper };
