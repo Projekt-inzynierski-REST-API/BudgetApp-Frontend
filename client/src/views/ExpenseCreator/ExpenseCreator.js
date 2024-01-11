@@ -215,247 +215,239 @@ export const ExpenseCreator = () => {
             console.error(`Błąd HTTP: ${response.status}`);
             return;
           }
-          // Przekieruj użytkownika
-          console.log(`dodano wydatek`);
-          const data = await response.json();
-          navigate("/Expenses");
         }
+        // Przekieruj użytkownika
+        console.log(`dodano wydatek`);
+        const data = await response.json();
+        navigate("/Expenses");
       } catch (error) {
         console.error("Wystąpił błąd podczas pobierania danych:", error);
       }
       setHasBeenClicked(false);
     }
-  }
-
-    const handleClick = (event) => {
-      event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
-      if (!hasBeenClicked) {
-        setHasBeenClicked(true);
-        addExpense();
-      }
-    };
-
-    useEffect(() => {
-      getAllCategories();
-      getAllGroups();
-      // eslint-disable-next-line
-    }, []);
-
-    if (!categoriesObject || !allGroups) {
-      // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
-      return <SimpleBackdrop isOpen={true} />;
-    }
-    return (
-      <>
-        <NavigationBar storedUser={storedUser}></NavigationBar>
-        <StyledPage>
-          <HeaderContainer>
-            <FirstHeader>Expense Creator</FirstHeader>
-          </HeaderContainer>
-          <Form onSubmit={handleClick}>
-            <FormRow>
-              <Expense>
-                <Column>
-                  <InputLabel>Expense Name</InputLabel>
-                  <TextField
-                    id="outlined-basic"
-                    variant="outlined"
-                    onChange={handleChangeName}
-                    required
-                    sx={{
-                      "& .MuiInputBase-input": {
-                        backgroundColor: "transparent",
-                        // Dodatkowe stylizacje, jeśli są potrzebne
-                      },
-                      "& .MuiInputBase-input:focus": {
-                        backgroundColor: "transparent",
-                        // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
-                      },
-                      "& .MuiInputBase-input:-webkit-autofill": {
-                        transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
-                      },
-                    }}
-                  />
-                  <InputLabel htmlFor="outlined-adornment-amount">
-                    Amount
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-amount"
-                    startAdornment={
-                      <InputAdornment position="start">$</InputAdornment>
-                    }
-                    onChange={handleChangeAmount}
-                    required
-                    sx={{
-                      "& .MuiInputBase-input": {
-                        backgroundColor: "transparent",
-                        // Dodatkowe stylizacje, jeśli są potrzebne
-                      },
-                      "& .MuiInputBase-input:focus": {
-                        backgroundColor: "transparent",
-                        // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
-                      },
-                      "& .MuiInputBase-input:-webkit-autofill": {
-                        transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
-                      },
-                    }}
-                  />
-                  {!isValidAmount && (
-                    <HelperText>You must enter a number!</HelperText>
-                  )}
-                  <InputLabel>Group</InputLabel>
-                  <Select label="group" onChange={handleChangeGroup} required>
-                    {allGroups.map((group) => (
-                      <MenuItem key={group.group_id} value={group.group_id}>
-                        {group.group_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-
-                  <InputLabel>Category</InputLabel>
-                  <Select
-                    label="category"
-                    onChange={handleChangeCategory}
-                    required
-                  >
-                    {categoriesObject.map((category) => (
-                      <MenuItem key={category.id} value={category.id}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-
-                  <InputLabel>Expense participants</InputLabel>
-                  <Select
-                    disabled={!expenseGroupId}
-                    multiple
-                    value={expenseParticipantsIds}
-                    onChange={handleChangeParticipants}
-                    input={<OutlinedInput label="Tag" />}
-                    required
-                    renderValue={(selected) =>
-                      selected
-                        .map((id) => {
-                          const member = allGroups
-                            .filter(
-                              (group) => group.group_id === expenseGroupId
-                            )
-                            .flatMap((filteredGroup) =>
-                              filteredGroup.members.filter((m) => m.id === id)
-                            )[0];
-                          return member
-                            ? `${member.name} ${member.surname}`
-                            : "";
-                        })
-                        .join(", ")
-                    }
-                    MenuProps={MenuProps}
-                  >
-                    {allGroups
-                      .filter((group) => group.group_id === expenseGroupId) // tylko członkowie wybranej wczesniej grupy
-                      .map((filteredGroup) =>
-                        filteredGroup.members.map((member) => (
-                          <MenuItem key={member.id} value={member.id}>
-                            <Checkbox
-                              checked={expenseParticipantsIds.includes(
-                                member.id
-                              )}
-                            />
-                            <ListItemText
-                              primary={`${member.name} ${member.surname}`}
-                            />
-                          </MenuItem>
-                        ))
-                      )}
-                  </Select>
-                </Column>
-              </Expense>
-              <CalendarEvent>
-                <Column>
-                  {addAsEvent ? (
-                    <MyLocalizationProvider dateAdapter={AdapterDayjs}>
-                      <InputLabel>Event's start date</InputLabel>
-                      <DateTimePicker
-                        value={eventStartDate}
-                        onChange={(newValue) => handleStartDate(newValue)}
-                      />
-                      {!isSetStartDate && (
-                        <HelperText>
-                          You must choose event's start date!
-                        </HelperText>
-                      )}
-                      <InputLabel>Event's end date</InputLabel>
-                      <DateTimePicker
-                        value={eventEndDate}
-                        onChange={(newValue) => handleEndDate(newValue)}
-                      />
-                      {!isSetEndDate && (
-                        <HelperText>
-                          You must choose event's end date!
-                        </HelperText>
-                      )}
-                      <InputLabel>Event location</InputLabel>
-                      <TextField
-                        variant="outlined"
-                        onChange={handleChangeLocation}
-                        required
-                        sx={{
-                          "& .MuiInputBase-input": {
-                            backgroundColor: "transparent",
-                            // Dodatkowe stylizacje, jeśli są potrzebne
-                          },
-                          "& .MuiInputBase-input:focus": {
-                            backgroundColor: "transparent",
-                            // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
-                          },
-                          "& .MuiInputBase-input:-webkit-autofill": {
-                            transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
-                          },
-                        }}
-                      />
-                      <InputLabel>Description</InputLabel>
-                      <TextField
-                        variant="outlined"
-                        onChange={handleChangeDescription}
-                        multiline
-                        rows={4}
-                        required
-                      />
-                    </MyLocalizationProvider>
-                  ) : (
-                    ""
-                  )}
-                </Column>
-              </CalendarEvent>
-            </FormRow>
-            <FormRow>
-              <ButtonContainer>
-                <Column>
-                  <FormControlLabel
-                    disabled={!(expenseParticipantsIds.length > 0)}
-                    control={
-                      <Switch
-                        onChange={handleSwitch}
-                        value={addAsEvent}
-                        color="primary"
-                      />
-                    }
-                    label="Add as event to Google Calendar"
-                    labelPlacement="start"
-                  />
-                  <AddExpenseButton
-                    variant="contained"
-                    color="success"
-                    type="submit"
-                  >
-                    Add expense
-                  </AddExpenseButton>
-                </Column>
-              </ButtonContainer>
-              <ButtonContainer></ButtonContainer>
-            </FormRow>
-          </Form>
-        </StyledPage>
-      </>
-    );
   };
+
+  const handleClick = (event) => {
+    event.preventDefault(); // Zapobiegnij domyślnemu zachowaniu formularza (przeładowaniu strony)
+    if (!hasBeenClicked) {
+      setHasBeenClicked(true);
+      addExpense();
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+    getAllGroups();
+    // eslint-disable-next-line
+  }, []);
+
+  if (!categoriesObject || !allGroups) {
+    // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
+    return <SimpleBackdrop isOpen={true} />;
+  }
+  return (
+    <>
+      <NavigationBar storedUser={storedUser}></NavigationBar>
+      <StyledPage>
+        <HeaderContainer>
+          <FirstHeader>Expense Creator</FirstHeader>
+        </HeaderContainer>
+        <Form onSubmit={handleClick}>
+          <FormRow>
+            <Expense>
+              <Column>
+                <InputLabel>Expense Name</InputLabel>
+                <TextField
+                  id="outlined-basic"
+                  variant="outlined"
+                  onChange={handleChangeName}
+                  required
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:focus": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:-webkit-autofill": {
+                      transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
+                    },
+                  }}
+                />
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Amount
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  onChange={handleChangeAmount}
+                  required
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:focus": {
+                      backgroundColor: "transparent",
+                      // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                    },
+                    "& .MuiInputBase-input:-webkit-autofill": {
+                      transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
+                    },
+                  }}
+                />
+                {!isValidAmount && (
+                  <HelperText>You must enter a number!</HelperText>
+                )}
+                <InputLabel>Group</InputLabel>
+                <Select label="group" onChange={handleChangeGroup} required>
+                  {allGroups.map((group) => (
+                    <MenuItem key={group.group_id} value={group.group_id}>
+                      {group.group_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                <InputLabel>Category</InputLabel>
+                <Select
+                  label="category"
+                  onChange={handleChangeCategory}
+                  required
+                >
+                  {categoriesObject.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                <InputLabel>Expense participants</InputLabel>
+                <Select
+                  disabled={!expenseGroupId}
+                  multiple
+                  value={expenseParticipantsIds}
+                  onChange={handleChangeParticipants}
+                  input={<OutlinedInput label="Tag" />}
+                  required
+                  renderValue={(selected) =>
+                    selected
+                      .map((id) => {
+                        const member = allGroups
+                          .filter((group) => group.group_id === expenseGroupId)
+                          .flatMap((filteredGroup) =>
+                            filteredGroup.members.filter((m) => m.id === id)
+                          )[0];
+                        return member ? `${member.name} ${member.surname}` : "";
+                      })
+                      .join(", ")
+                  }
+                  MenuProps={MenuProps}
+                >
+                  {allGroups
+                    .filter((group) => group.group_id === expenseGroupId) // tylko członkowie wybranej wczesniej grupy
+                    .map((filteredGroup) =>
+                      filteredGroup.members.map((member) => (
+                        <MenuItem key={member.id} value={member.id}>
+                          <Checkbox
+                            checked={expenseParticipantsIds.includes(member.id)}
+                          />
+                          <ListItemText
+                            primary={`${member.name} ${member.surname}`}
+                          />
+                        </MenuItem>
+                      ))
+                    )}
+                </Select>
+              </Column>
+            </Expense>
+            <CalendarEvent>
+              <Column>
+                {addAsEvent ? (
+                  <MyLocalizationProvider dateAdapter={AdapterDayjs}>
+                    <InputLabel>Event's start date</InputLabel>
+                    <DateTimePicker
+                      value={eventStartDate}
+                      onChange={(newValue) => handleStartDate(newValue)}
+                    />
+                    {!isSetStartDate && (
+                      <HelperText>
+                        You must choose event's start date!
+                      </HelperText>
+                    )}
+                    <InputLabel>Event's end date</InputLabel>
+                    <DateTimePicker
+                      value={eventEndDate}
+                      onChange={(newValue) => handleEndDate(newValue)}
+                    />
+                    {!isSetEndDate && (
+                      <HelperText>You must choose event's end date!</HelperText>
+                    )}
+                    <InputLabel>Event location</InputLabel>
+                    <TextField
+                      variant="outlined"
+                      onChange={handleChangeLocation}
+                      required
+                      sx={{
+                        "& .MuiInputBase-input": {
+                          backgroundColor: "transparent",
+                          // Dodatkowe stylizacje, jeśli są potrzebne
+                        },
+                        "& .MuiInputBase-input:focus": {
+                          backgroundColor: "transparent",
+                          // Dodatkowe stylizacje dla fokusu, jeśli są potrzebne
+                        },
+                        "& .MuiInputBase-input:-webkit-autofill": {
+                          transition: "background-color 5000s ease-in-out 0s", // Wydłuża czas animacji autofill
+                        },
+                      }}
+                    />
+                    <InputLabel>Description</InputLabel>
+                    <TextField
+                      variant="outlined"
+                      onChange={handleChangeDescription}
+                      multiline
+                      rows={4}
+                      required
+                    />
+                  </MyLocalizationProvider>
+                ) : (
+                  ""
+                )}
+              </Column>
+            </CalendarEvent>
+          </FormRow>
+          <FormRow>
+            <ButtonContainer>
+              <Column>
+                <FormControlLabel
+                  disabled={!(expenseParticipantsIds.length > 0)}
+                  control={
+                    <Switch
+                      onChange={handleSwitch}
+                      value={addAsEvent}
+                      color="primary"
+                    />
+                  }
+                  label="Add as event to Google Calendar"
+                  labelPlacement="start"
+                />
+                <AddExpenseButton
+                  variant="contained"
+                  color="success"
+                  type="submit"
+                >
+                  Add expense
+                </AddExpenseButton>
+              </Column>
+            </ButtonContainer>
+            <ButtonContainer></ButtonContainer>
+          </FormRow>
+        </Form>
+      </StyledPage>
+    </>
+  );
+};
