@@ -3,12 +3,12 @@ import { StyledButton } from './ChangeAccountBalanceButton.style'
 export const ChangeAccountBalanceButton = ({onClick}) => {
   return (
     <StyledButton
-    value="Change account balance"
+    value="Change your account balance"
     variant="contained"
     color="secondary"
     onClick={onClick}
   >
-    Change Account Balance
+    Change Your Account Balance
   </StyledButton>
   )
 }
