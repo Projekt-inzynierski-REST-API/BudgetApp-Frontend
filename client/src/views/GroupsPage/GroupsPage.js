@@ -12,6 +12,7 @@ import { AddGroupForm } from "../../components/organisms/AddGroupForm/AddGroupFo
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { YoursGroups } from "../../components/organisms/YoursGroups/YoursGroups";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/organisms/Footer/Footer";
 
 export function GroupsPage() {
   // obiekt z grupami
@@ -69,20 +70,23 @@ export function GroupsPage() {
   }
 
   return (
-    <PageContainer>
-      <NavigationBar storedUser={storedUser}></NavigationBar>
-      <StyledPage>
-        <CreateGroupColumn>
-          <CreateGroupContaier>
-            <AddGroupForm getAllGroups={getAllGroups} />
-          </CreateGroupContaier>
-        </CreateGroupColumn>
-        <YourGroupsColumn>
-          <YourGroupsContaier>
-            <YoursGroups allGroups={allGroups} getAllGroups={getAllGroups} />
-          </YourGroupsContaier>
-        </YourGroupsColumn>
-      </StyledPage>
-    </PageContainer>
+    <>
+      <PageContainer>
+        <NavigationBar storedUser={storedUser}></NavigationBar>
+        <StyledPage>
+          <CreateGroupColumn>
+            <CreateGroupContaier>
+              <AddGroupForm getAllGroups={getAllGroups} />
+            </CreateGroupContaier>
+          </CreateGroupColumn>
+          <YourGroupsColumn>
+            <YourGroupsContaier>
+              <YoursGroups allGroups={allGroups} getAllGroups={getAllGroups} />
+            </YourGroupsContaier>
+          </YourGroupsColumn>
+        </StyledPage>
+      </PageContainer>
+      <Footer />
+    </>
   );
 }

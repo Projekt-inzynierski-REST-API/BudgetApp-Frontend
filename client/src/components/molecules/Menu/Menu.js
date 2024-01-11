@@ -59,45 +59,39 @@ function SimpleAppBarWithMenu() {
           </Button>
         </Toolbar>
       </AppBar>
-        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-          <>
-            <IconButton onClick={toggleDrawer(false)}>
-              <CloseIcon
-                sx={{
-                  fontSize: 30,
-                  color: "darkblue",
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-              />
-            </IconButton>
-            <List style={{ width: "50vh" }}>
-              <ListItem button onClick={toggleDrawer(false, "/HomePage")}>
-                <ListItemText primary="Overview" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer(false, "/GroupsPage")}>
-                <ListItemText primary="Groups " />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer(false, "/Expenses")}>
-                <ListItemText primary="Expenses " />
-              </ListItem>
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <>
+          <IconButton onClick={toggleDrawer(false)}>
+            <CloseIcon
+              sx={{
+                fontSize: 30,
+                color: "darkblue",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+              }}
+            />
+          </IconButton>
+          <List style={{ width: "50vh" }}>
+            <ListItem button onClick={toggleDrawer(false, "/HomePage")}>
+              <ListItemText primary="Overview" />
+            </ListItem>
+            <ListItem button onClick={toggleDrawer(false, "/GroupsPage")}>
+              <ListItemText primary="Groups " />
+            </ListItem>
+            <ListItem button onClick={toggleDrawer(false, "/Expenses")}>
+              <ListItemText primary="Expenses " />
+            </ListItem>
 
-              <ListItem button onClick={toggleDrawer(false, "/BudgetsPage")}>
-                <ListItemText primary="Budgets" />
-              </ListItem>
-
-              <ListItem button onClick={handleLogout}>
-                {" "}
-                {/* Dodaj funkcję obsługującą wylogowanie */}
-                <ListItemText primary="Logout" />
-                <ListItemIcon>
-                  <ExitToAppIcon /> {/* Dodaj ikonę wylogowania */}
-                </ListItemIcon>
-              </ListItem>
-            </List>
-          </>
-        </Drawer>
+            <ListItem button onClick={handleLogout}>
+              <ListItemText primary="Logout" />
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+            </ListItem>
+          </List>
+        </>
+      </Drawer>
     </>
   );
 }

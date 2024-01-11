@@ -22,7 +22,8 @@ function LastTransactionSection({ LastTransactionSectionData }) {
         <h2>Last 5 transactions:</h2>
         <List>
           {LastTransactionSectionData &&
-          LastTransactionSectionData.transactions ? (
+          LastTransactionSectionData.transactions &&
+          LastTransactionSectionData.transactions.length > 0 ? (
             LastTransactionSectionData.transactions.map((transaction) => {
               const transactionDate = new Date(transaction.date);
               const formattedDate = `${transactionDate.getDate()} ${transactionDate.toLocaleString(
@@ -91,7 +92,16 @@ function LastTransactionSection({ LastTransactionSectionData }) {
               );
             })
           ) : (
-            <li>No transactions available</li>
+            <p
+              style={{
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+                textAlign: "center",
+              }}
+            >
+              Brak wydatków do wyświetlenia.
+            </p>
           )}
         </List>
       </StyledLastTransactionSection>

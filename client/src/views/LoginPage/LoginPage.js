@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import UserCardLoginPage from "../../components/organisms/UserCardLoginPage/UserCardLoginPage";
 import LoginForm from "../../components/organisms/LoginForm/LoginForm";
 import { StyledPage, GoogleButton } from "./StyledLoginPage.style";
+import Footer from "../../components/organisms/Footer/Footer";
 
 /* global google */
 const CLIENT_ID =
@@ -82,6 +83,7 @@ function LoginPage() {
 
     if (!calendarApiResponse.ok) {
       throw new Error("Nie udało się uzyskać danych z Google Calendar API");
+      alert("Błąd podczas pobierania danych!");
     }
 
     const calendarData = await calendarApiResponse.json();
@@ -132,6 +134,7 @@ function LoginPage() {
           <GoogleButton id="signInDiv"></GoogleButton>
         </LoginForm>
       </StyledPage>
+      <Footer />
     </>
   );
 }

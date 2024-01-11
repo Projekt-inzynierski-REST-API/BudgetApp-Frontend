@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import ExpenseSection from "../../components/organisms/ExpenseSection/ExpenseSection";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/organisms/Footer/Footer";
 
 import {
   StyledPage,
@@ -18,6 +19,7 @@ import {
   LeftSectionRightPanel,
   LeftSectionLeftPanel,
   GroupsSection,
+  FirstHeader,
 } from "./StyledHomePage.style";
 
 function HomePage() {
@@ -145,12 +147,10 @@ function HomePage() {
     return <SimpleBackdrop isOpen={true} />;
   }
 
-  console.log("home page!");
-
   return (
     <>
       <NavigationBar storedUser={storedUser}></NavigationBar>
-      <h2 style={{ marginLeft: 30 }}>Overall </h2>
+      <FirstHeader>Overall </FirstHeader>
       <StyledPage>
         <LeftSection>
           <LeftSectionLeftPanel>
@@ -210,9 +210,10 @@ function HomePage() {
         </RightSection>
       </StyledPage>
       <GroupsSection>
-        <h2 style={{ marginLeft: 30 }}>User Groups</h2>
+        <FirstHeader>User Groups</FirstHeader>
         <Groups groups={groups} />
       </GroupsSection>
+      <Footer />
     </>
   );
 }

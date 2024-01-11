@@ -5,6 +5,7 @@ import NavigationBar from "../../components/organisms/NavigationBar/NavigationBa
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Footer from "../../components/organisms/Footer/Footer";
 import {
   Select,
   InputLabel,

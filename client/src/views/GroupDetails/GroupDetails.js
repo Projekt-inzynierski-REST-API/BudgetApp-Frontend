@@ -18,6 +18,7 @@ import { MembersTable } from "../../components/organisms/MembersTable/MembersTab
 import { GroupInfo } from "../../components/organisms/GroupInfo/GroupInfo";
 import { LeaveGroupButton } from "../../components/atoms/LeaveGroupButton/LeaveGroupButton";
 import { ConfirmLeaveGroup } from "../../components/organisms/ConfirmLeaveGroup/ConfirmLeaveGroup";
+import Footer from "../../components/organisms/Footer/Footer";
 
 export const GroupDetails = () => {
   const location = useLocation();
@@ -167,6 +168,7 @@ export const GroupDetails = () => {
           />
         </StyledTableContainer>
       </StyledPage>
+      <Footer />
     </>
   );
 };

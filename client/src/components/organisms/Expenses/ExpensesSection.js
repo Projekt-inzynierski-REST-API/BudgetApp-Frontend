@@ -1,21 +1,30 @@
 import React from "react";
 import ExpenseCard from "../../molecules/ExpenseCard/ExpenseCard";
 import { Wrapper } from "./ExpensesSection.style";
+import { margin } from "@mui/system";
 
 function ExpensesSection({ expenses }) {
   return (
     <Wrapper>
-      {console.log(expenses)}
       {Array.isArray(expenses) && expenses.length > 0 ? (
         expenses.map((expense, index) => (
           <ExpenseCard
             key={expense.id}
             expenseDetail={expense}
             enxpenseDate={expense.date}
-          />
+          ></ExpenseCard>
         ))
       ) : (
-        <div>No data</div>
+        <p
+          style={{
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center",
+          }}
+        >
+          Brak wydatków do wyświetlenia.
+        </p>
       )}
     </Wrapper>
   );
