@@ -29,7 +29,7 @@ function Groups({ groups }) {
             textAlign: "center",
           }}
         >
-          Brak grup do wyświetlenia.
+           No groups to display.
         </p>
       )}
     </Wrapper>
