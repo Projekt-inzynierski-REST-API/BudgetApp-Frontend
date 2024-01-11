@@ -100,7 +100,7 @@ function LastTransactionSection({ LastTransactionSectionData }) {
                 textAlign: "center",
               }}
             >
-              Brak wydatków do wyświetlenia.
+              No expenses to display.
             </p>
           )}
         </List>

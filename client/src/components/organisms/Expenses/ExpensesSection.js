@@ -23,7 +23,7 @@ function ExpensesSection({ expenses }) {
             textAlign: "center",
           }}
         >
-          Brak wydatków do wyświetlenia.
+          No expenses to display.
         </p>
       )}
     </Wrapper>

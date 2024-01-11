@@ -40,7 +40,7 @@ export default function RecipeReviewCard({ group, expanded, onExpandClick }) {
           </Avatar>
         }
         action={
-          <Tooltip title="Zarządzaj grupą">
+          <Tooltip title="Group details">
             <IconButton
               aria-label="Manage Group"
               onClick={() => handleManageGroupClick(group)}

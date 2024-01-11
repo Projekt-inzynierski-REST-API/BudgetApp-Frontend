@@ -63,7 +63,7 @@ export default function ExpenseCard({ expenseDetail, enxpenseDate }) {
       <CardHeader
         title={expenseDetail.name}
         action={
-          <Tooltip title="Usuń grupę.">
+          <Tooltip title="Remove expense">
             <DeleteForeverIcon
               style={{
                 cursor: "pointer",

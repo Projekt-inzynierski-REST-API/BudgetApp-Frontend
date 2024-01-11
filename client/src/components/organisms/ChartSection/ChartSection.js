@@ -18,7 +18,7 @@ function ChartSection({ chartData }) {
   }, []);
 
   const defaultChartData = [
-    { id: "NoData", label: "Brak danych ", value: 100 },
+    { id: "NoData", label: "No data", value: 100 },
   ];
 
   const pieChartData =
