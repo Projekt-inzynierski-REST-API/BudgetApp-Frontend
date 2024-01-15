@@ -7,6 +7,8 @@ import {
   FirstHeader,
   AddExpenseButton,
   ExpensesWrapper,
+  MainContainer,
+  Content,
 } from "./Expenses.style";
 import Footer from "../../components/organisms/Footer/Footer";
 
@@ -67,28 +69,30 @@ function Expenses() {
   }, [location]);
 
   return (
-    <>
-      <NavigationBar storedUser={storedUser}></NavigationBar>
-      <Wrapper>
-        <FirstHeader>
-          You have spent {totalAmount} zł <br /> In a total of {totalExpenses}{" "}
-          expenses!{" "}
-        </FirstHeader>
+    <MainContainer>
+      <Content>
+        <NavigationBar storedUser={storedUser}></NavigationBar>
+        <Wrapper>
+          <FirstHeader>
+            You have spent {totalAmount} zł <br /> In a total of {totalExpenses}{" "}
+            expenses!{" "}
+          </FirstHeader>
 
-        <AddExpenseButton
-          variant="contained"
-          color="secondary"
-          type="submit"
-          onClick={handleAddExpenseClick}
-        >
-          Add expense
-        </AddExpenseButton>
-      </Wrapper>
-      <ExpensesWrapper>
-        <ExpensesSection expenses={expenses} />
-      </ExpensesWrapper>
+          <AddExpenseButton
+            variant="contained"
+            color="secondary"
+            type="submit"
+            onClick={handleAddExpenseClick}
+          >
+            Add expense
+          </AddExpenseButton>
+        </Wrapper>
+        <ExpensesWrapper>
+          <ExpensesSection expenses={expenses} />
+        </ExpensesWrapper>
+      </Content>
       <Footer />
-    </>
+    </MainContainer>
   );
 }
 

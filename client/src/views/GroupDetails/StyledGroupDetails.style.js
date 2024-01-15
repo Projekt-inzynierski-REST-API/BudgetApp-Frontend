@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const StyledPage = styled.div`
   width: 100%;
-  height: 100vh;
-  background: url('images/backgrounds/background.jpg') center/cover no-repeat;
+  height: auto;
+  background: url("images/backgrounds/background.jpg") center/cover no-repeat;
   /* background: linear-gradient(to bottom, #add8e6, #d8bfd8); */
   display: flex;
   flex-direction: column;
@@ -30,12 +30,6 @@ const HeaderGeneralInformation = styled.div`
 const GroupInfoContainer = styled.div`
   width: 90%;
   align-self: center;
-  /* min-height: 15vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-  padding: 30px 40px; */
 `;
 
 const HeaderMembers = styled.div`
@@ -70,7 +64,20 @@ const StyledTableContainer = styled(TableContainer)`
     min-height: 20vh;
     align-self: center;
     padding: 30px 40px;
+    box-sizing: border-box;
   }
+`;
+
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+`;
+
+const Content = styled.div`
+  flex: 1;
+  overflow: auto;
 `;
 
 export {
@@ -80,4 +87,6 @@ export {
   ButtonsContainer,
   GroupInfoContainer,
   StyledTableContainer,
+  MainContainer,
+  Content,
 };
