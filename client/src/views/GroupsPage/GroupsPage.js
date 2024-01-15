@@ -61,6 +61,13 @@ export function GroupsPage() {
   };
 
   useEffect(() => {
+    if (!storedUser) {
+      alert("Musisz się pierwsze zalogować!");
+      navigate("/");
+    }
+  }, [storedUser]);
+
+  useEffect(() => {
     getAllGroups();
   }, []);
 

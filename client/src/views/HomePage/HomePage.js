@@ -133,6 +133,13 @@ function HomePage() {
     }
   }
 
+  useEffect(() => {
+    if (!storedUser) {
+      alert("Musisz się pierwsze zalogować!");
+      navigate("/");
+    }
+  }, [storedUser]);
+
   const getAccessToken = () => {
     tokenClient.requestAccessToken();
   };

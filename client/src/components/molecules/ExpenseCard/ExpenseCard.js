@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 
 export default function ExpenseCard({ expenseDetail, enxpenseDate }) {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const credential = localStorage.getItem("token");
   const expense_date = new Date(enxpenseDate);
@@ -48,6 +49,13 @@ export default function ExpenseCard({ expenseDetail, enxpenseDate }) {
       console.error("There was a problem with the fetch operation:", error);
     }
   };
+
+  useEffect(() => {
+    if (!storedUser) {
+      alert("Musisz się pierwsze zalogować!");
+      navigate("/");
+    }
+  }, [storedUser]);
 
   return (
     <Card
