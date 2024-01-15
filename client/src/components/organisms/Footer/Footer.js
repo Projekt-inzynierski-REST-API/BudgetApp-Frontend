@@ -11,7 +11,6 @@ const Footer = () => {
         backgroundColor: "black",
         color: "white",
         textAlign: "center",
-        bottom: 0,
       }}
     >
       <Typography variant="body2">

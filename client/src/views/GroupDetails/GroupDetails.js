@@ -7,6 +7,8 @@ import {
   ButtonsContainer,
   GroupInfoContainer,
   StyledTableContainer,
+  MainContainer,
+  Content,
 } from "../GroupDetails/StyledGroupDetails.style";
 import NavigationBar from "../../components/organisms/NavigationBar/NavigationBar";
 import { SimpleBackdrop } from "../../components/molecules/SimpleBackdrop/SimpleBackdrop";
@@ -108,67 +110,69 @@ export const GroupDetails = () => {
   const handleLeaveGroupConfirmClose = () => setIsLeaveGroupConfirmOpen(false);
 
   return (
-    <>
-      <ConfirmLeaveGroup
-        isOpen={isLeaveGroupConfirmOpen}
-        onClose={handleLeaveGroupConfirmClose}
-        groupDetails={groupDetailsObject}
-      />
-      <AddToGroupForm
-        isOpen={isAddFormOpen}
-        onClose={handleAddFormClose}
-        groupObject={groupDetailsObject}
-        getGroupInfo={getGroupInfo}
-      />
-      <ChangeAccountBalanceForm
-        isOpen={isAccountBalanceFormOpen}
-        onClose={handleAccountBalanceFormClose}
-        groupObject={groupDetailsObject}
-        getGroupInfo={getGroupInfo}
-      />
-      <NavigationBar storedUser={storedUser}></NavigationBar>
-      <StyledPage>
-        <HeaderGeneralInformation>
-          {groupDetailsObject.group_name}
-        </HeaderGeneralInformation>
-        <GroupInfoContainer>
-          <GroupInfo
-            data={groupDetailsObject}
-            membersAmount={groupObject.members.length}
-            budget={groupObject.group_budget}
-          />
-        </GroupInfoContainer>
-        <HeaderMembers>
-          Members
-          <ButtonsContainer>
-            {groupObject.should_show_members_account_balance ? (
-              <>
-                <ChangeAccountBalanceButton
-                  onClick={handleAccountBalanceClick}
-                />
-                <AddMemberButton onClick={handleAddMemberClick} />
-              </>
-            ) : (
-              <>
-                <ChangeAccountBalanceButton
-                  onClick={handleAccountBalanceClick}
-                />
-                <LeaveGroupButton onClick={handleLeaveGroupConfirmOpen} />
-              </>
-            )}
-          </ButtonsContainer>
-        </HeaderMembers>
-        <StyledTableContainer>
-          <MembersTable
-            key={tableKey}
-            groupName={groupDetailsObject.group_name}
-            groupObject={groupObject}
-            groupId={groupDetailsObject.group_id}
-            getGroupInfo={getGroupInfo}
-          />
-        </StyledTableContainer>
-      </StyledPage>
+    <MainContainer>
+      <Content>
+        <ConfirmLeaveGroup
+          isOpen={isLeaveGroupConfirmOpen}
+          onClose={handleLeaveGroupConfirmClose}
+          groupDetails={groupDetailsObject}
+        />
+        <AddToGroupForm
+          isOpen={isAddFormOpen}
+          onClose={handleAddFormClose}
+          groupObject={groupDetailsObject}
+          getGroupInfo={getGroupInfo}
+        />
+        <ChangeAccountBalanceForm
+          isOpen={isAccountBalanceFormOpen}
+          onClose={handleAccountBalanceFormClose}
+          groupObject={groupDetailsObject}
+          getGroupInfo={getGroupInfo}
+        />
+        <NavigationBar storedUser={storedUser}></NavigationBar>
+        <StyledPage>
+          <HeaderGeneralInformation>
+            {groupDetailsObject.group_name}
+          </HeaderGeneralInformation>
+          <GroupInfoContainer>
+            <GroupInfo
+              data={groupDetailsObject}
+              membersAmount={groupObject.members.length}
+              budget={groupObject.group_budget}
+            />
+          </GroupInfoContainer>
+          <HeaderMembers>
+            Members
+            <ButtonsContainer>
+              {groupObject.should_show_members_account_balance ? (
+                <>
+                  <ChangeAccountBalanceButton
+                    onClick={handleAccountBalanceClick}
+                  />
+                  <AddMemberButton onClick={handleAddMemberClick} />
+                </>
+              ) : (
+                <>
+                  <ChangeAccountBalanceButton
+                    onClick={handleAccountBalanceClick}
+                  />
+                  <LeaveGroupButton onClick={handleLeaveGroupConfirmOpen} />
+                </>
+              )}
+            </ButtonsContainer>
+          </HeaderMembers>
+          <StyledTableContainer>
+            <MembersTable
+              key={tableKey}
+              groupName={groupDetailsObject.group_name}
+              groupObject={groupObject}
+              groupId={groupDetailsObject.group_id}
+              getGroupInfo={getGroupInfo}
+            />
+          </StyledTableContainer>
+        </StyledPage>
+      </Content>
       <Footer />
-    </>
+    </MainContainer>
   );
 };

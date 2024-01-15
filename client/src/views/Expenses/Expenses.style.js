@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 
 const ExpensesWrapper = styled.div`
   width: 100%;
-  height: 60vh;
+  height: auto;
   margin-bottom: 5vh;
 `;
 
@@ -33,4 +33,22 @@ const AddExpenseButton = styled(Button)`
   width: 25%;
 `;
 
-export { Wrapper, FirstHeader, AddExpenseButton, ExpensesWrapper };
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  min-height: 100vh;
+`;
+const Content = styled.div`
+  flex: 1;
+  overflow: auto;
+`;
+
+export {
+  Wrapper,
+  FirstHeader,
+  AddExpenseButton,
+  ExpensesWrapper,
+  MainContainer,
+  Content,
+};
