@@ -25,21 +25,18 @@ import Footer from "../../components/organisms/Footer/Footer";
 export const GroupDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [tableKey, setTableKey] = useState(1); // Unikalny klucz komponentu
+  const [tableKey, setTableKey] = useState(1);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isAccountBalanceFormOpen, setIsAccountBalanceFormOpen] =
     useState(false);
   const [groupObject, setGroupObject] = useState(false);
   const [isLeaveGroupConfirmOpen, setIsLeaveGroupConfirmOpen] = useState(false);
-  const groupDetailsObject = location.state?.groupDetailsObject; // odczytuje przekazane dane o grupie
+  const groupDetailsObject = location.state?.groupDetailsObject;
 
-  // pobranie danych usera(nazwa, mail itp.)
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const checkLocationState = () => {
-    // Sprawdź, czy location.state zawiera oczekiwane dane
     if (!groupDetailsObject) {
-      // Przekieruj użytkownika
       navigate("/HomePage");
     }
   };
@@ -49,11 +46,10 @@ export const GroupDetails = () => {
     navigate("/");
   };
 
-  //funkcja pobierająca detailsy grupy z bazy danych
   const getGroupInfo = async () => {
     try {
       const credential = localStorage.getItem("token");
-      const lastTransactionsAmount = { rows_number: 5 }; // ilość ostatnich tranzakcji grupy jakie dostane z serwera
+      const lastTransactionsAmount = { rows_number: 5 };
       const response = await fetch(
         `http://localhost:1900/api/group/${groupDetailsObject.group_id}`,
         {
@@ -83,21 +79,22 @@ export const GroupDetails = () => {
 
       const data = await response.json();
       setGroupObject(data);
-      // setGroupDetailsObject(data.groups[0]);
-      // // Po zmianie groupDetailsObject zmien klucz, aby ponownie załadować MembersTable
-      // setTableKey((prevKey) => prevKey + 1);
     } catch (error) {
       console.error("Wystąpił błąd podczas pobierania danych:", error);
     }
   };
 
   useEffect(() => {
-    checkLocationState();
-    getGroupInfo();
+    if (!storedUser) {
+      alert("Musisz się pierwsze zalogować!");
+      navigate("/");
+    } else {
+      checkLocationState();
+      getGroupInfo();
+    }
   }, []);
 
   if (!groupObject) {
-    // Jeśli dane nie zostały jeszcze pobrane "Ładowanie..."
     return <SimpleBackdrop isOpen={true} />;
   }
 

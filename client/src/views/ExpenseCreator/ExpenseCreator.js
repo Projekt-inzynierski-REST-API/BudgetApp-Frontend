@@ -236,6 +236,13 @@ export const ExpenseCreator = () => {
   };
 
   useEffect(() => {
+    if (!storedUser) {
+      alert("Musisz się pierwsze zalogować!");
+      navigate("/");
+    }
+  }, [storedUser]);
+
+  useEffect(() => {
     getAllCategories();
     getAllGroups();
     // eslint-disable-next-line
@@ -448,6 +455,7 @@ export const ExpenseCreator = () => {
           </FormRow>
         </Form>
       </StyledPage>
+      <Footer />
     </>
   );
 };
