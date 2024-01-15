@@ -39,7 +39,7 @@ function Expenses() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            rows_number: 10,
+            rows_number: -1,
           }),
         }
       );
