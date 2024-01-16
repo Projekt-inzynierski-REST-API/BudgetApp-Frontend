@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Avatar } from "@mui/material"; // lub inny import dla komponentu Avatar
+import { Avatar } from "@mui/material";
 
 function ProfileImage({ userImage }) {
   return (

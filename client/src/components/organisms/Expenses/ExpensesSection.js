@@ -1,7 +1,6 @@
 import React from "react";
 import ExpenseCard from "../../molecules/ExpenseCard/ExpenseCard";
 import { Wrapper } from "./ExpensesSection.style";
-import { margin } from "@mui/system";
 
 function ExpensesSection({ expenses }) {
   return (

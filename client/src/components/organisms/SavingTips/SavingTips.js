@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
-import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
+import Card from "@mui/material/Card";
 import Advice from "../../../assets/icons/ADVICE.png";
 
 const tipsData = [

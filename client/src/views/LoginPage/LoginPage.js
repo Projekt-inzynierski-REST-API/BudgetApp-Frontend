@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import UserCardLoginPage from "../../components/organisms/UserCardLoginPage/UserCardLoginPage";
 import LoginForm from "../../components/organisms/LoginForm/LoginForm";
 import { StyledPage, GoogleButton } from "./StyledLoginPage.style";
 import Footer from "../../components/organisms/Footer/Footer";

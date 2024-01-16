@@ -1,6 +1,5 @@
 import React from "react";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
-
 import { CardContainer, UserInfo } from "./UserCardLoginPage.style";
 
 function UserCardLoginPage(props) {

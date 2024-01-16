@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CardHeader from "@mui/material/CardHeader";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +60,8 @@ export default function ExpenseCard({ expenseDetail, enxpenseDate }) {
   return (
     <Card
       sx={{
-        maxWidth: 220,
+        maxWidth: 320,
+        minWidth: 320,
         margin: 3,
         boxShadow: "6px 6px 6px 6px rgba(13, 71, 161, 0.5)",
         backdropFilter: "blur(5px)",
@@ -89,6 +90,10 @@ export default function ExpenseCard({ expenseDetail, enxpenseDate }) {
 
         <Typography>Category: {expenseDetail.category_name}</Typography>
         <div key={expenseDetail.expenseId}></div>
+        <Typography>Expense owner: {expenseDetail.expense_owner}</Typography>
+        <Typography>
+          Expense participants: {expenseDetail.total_expense_participants}
+        </Typography>
 
         <Typography style={{ marginTop: "10px" }}>
           Amount: {expenseDetail.amount} zł
