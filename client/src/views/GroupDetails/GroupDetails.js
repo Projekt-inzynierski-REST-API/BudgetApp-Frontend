@@ -136,6 +136,7 @@ export const GroupDetails = () => {
               data={groupDetailsObject}
               membersAmount={groupObject.members.length}
               budget={groupObject.group_budget}
+              userBudget={groupObject.user_budget}
             />
           </GroupInfoContainer>
           <HeaderMembers>

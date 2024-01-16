@@ -16,7 +16,7 @@ const GroupInfoDiv = styled.div`
 `;
 
 const InfoBox = styled.div`
-  flex-basis: 30%;
+  flex-basis: 23%;
   padding: 10px 0;
   display: flex;
   flex-direction: column;
@@ -42,8 +42,17 @@ const Header = styled.h2`
   color: #FFF6F2;
   /* color: #151333; */
   cursor: default;
-  @media (max-width: 1020px) {
+  @media (max-width: 1450px) {
     font-size: 25px;
+  }
+  @media (max-width: 1200px) {
+    font-size: 22px;
+  }
+  @media (max-width: 1000px) {
+    font-size: 18px;
+  }
+  @media (max-width: 800px) {
+    font-size: 17px;
   }
   @media (max-width: 750px) {
     font-size: 32px;
@@ -68,8 +77,14 @@ const Data = styled.div`
   font-size: 30px;
   padding-left: 5px;
   align-self: end;
-  @media (max-width: 1020px) {
+  @media (max-width: 1200px) {
+    font-size: 25px;
+  }
+  @media (max-width: 1000px) {
     font-size: 20px;
+  }
+  @media (max-width: 800px) {
+    font-size: 19px;
   }
   @media (max-width: 750px) {
     font-size: 30px;
