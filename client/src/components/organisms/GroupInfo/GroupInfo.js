@@ -1,7 +1,7 @@
 import React from "react";
 import { GroupInfoDiv, InfoBox, Header, Icon, InfoRow, Data } from "./GroupInfo.style";
 
-export const GroupInfo = ({ data, membersAmount, budget }) => {
+export const GroupInfo = ({ data, membersAmount, budget, userBudget }) => {
     // Tworzymy obiekt Date na podstawie ciągu znaków
     const dateObject = new Date(data.created_date);
 
@@ -19,6 +19,13 @@ export const GroupInfo = ({ data, membersAmount, budget }) => {
         <InfoRow>
           <Icon src="/images/groupdetails/group1.png" alt="totalUsersIcon" />
           <Data>{membersAmount}</Data>
+        </InfoRow>
+      </InfoBox>
+      <InfoBox>
+        <Header>Your Total Budget</Header>
+        <InfoRow>
+          <Icon src="/images/groupdetails/wallet.png" alt="totalUserBudgetIcon" />
+          <Data>{userBudget}$</Data>
         </InfoRow>
       </InfoBox>
       <InfoBox>
