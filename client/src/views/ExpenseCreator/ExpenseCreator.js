@@ -289,7 +289,7 @@ export const ExpenseCreator = () => {
                 <OutlinedInput
                   id="outlined-adornment-amount"
                   startAdornment={
-                    <InputAdornment position="start">$</InputAdornment>
+                    <InputAdornment position="start">zł</InputAdornment>
                   }
                   onChange={handleChangeAmount}
                   required
