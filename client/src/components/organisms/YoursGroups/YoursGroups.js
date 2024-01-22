@@ -51,7 +51,7 @@ export const YoursGroups = ({ allGroups, getAllGroups }) => {
         groupToRemove={groupToRemove}
         getAllGroups={getAllGroups}
       />
-      <Headline>Your's groups</Headline>
+      <Headline>Your groups</Headline>
       <RowsContainer>
         {allGroups.map((group) => (
           <Row

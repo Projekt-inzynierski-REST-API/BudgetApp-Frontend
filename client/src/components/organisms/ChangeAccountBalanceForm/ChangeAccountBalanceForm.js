@@ -83,7 +83,9 @@ export const ChangeAccountBalanceForm = ({
           <OutlinedInput
             autoFocus
             id="account_balance"
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            startAdornment={
+              <InputAdornment position="start">zł</InputAdornment>
+            }
             margin="dense"
             type="number"
             fullWidth
